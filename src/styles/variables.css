@@ -1,0 +1,64 @@
+:root {
+  /* ==========================================================================
+     TOKENS GLOBALES (PRIMITIVOS)
+     Nombres basados en el color real. Nunca se usan directamente para 
+     definir roles, solo como base para los tokens semánticos.
+     ========================================================================== */
+  
+  /* Escala de Grises */
+  --gray-50:  #f9fafb;
+  --gray-100: #f5f5f5;
+  --gray-200: #eeeeee;
+  --gray-300: #e5e7eb;
+  --gray-400: #cccccc;
+  --gray-500: #999999;
+  --gray-600: #757575;
+  --gray-700: #555555;
+  --gray-800: #333333;
+  --white:    #ffffff;
+  --black:    #000000;
+
+  /* Paleta Flat UI (Brand & Accents) */
+  --blue-500:   #0088cc; /* Primary */
+  --blue-400:   #1ba1e2; /* Info */
+  --red-500:    #e51400; /* Danger */
+  --green-500:  #00a300; /* Success */
+  --orange-500: #f0a30a; /* Warning */
+  --yellow-600: #b58900; /* Secondary */
+
+  /* ==========================================================================
+     TOKENS SEMÁNTICOS
+     Definen la intención de uso. Estos son los que los componentes deben
+     consumir en su CSS local (nunca los primitivos).
+     ========================================================================== */
+
+  /* Estados e Intenciones (Brand) */
+  --color-primary:   var(--blue-500);
+  --color-secondary: var(--yellow-600);
+  --color-danger:    var(--red-500);
+  --color-success:   var(--green-500);
+  --color-warning:   var(--orange-500);
+  --color-info:      var(--blue-400);
+
+  /* Texto */
+  --text-primary:    var(--gray-800);
+  --text-secondary:  var(--gray-700);
+  --text-muted:      var(--gray-600);
+  --text-placeholder:var(--gray-500);
+  --text-inverse:    var(--white);
+
+  /* Superficies y Fondos */
+  --bg-body:         var(--gray-50);
+  --bg-surface:      var(--white);
+  --bg-disabled:     var(--gray-50);
+  --bg-disabled-icon:var(--gray-200);
+  --bg-icon-block:   var(--gray-100);
+
+  /* Bordes */
+  --border-light:    var(--gray-300);
+  --border-base:     var(--gray-400);
+  
+  /* Layout y Dimensiones Globales (Flat UI defaults) */
+  --control-height:  48px;
+  --control-icon-w:  48px;
+}

@@ -1,0 +1,72 @@
+.textarea-wrapper {
+  --textarea-border-color: var(--border-base);
+  --textarea-bg: var(--bg-surface);
+  --textarea-text: var(--text-primary);
+  --textarea-error-color: var(--color-danger);
+  --textarea-focus-border: var(--color-info);
+  
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.textarea__label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.textarea__field-container {
+  display: flex;
+  width: 100%;
+  background-color: var(--textarea-bg);
+  border: 1px solid var(--textarea-border-color);
+  transition: border-color 0.2s ease;
+}
+
+.textarea__field-container:focus-within {
+  border-color: var(--textarea-focus-border);
+}
+
+.textarea__element {
+  flex: 1;
+  width: 100%;
+  min-height: 120px;
+  border: none;
+  background: transparent;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  color: var(--textarea-text);
+  font-family: inherit;
+  resize: vertical;
+}
+
+.textarea__element:focus {
+  outline: none;
+}
+
+.textarea__element::placeholder {
+  color: var(--text-placeholder);
+}
+
+/* Modifiers - Error */
+.textarea-wrapper--error .textarea__field-container {
+  border-color: var(--textarea-error-color);
+}
+
+.textarea__error-message {
+  font-size: 0.75rem;
+  color: var(--textarea-error-color);
+  margin-top: -0.25rem;
+}
+
+/* Modifiers - Disabled */
+.textarea-wrapper--disabled {
+  opacity: 0.7;
+}
+
+.textarea-wrapper--disabled .textarea__element {
+  cursor: not-allowed;
+  background-color: var(--bg-disabled);
+}

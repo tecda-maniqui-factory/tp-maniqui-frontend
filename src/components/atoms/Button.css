@@ -1,0 +1,93 @@
+/* 
+  Estilos del Átomo Button (Flat UI Split Design)
+*/
+
+.button {
+  --btn-height: var(--control-height);
+  --btn-icon-width: var(--control-icon-w);
+  --btn-text-bg: var(--text-muted);
+  --btn-text-color: var(--text-inverse);
+  --btn-transition: opacity 0.2s ease;
+
+  display: inline-flex;
+  height: var(--btn-height);
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  cursor: pointer;
+  overflow: hidden;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 400;
+  transition: var(--btn-transition);
+  outline: none;
+  min-width: 160px; /* Asegura un ancho mínimo para verse bien */
+}
+
+.button:hover:not(:disabled) {
+  opacity: 0.85;
+}
+
+/* Modifiers - Variantes */
+.button--primary {
+  --btn-icon-bg: var(--color-primary);
+}
+
+.button--secondary {
+  --btn-icon-bg: var(--color-secondary);
+}
+
+.button--danger {
+  --btn-icon-bg: var(--color-danger);
+}
+
+.button--success {
+  --btn-icon-bg: var(--color-success);
+}
+
+.button--warning {
+  --btn-icon-bg: var(--color-warning);
+}
+
+.button--info {
+  --btn-icon-bg: var(--color-info);
+}
+
+/* Elements - Bloques Internos (BEM) */
+.button__icon-block {
+  width: var(--btn-icon-width);
+  height: 100%;
+  background-color: var(--btn-icon-bg);
+  color: var(--text-inverse);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.button__icon {
+  width: 24px;
+  height: 24px;
+}
+
+.button__text-block {
+  flex-grow: 1;
+  height: 100%;
+  background-color: var(--btn-text-bg);
+  color: var(--btn-text-color);
+  display: flex;
+  align-items: center;
+  padding: 0 1.5rem;
+  justify-content: center; /* Centramos el texto como en la imagen */
+}
+
+.button__placeholder {
+  width: 24px;
+  height: 24px;
+}
+
+/* Modifiers - Estados */
+.button--disabled,
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

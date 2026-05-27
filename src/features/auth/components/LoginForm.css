@@ -1,0 +1,42 @@
+/* 
+  Estilos del Organismo LoginForm (Flat UI)
+*/
+
+.login-form {
+  --form-bg: var(--bg-surface);
+  --form-border: var(--border-light);
+  --form-title-color: var(--text-primary);
+
+  background-color: var(--form-bg);
+  border: 1px solid var(--form-border);
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.login-form__title {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--form-title-color);
+  text-align: center;
+}
+
+.login-form__fields {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.login-form__actions {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.login-form__submit-btn {
+  width: 100%;
+}

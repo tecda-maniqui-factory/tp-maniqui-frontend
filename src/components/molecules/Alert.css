@@ -1,0 +1,94 @@
+.alert {
+  display: flex;
+  align-items: flex-start;
+  padding: 1rem;
+  border-left: 4px solid var(--alert-color);
+  background-color: var(--alert-bg);
+  color: var(--text-primary);
+  width: 100%;
+  position: relative;
+}
+
+.alert__icon-wrapper {
+  color: var(--alert-color);
+  margin-right: 0.75rem;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+.alert__icon {
+  width: 20px;
+  height: 20px;
+}
+
+.alert__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.alert__title {
+  margin: 0 0 0.25rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--alert-color);
+}
+
+.alert__message {
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.alert__close {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0.25rem;
+  margin-left: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+}
+
+.alert__close:hover {
+  color: var(--text-primary);
+}
+
+.alert__close svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Modifiers - Variantes de Color (Usando colores muy suaves de fondo y el principal para bordes) */
+.alert--primary {
+  --alert-color: var(--color-primary);
+  --alert-bg: #e6f3fa; /* primary al 10% aprox */
+}
+
+.alert--secondary {
+  --alert-color: var(--color-secondary);
+  --alert-bg: #fdf5e6;
+}
+
+.alert--danger {
+  --alert-color: var(--color-danger);
+  --alert-bg: #fde8e6;
+}
+
+.alert--success {
+  --alert-color: var(--color-success);
+  --alert-bg: #e6f6e6;
+}
+
+.alert--warning {
+  --alert-color: var(--color-warning);
+  --alert-bg: #fef6e6;
+}
+
+.alert--info {
+  --alert-color: var(--color-info);
+  --alert-bg: #e8f6fc;
+}

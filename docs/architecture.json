@@ -1,0 +1,70 @@
+{
+  "architecture": {
+    "componentsAndStyles": {
+      "atomicDesign": {
+        "atoms": "Componentes básicos (Button, Input, Badge, Icon). Obligatorio usar <Button /> e <Icon />.",
+        "molecules": "Combinación de átomos (SearchBar, FormField).",
+        "organisms": "Secciones complejas (Header, ReportTable).",
+        "templates": "Layouts de página.",
+        "pages": "Páginas completas."
+      },
+      "bemCSS": {
+        "rules": "Estricto uso de block__element--modifier.",
+        "forbidden": ["Tailwind", "CSS-in-JS", "camelCase", "PascalCase", "inline styles"]
+      },
+      "styling": {
+        "oneComponentOneCSS": "Cada archivo .tsx tiene su .css correspondiente. Sin anidamientos que modifiquen hijos.",
+        "tokens": {
+          "global": "Colores crudos en variables.css",
+          "semantic": "Roles genéricos en variables.css",
+          "local": "Declarados en la clase raíz BEM del componente, no polucionar globales."
+        },
+        "bentoBox": "Nunca encadenar fondos grises sobre grises. Tarjetas en blanco sobre fondos grises."
+      }
+    },
+    "featureBasedModularization": {
+      "domainLogic": "Encapsulada en src/features/{feature_name}/",
+      "structure": ["components/", "hooks/", "index.ts (Barrel)", "FeaturePage.tsx", "FeaturePage.css"],
+      "controllers": "Lógica de orquestación en useFeatureController.ts. Manejadores en useFeatureHandlers.ts.",
+      "orchestratorsVsExecutors": "Si un orquestador (App, Page) tiene lógica compleja, extraer a hook controlador."
+    },
+    "react19AndPrinciples": {
+      "react19Ready": {
+        "context": "Priorizar use(Context) sobre useContext.",
+        "renderInRender": "Prohibido definir funciones que retornen JSX dentro de componentes.",
+        "componentSize": "Descomponer si supera ~350 líneas.",
+        "semantics": "Nombres semánticos para handlers (handleSavePatient, no handleClick)."
+      },
+      "dry": "No repetir código. Centralizar lógica y configuraciones.",
+      "memoization": "Usar useMemo/useCallback con justificación. Context Providers DEBEN memorizarse.",
+      "i18n": "Uso obligatorio de t('key'). Cero texto crudo o fallbacks hardcodeados.",
+      "cleanPaths": "Alias @/ para src/. Lazy Loading en componentes pesados.",
+      "errorHandling": "Aislar estado de errores por formulario. Limpiar errores al interactuar (onChange)."
+    },
+    "backendAndSecurity": {
+      "mvc": {
+        "routes": "Rutas HTTP.",
+        "controllers": "Orquestación de peticiones. Uso de dateUtils.ts.",
+        "services": "Lógica de negocio.",
+        "repositories": "Acceso a datos."
+      },
+      "security": "Protección SQL (sqlUtils.ts). Prohibido concatenar en SQL. Uso de whitelists en updates.",
+      "mariaDB": {
+        "indexes": "Obligatorios en WHERE, ORDER BY, GROUP BY, JOIN.",
+        "joins": "Obligatorio JOINs pre-agregados. Prohibido subconsultas correlacionadas.",
+        "databaseLogic": "Priorizar Vistas, Funciones y Procedimientos para lógica pesada."
+      },
+      "apiStandard": "Listados retornan { [nombre_entidad]: Array, totalCount: Number }."
+    },
+    "businessRules": {
+      "finance": "Turnos futuros no son deuda hasta completarse. Independencia de pago entre paciente e institución."
+    },
+    "gitFlow": {
+      "branches": ["main", "development", "release-* (Intocables)"],
+      "cleanup": "Borrar feat/fix/chore tras integrar."
+    },
+    "aiRules": {
+      "browserToolForbidden": "Prohibido usar herramientas de navegador en localhost. Validar interfaz preguntando al usuario."
+    }
+  }
+}

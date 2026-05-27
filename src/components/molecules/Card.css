@@ -1,0 +1,38 @@
+.card {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-light);
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  /* Flat UI minimalista, sombra muy sutil o nula, enfoquémonos en bordes limpios */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.card__header {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--border-light);
+  background-color: var(--gray-50);
+}
+
+.card__title {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.card__body {
+  padding: 1.25rem;
+  flex: 1;
+  color: var(--text-secondary);
+}
+
+.card__footer {
+  padding: 1rem 1.25rem;
+  border-top: 1px solid var(--border-light);
+  background-color: var(--gray-50);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}

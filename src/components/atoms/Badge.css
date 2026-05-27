@@ -1,0 +1,26 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--white);
+  gap: 0.35rem;
+  /* Flat UI no usa bordes redondeados pronunciados, pero podemos usar 2px o cuadrado */
+  border-radius: 2px;
+}
+
+.badge__icon {
+  width: 12px;
+  height: 12px;
+}
+
+/* Modifiers - Variantes de Color */
+.badge--primary { background-color: var(--color-primary); }
+.badge--secondary { background-color: var(--color-secondary); }
+.badge--danger { background-color: var(--color-danger); }
+.badge--success { background-color: var(--color-success); }
+.badge--warning { background-color: var(--color-warning); color: var(--text-primary); } /* Naranja a veces requiere texto oscuro, pero white suele estar bien, dejémoslo white en warning Flat UI */
+.badge--info { background-color: var(--color-info); }

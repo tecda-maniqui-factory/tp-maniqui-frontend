@@ -1,0 +1,102 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 60px;
+  background-color: var(--color-primary); /* Flat UI Header typically uses a solid brand color */
+  color: var(--white);
+  padding: 0 1.5rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.navbar__left, .navbar__right {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.navbar__menu-btn {
+  background: transparent;
+  border: none;
+  color: var(--white);
+  cursor: pointer;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s;
+}
+
+.navbar__menu-btn:hover {
+  opacity: 0.8;
+}
+
+.navbar__brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.navbar__logo {
+  color: var(--white);
+}
+
+.navbar__title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.navbar__user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.navbar__avatar {
+  width: 32px;
+  height: 32px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navbar__avatar svg {
+  width: 18px;
+  height: 18px;
+}
+
+.navbar__username {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.navbar__logout-btn {
+  background: transparent;
+  border: none;
+  color: var(--white);
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.navbar__logout-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .navbar__username {
+    display: none;
+  }
+}

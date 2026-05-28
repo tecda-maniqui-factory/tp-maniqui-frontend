@@ -1,0 +1,69 @@
+.table {
+  --table-border-color: var(--gray-200);
+  --table-header-bg: var(--gray-50);
+  --table-header-text: var(--gray-700);
+  --table-row-hover: var(--blue-50);
+  --table-text-color: var(--gray-800);
+  
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--white);
+  border: 1px solid var(--table-border-color);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  font-size: 0.875rem;
+}
+
+.table__header {
+  background-color: var(--table-header-bg);
+  border-bottom: 2px solid var(--table-border-color);
+}
+
+.table__header-cell {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: var(--table-header-text);
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  font-size: 0.75rem;
+}
+
+.table__row {
+  border-bottom: 1px solid var(--table-border-color);
+  transition: background-color 0.2s ease;
+}
+
+.table__row:last-child {
+  border-bottom: none;
+}
+
+.table__row--hoverable:hover {
+  background-color: var(--table-row-hover);
+}
+
+.table__cell {
+  padding: 0.75rem 1rem;
+  color: var(--table-text-color);
+  vertical-align: middle;
+}
+
+.table__cell--numeric {
+  text-align: right;
+}
+
+.table__cell--center {
+  text-align: center;
+}
+
+.table__footer {
+  background-color: var(--table-header-bg);
+  border-top: 2px solid var(--table-border-color);
+  font-weight: 600;
+}
+
+/* Modifier para tablas compactas */
+.table--compact .table__header-cell,
+.table--compact .table__cell {
+  padding: 0.5rem 0.75rem;
+}

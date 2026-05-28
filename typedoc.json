@@ -1,0 +1,21 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": ["src/main.tsx", "src/components", "src/features"],
+  "entryPointStrategy": "expand",
+  "out": "docs/technical-reference",
+  "name": "TP Maniquí - Frontend Documentation",
+  "includeVersion": true,
+  "exclude": ["**/*.css", "**/*.test.tsx", "node_modules"],
+  "theme": "default",
+  "readme": "README.md",
+  "plugin": [],
+  "categorizeByGroup": true,
+  "sort": ["kind", "instance-first", "alphabetical"],
+  "cleanOutputDir": true,
+  "visibilityFilters": {
+    "protected": true,
+    "private": false,
+    "inherited": true,
+    "external": false
+  }
+}

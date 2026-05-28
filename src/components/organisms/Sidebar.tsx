@@ -1,5 +1,6 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import Icon from '../atoms/Icon';
+import { icons } from 'lucide-react';
 import './Sidebar.css';
 
 export interface SidebarItem {
@@ -10,7 +11,7 @@ export interface SidebarItem {
 }
 
 export interface SidebarProps {
-  /** Indica si la barra lateral está abierta (importante en móviles) */
+  /** Indica si la barra lateral está abierta */
   isOpen: boolean;
   /** Lista de enlaces de navegación */
   items: SidebarItem[];
@@ -22,7 +23,6 @@ export interface SidebarProps {
 
 /**
  * Componente Organismo: Sidebar
- * Barra de navegación lateral típica de un Dashboard (Layout).
  */
 const Sidebar: FC<SidebarProps> = ({
   isOpen,
@@ -34,10 +34,13 @@ const Sidebar: FC<SidebarProps> = ({
   
   return (
     <>
-      {/* Overlay oscuro solo visible en móviles cuando está abierto */}
-      {isOpen && <div className={`${baseClass}-overlay`} onClick={onClose} />}
+      {/* Overlay oscuro para móviles */}
+      <div 
+        className={`${baseClass}-overlay ${isOpen ? 'sidebar-overlay--open' : ''}`} 
+        onClick={onClose} 
+      />
       
-      <aside className={`${baseClass} ${isOpen ? `${baseClass}--open` : ''}`}>
+      <aside className={baseClass}>
         <nav className={`${baseClass}__nav`}>
           <ul className={`${baseClass}__list`}>
             {items.map((item) => (

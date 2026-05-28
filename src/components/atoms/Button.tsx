@@ -1,22 +1,25 @@
-import React, { FC, ButtonHTMLAttributes, ReactNode } from 'react';
+import { FC, ButtonHTMLAttributes, ReactNode } from 'react';
 import Icon from './Icon';
 import { icons } from 'lucide-react';
 import './Button.css';
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  /** Texto a mostrar a la derecha */
-  children: ReactNode;
+  /** Texto a mostrar a la derecha. Opcional si es isCompact */
+  children?: ReactNode;
   /** Nombre del icono de lucide-react */
   iconName?: keyof typeof icons;
   /** Variante visual que define el color del bloque izquierdo */
   variant?: 'primary' | 'secondary' | 'danger' | 'success' | 'warning' | 'info';
   /** Estado deshabilitado explícito (independiente de disabled nativo) */
   isDisabled?: boolean;
+  /** Si es true, solo muestra el bloque del icono (cuadrado) */
+  isCompact?: boolean;
 }
 
 /**
  * Componente Átomo: Button
  * Diseño Flat UI "Split": Icono en cuadrado de color a la izquierda, texto en gris a la derecha.
+ * Si isCompact es true, solo se muestra el bloque del icono.
  */
 const Button: FC<ButtonProps> = ({ 
   children, 
@@ -24,6 +27,7 @@ const Button: FC<ButtonProps> = ({
   variant = 'primary', 
   type = 'button', 
   isDisabled = false, 
+  isCompact = false,
   onClick, 
   className = '',
   ...props 
@@ -32,8 +36,9 @@ const Button: FC<ButtonProps> = ({
   const baseClass = 'button';
   const variantClass = `${baseClass}--${variant}`;
   const disabledClass = isDisabled ? `${baseClass}--disabled` : '';
+  const compactClass = isCompact ? `${baseClass}--compact` : '';
 
-  const finalClassName = [baseClass, variantClass, disabledClass, className]
+  const finalClassName = [baseClass, variantClass, disabledClass, compactClass, className]
     .filter(Boolean)
     .join(' ');
 
@@ -52,9 +57,12 @@ const Button: FC<ButtonProps> = ({
           <div className={`${baseClass}__placeholder`} />
         )}
       </div>
-      <div className={`${baseClass}__text-block`}>
-        {children}
-      </div>
+      
+      {!isCompact && children && (
+        <div className={`${baseClass}__text-block`}>
+          {children}
+        </div>
+      )}
     </button>
   );
 };

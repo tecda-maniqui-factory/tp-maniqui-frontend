@@ -21,37 +21,26 @@
   font-weight: 400;
   transition: var(--btn-transition);
   outline: none;
-  min-width: 160px; /* Asegura un ancho mínimo para verse bien */
+  min-width: 160px; /* Ancho mínimo para botones estándar */
 }
 
 .button:hover:not(:disabled) {
   opacity: 0.85;
 }
 
+/* Modifier - Compact (Solo icono) */
+.button--compact {
+  min-width: var(--btn-icon-width);
+  width: var(--btn-icon-width);
+}
+
 /* Modifiers - Variantes */
-.button--primary {
-  --btn-icon-bg: var(--color-primary);
-}
-
-.button--secondary {
-  --btn-icon-bg: var(--color-secondary);
-}
-
-.button--danger {
-  --btn-icon-bg: var(--color-danger);
-}
-
-.button--success {
-  --btn-icon-bg: var(--color-success);
-}
-
-.button--warning {
-  --btn-icon-bg: var(--color-warning);
-}
-
-.button--info {
-  --btn-icon-bg: var(--color-info);
-}
+.button--primary { --btn-icon-bg: var(--color-primary); }
+.button--secondary { --btn-icon-bg: var(--color-secondary); }
+.button--danger { --btn-icon-bg: var(--color-danger); }
+.button--success { --btn-icon-bg: var(--color-success); }
+.button--warning { --btn-icon-bg: var(--color-warning); }
+.button--info { --btn-icon-bg: var(--color-info); }
 
 /* Elements - Bloques Internos (BEM) */
 .button__icon-block {
@@ -62,6 +51,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0; /* Evita que el bloque se encoja */
 }
 
 .button__icon {
@@ -77,7 +67,8 @@
   display: flex;
   align-items: center;
   padding: 0 1.5rem;
-  justify-content: center; /* Centramos el texto como en la imagen */
+  justify-content: center;
+  white-space: nowrap; /* Evita que el texto salte de línea */
 }
 
 .button__placeholder {

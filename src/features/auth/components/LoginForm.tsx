@@ -1,67 +1,82 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import Input from '@/components/atoms/Input';
 import Button from '@/components/atoms/Button';
+import FormField from '@/components/molecules/FormField';
+import Card from '@/components/molecules/Card';
+import Spinner from '@/components/atoms/Spinner';
+import Alert from '@/components/molecules/Alert';
 import { useLoginController } from '../hooks/useLoginController';
 import './LoginForm.css';
 
 /**
  * Componente Organismo: LoginForm
  * 
- * Renderiza el formulario de inicio de sesión utilizando átomos estándar (Input, Button).
- * Toda su lógica interna y orquestación de estado está delegada al controlador `useLoginController`.
- * 
- * @component
- * @example
- * return (
- *   <LoginForm />
- * )
+ * Implementación optimizada con FormField (Molécula) para la gestión de errores y etiquetas.
+ * Utiliza Card (Molécula) para el contenedor siguiendo reglas de composición.
+ * Integra Spinner (Átomo) para indicar estados de carga y Alert para errores globales.
  */
 export const LoginForm: FC = () => {
   const { formData, errors, isLoading, handlers, t } = useLoginController();
 
+  const footer = (
+    <Button 
+      type="submit" 
+      variant="primary" 
+      iconName={!isLoading ? "LogIn" : undefined}
+      isDisabled={isLoading}
+      className="login-form__submit-btn"
+    >
+      {isLoading ? <Spinner size={20} variant="info" /> : t('auth.login.submit')}
+    </Button>
+  );
+
   return (
     <form className="login-form" onSubmit={handlers.handleSubmit} noValidate>
-      <h2 className="login-form__title">{t('auth.login.title')}</h2>
-      
-      <div className="login-form__fields">
-        <Input
-          name="email"
-          type="email"
-          label={t('auth.login.email')}
-          placeholder={t('auth.login.email_placeholder')}
-          iconName="Mail"
-          variant="info"
-          value={formData.email}
-          onChange={handlers.handleChange}
-          error={errors.email ? t(errors.email) : undefined}
-          isDisabled={isLoading}
-        />
+      <Card title={t('auth.login.title')} footer={footer}>
+        <div className="login-form__fields">
+          {errors.form && (
+            <Alert variant="danger" className="login-form__alert">
+              {t(errors.form)}
+            </Alert>
+          )}
 
-        <Input
-          name="password"
-          type="password"
-          label={t('auth.login.password')}
-          placeholder={t('auth.login.password_placeholder')}
-          iconName="Lock"
-          variant="secondary"
-          value={formData.password}
-          onChange={handlers.handleChange}
-          error={errors.password ? t(errors.password) : undefined}
-          isDisabled={isLoading}
-        />
-      </div>
+          <FormField 
+            label={t('auth.login.username')} 
+            error={errors.username ? t(errors.username) : undefined}
+            required
+          >
+            <Input
+              name="username"
+              type="text"
+              placeholder={t('auth.login.username_placeholder')}
+              iconName="User"
+              variant="info"
+              value={formData.username}
+              onChange={handlers.handleChange}
+              hasError={!!errors.username}
+              disabled={isLoading}
+            />
+          </FormField>
 
-      <div className="login-form__actions">
-        <Button 
-          type="submit" 
-          variant="primary" 
-          iconName="LogIn" 
-          isDisabled={isLoading}
-          className="login-form__submit-btn"
-        >
-          {isLoading ? '...' : t('auth.login.submit')}
-        </Button>
-      </div>
+          <FormField 
+            label={t('auth.login.password')} 
+            error={errors.password ? t(errors.password) : undefined}
+            required
+          >
+            <Input
+              name="password"
+              type="password"
+              placeholder={t('auth.login.password_placeholder')}
+              iconName="Lock"
+              variant="secondary"
+              value={formData.password}
+              onChange={handlers.handleChange}
+              hasError={!!errors.password}
+              disabled={isLoading}
+            />
+          </FormField>
+        </div>
+      </Card>
     </form>
   );
 };

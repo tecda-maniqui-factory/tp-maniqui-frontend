@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from 'react';
+import { FC, ReactNode } from 'react';
 import Icon from './Icon';
 import { icons } from 'lucide-react';
 import './Badge.css';

@@ -1,0 +1,29 @@
+.auth-page {
+  --auth-bg: var(--color-primary);
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  width: 100%;
+  background-color: var(--auth-bg);
+  padding: 1rem;
+}
+
+.auth-page__container {
+  width: 100%;
+  max-width: 400px;
+  /* Anti-camuflaje: La Card interior usará var(--white) sobre este fondo --gray-100 */
+  animation: auth-fade-in 0.5s ease-out;
+}
+
+@keyframes auth-fade-in {
+  from { 
+    opacity: 0; 
+    transform: translateY(10px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}

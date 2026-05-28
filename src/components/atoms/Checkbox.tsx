@@ -1,25 +1,22 @@
-import React, { FC, InputHTMLAttributes, useId } from 'react';
+import { FC, InputHTMLAttributes, useId } from 'react';
 import './Checkbox.css';
 
 export interface CheckboxProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
-  /** Texto descriptivo que acompaña al checkbox */
-  label?: string;
   /** Variante de color (Flat UI) */
   variant?: 'primary' | 'secondary' | 'danger' | 'success' | 'warning' | 'info';
-  /** Estado deshabilitado explícito */
-  isDisabled?: boolean;
 }
 
 /**
  * Componente Átomo: Checkbox
- * Un checkbox con estilo cuadrado Flat UI personalizado (sin usar el nativo redondeado).
+ * Un checkbox con estilo cuadrado Flat UI personalizado.
+ * El label externo se delega al consumidor o a FormField si es necesario.
  */
 const Checkbox: FC<CheckboxProps> = ({
-  label,
   variant = 'primary',
-  isDisabled = false,
+  disabled = false,
   className = '',
   id,
+  children,
   ...props
 }) => {
   const generatedId = useId();
@@ -27,7 +24,7 @@ const Checkbox: FC<CheckboxProps> = ({
 
   const baseClass = 'checkbox';
   const variantClass = `${baseClass}-wrapper--${variant}`;
-  const disabledClass = isDisabled ? `${baseClass}-wrapper--disabled` : '';
+  const disabledClass = disabled ? `${baseClass}-wrapper--disabled` : '';
 
   return (
     <label className={[`${baseClass}-wrapper`, variantClass, disabledClass, className].filter(Boolean).join(' ')}>
@@ -36,12 +33,12 @@ const Checkbox: FC<CheckboxProps> = ({
           type="checkbox"
           id={checkboxId}
           className={`${baseClass}__input`}
-          disabled={isDisabled}
+          disabled={disabled}
           {...props}
         />
         <div className={`${baseClass}__custom`} />
       </div>
-      {label && <span className={`${baseClass}__label`}>{label}</span>}
+      {children && <span className={`${baseClass}__label`}>{children}</span>}
     </label>
   );
 };

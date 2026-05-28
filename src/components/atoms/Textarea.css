@@ -6,15 +6,7 @@
   --textarea-focus-border: var(--color-info);
   
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
   width: 100%;
-}
-
-.textarea__label {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: var(--text-secondary);
 }
 
 .textarea__field-container {
@@ -53,12 +45,6 @@
 /* Modifiers - Error */
 .textarea-wrapper--error .textarea__field-container {
   border-color: var(--textarea-error-color);
-}
-
-.textarea__error-message {
-  font-size: 0.75rem;
-  color: var(--textarea-error-color);
-  margin-top: -0.25rem;
 }
 
 /* Modifiers - Disabled */

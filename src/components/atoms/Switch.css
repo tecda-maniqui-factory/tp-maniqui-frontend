@@ -1,0 +1,81 @@
+.switch {
+  --switch-width: 44px;
+  --switch-height: 22px;
+  --switch-thumb-size: 18px;
+  --switch-bg-off: var(--gray-300);
+  --switch-bg-on: var(--color-primary);
+  --switch-thumb-bg: var(--white);
+  
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.switch__container {
+  position: relative;
+  width: var(--switch-width);
+  height: var(--switch-height);
+}
+
+.switch__input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.switch__track {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--switch-bg-off);
+  transition: background-color 0.2s ease;
+  border-radius: 100px;
+}
+
+.switch__thumb {
+  position: absolute;
+  height: var(--switch-thumb-size);
+  width: var(--switch-thumb-size);
+  left: 2px;
+  bottom: 2px;
+  background-color: var(--switch-thumb-bg);
+  transition: transform 0.2s ease;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Estado Activo */
+.switch__input:checked + .switch__track {
+  background-color: var(--switch-bg-on);
+}
+
+.switch__input:checked + .switch__track .switch__thumb {
+  transform: translateX(calc(var(--switch-width) - var(--switch-thumb-size) - 4px));
+}
+
+/* Foco para accesibilidad */
+.switch__input:focus-visible + .switch__track {
+  outline: 2px solid var(--color-info);
+  outline-offset: 2px;
+}
+
+/* Variantes de Color */
+.switch--success { --switch-bg-on: var(--color-success); }
+.switch--danger { --switch-bg-on: var(--color-danger); }
+.switch--warning { --switch-bg-on: var(--color-warning); }
+.switch--info { --switch-bg-on: var(--color-info); }
+
+/* Estado Deshabilitado */
+.switch--disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.switch--disabled .switch__input {
+  cursor: not-allowed;
+}

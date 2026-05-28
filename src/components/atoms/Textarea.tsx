@@ -1,23 +1,18 @@
-import React, { FC, TextareaHTMLAttributes, useId } from 'react';
+import { FC, TextareaHTMLAttributes, useId } from 'react';
 import './Textarea.css';
 
 export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
-  /** Etiqueta descriptiva del campo */
-  label?: string;
-  /** Mensaje de error a mostrar debajo del campo */
-  error?: string;
-  /** Estado deshabilitado explícito */
-  isDisabled?: boolean;
+  /** Estado de error visual */
+  hasError?: boolean;
 }
 
 /**
  * Componente Átomo: Textarea
- * Campo de texto multilínea estilo Flat UI.
+ * Solo el campo multilínea.
  */
 const Textarea: FC<TextareaProps> = ({
-  label,
-  error,
-  isDisabled = false,
+  hasError = false,
+  disabled = false,
   className = '',
   id,
   ...props
@@ -26,8 +21,8 @@ const Textarea: FC<TextareaProps> = ({
   const textareaId = id || generatedId;
 
   const baseClass = 'textarea';
-  const disabledClass = isDisabled ? `${baseClass}-wrapper--disabled` : '';
-  const errorClass = error ? `${baseClass}-wrapper--error` : '';
+  const disabledClass = disabled ? `${baseClass}-wrapper--disabled` : '';
+  const errorClass = hasError ? `${baseClass}-wrapper--error` : '';
   
   const finalWrapperClass = [`${baseClass}-wrapper`, disabledClass, errorClass, className]
     .filter(Boolean)
@@ -35,26 +30,14 @@ const Textarea: FC<TextareaProps> = ({
 
   return (
     <div className={finalWrapperClass}>
-      {label && (
-        <label className={`${baseClass}__label`} htmlFor={textareaId}>
-          {label}
-        </label>
-      )}
-      
       <div className={`${baseClass}__field-container`}>
         <textarea
           id={textareaId}
           className={`${baseClass}__element`}
-          disabled={isDisabled}
+          disabled={disabled}
           {...props}
         />
       </div>
-
-      {error && (
-        <span className={`${baseClass}__error-message`}>
-          {error}
-        </span>
-      )}
     </div>
   );
 };

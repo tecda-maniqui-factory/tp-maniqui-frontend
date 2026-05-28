@@ -1,64 +1,45 @@
-import { useState, useCallback, ChangeEvent, FormEvent } from 'react';
+import { useState, useCallback, ChangeEvent, FormEvent, use } from 'react';
 import { useLanguage } from '@/hooks/useLanguage';
+import { AuthContext } from '@/context/AuthContext';
+import { NotificationContext } from '@/context/NotificationContext';
+import { authService } from '../api/authService';
 
-/**
- * Interfaz que define la estructura del estado del formulario de login.
- */
 interface LoginState {
-  email: string;
+  username: string;
   password: string;
 }
 
-/**
- * Interfaz que define los posibles errores de validación del formulario.
- */
 interface LoginErrors {
-  email?: string;
+  username?: string;
   password?: string;
+  form?: string;
 }
 
-/**
- * Controlador (Custom Hook) para el caso de uso de Iniciar Sesión.
- * Encapsula la lógica de estado, validación y envío (simulación API),
- * manteniendo la vista (LoginForm) 100% libre de lógica de negocio.
- *
- * @returns {Object} Estado actual, errores, estado de carga y funciones manejadoras.
- */
 export const useLoginController = () => {
   const { t } = useLanguage();
+  const auth = use(AuthContext);
+  const notification = use(NotificationContext);
+
+  if (!auth || !notification) {
+    throw new Error('useLoginController must be used within correct providers');
+  }
   
-  const [formData, setFormData] = useState<LoginState>({ email: '', password: '' });
+  const [formData, setFormData] = useState<LoginState>({ username: '', password: '' });
   const [errors, setErrors] = useState<LoginErrors>({});
   const [isLoading, setIsLoading] = useState(false);
 
-  /**
-   * Manejador de cambios en los inputs.
-   * Actualiza el estado del formulario y, cumpliendo las reglas de arquitectura,
-   * limpia el error del campo específico apenas el usuario interactúa con él.
-   *
-   * @param {ChangeEvent<HTMLInputElement>} e - Evento de cambio del input nativo.
-   */
   const handleChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-    setErrors(prev => ({ ...prev, [name]: undefined }));
+    setErrors(prev => ({ ...prev, [name]: undefined, form: undefined }));
   }, []);
 
-  /**
-   * Manejador del envío del formulario.
-   * Ejecuta validaciones síncronas antes de simular la llamada a la API.
-   *
-   * @param {FormEvent} e - Evento de envío del formulario.
-   */
   const handleSubmit = useCallback(async (e: FormEvent) => {
     e.preventDefault();
     const newErrors: LoginErrors = {};
 
-    // Validaciones
-    if (!formData.email) {
-      newErrors.email = 'auth.error.required';
-    } else if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
-      newErrors.email = 'auth.error.invalid_email';
+    if (!formData.username) {
+      newErrors.username = 'auth.error.required';
     }
     
     if (!formData.password) {
@@ -71,12 +52,22 @@ export const useLoginController = () => {
     }
 
     setIsLoading(true);
-    // Simulación de API
-    setTimeout(() => {
-      alert(`Login exitoso con: ${formData.email}`);
+    
+    try {
+      const response = await authService.login(formData.username, formData.password);
+      auth.login(response.token, response.user);
+      notification.showNotification(t('auth.success.login'), 'success');
+    } catch (error: any) {
+      console.error('Login failed:', error);
+      const isNetworkError = error.message === 'Failed to fetch';
+      const errorKey = isNetworkError ? 'auth.error.server' : error.message;
+      
+      setErrors({ form: errorKey });
+      notification.showNotification(t(errorKey), 'danger', t('auth.error.title'));
+    } finally {
       setIsLoading(false);
-    }, 1500);
-  }, [formData]);
+    }
+  }, [formData, auth]);
 
   const handlers = {
     handleChange,

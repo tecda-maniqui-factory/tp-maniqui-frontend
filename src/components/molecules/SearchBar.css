@@ -1,0 +1,31 @@
+.search-bar {
+  --search-bg: var(--white);
+  --search-border: var(--gray-300);
+  --search-focus: var(--color-info);
+  
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 400px;
+  position: relative;
+}
+
+.search-bar__input-wrapper {
+  flex: 1;
+}
+
+/* Modificamos ligeramente el estilo del input cuando está dentro de una SearchBar 
+   si fuera necesario, pero lo ideal es usar el átomo Input tal cual. */
+
+.search-bar__button {
+  position: absolute;
+  right: 2px;
+  top: 2px;
+  bottom: 2px;
+  z-index: 10;
+}
+
+/* Variante expandible o minimalista si se requiere en el futuro */
+.search-bar--large {
+  max-width: 100%;
+}

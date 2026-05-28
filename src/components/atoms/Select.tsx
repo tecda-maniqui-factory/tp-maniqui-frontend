@@ -1,4 +1,4 @@
-import React, { FC, SelectHTMLAttributes, useId } from 'react';
+import { FC, SelectHTMLAttributes, useId } from 'react';
 import Icon from './Icon';
 import { icons } from 'lucide-react';
 import './Select.css';
@@ -9,31 +9,26 @@ export interface SelectOption {
 }
 
 export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
-  /** Etiqueta descriptiva del campo */
-  label?: string;
   /** Opciones a mostrar en el select */
   options: SelectOption[];
-  /** Mensaje de error a mostrar debajo del campo */
-  error?: string;
   /** Icono opcional a mostrar a la izquierda */
   iconName?: keyof typeof icons;
   /** Variante visual que define el color del bloque del icono (Flat UI) */
   variant?: 'primary' | 'secondary' | 'danger' | 'success' | 'warning' | 'info';
-  /** Estado deshabilitado explícito */
-  isDisabled?: boolean;
+  /** Estado de error visual */
+  hasError?: boolean;
 }
 
 /**
  * Componente Átomo: Select
- * Select HTML nativo pero estilizado al 100% como Flat UI para que coincida con Input y Button.
+ * Se enfoca solo en la selección. Las etiquetas deben ir en FormField.
  */
 const Select: FC<SelectProps> = ({
-  label,
   options,
-  error,
   iconName,
   variant,
-  isDisabled = false,
+  hasError = false,
+  disabled = false,
   className = '',
   id,
   placeholder = 'Seleccione una opción...',
@@ -42,10 +37,9 @@ const Select: FC<SelectProps> = ({
   const generatedId = useId();
   const selectId = id || generatedId;
 
-  // Clases BEM
   const baseClass = 'select';
-  const disabledClass = isDisabled ? `${baseClass}-wrapper--disabled` : '';
-  const errorClass = error ? `${baseClass}-wrapper--error` : '';
+  const disabledClass = disabled ? `${baseClass}-wrapper--disabled` : '';
+  const errorClass = hasError ? `${baseClass}-wrapper--error` : '';
   const variantClass = variant ? `${baseClass}-wrapper--${variant}` : '';
 
   const finalWrapperClass = [`${baseClass}-wrapper`, variantClass, disabledClass, errorClass, className]
@@ -54,12 +48,6 @@ const Select: FC<SelectProps> = ({
 
   return (
     <div className={finalWrapperClass}>
-      {label && (
-        <label className={`${baseClass}__label`} htmlFor={selectId}>
-          {label}
-        </label>
-      )}
-      
       <div className={`${baseClass}__field-container`}>
         {iconName && (
           <div className={`${baseClass}__icon-wrapper`}>
@@ -71,29 +59,21 @@ const Select: FC<SelectProps> = ({
           <select
             id={selectId}
             className={`${baseClass}__element`}
-            disabled={isDisabled}
-            defaultValue=""
+            disabled={disabled}
             {...props}
           >
             <option value="" disabled hidden>
               {placeholder}
             </option>
-            {options.map((option) => (
+            {options && options.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
               </option>
             ))}
           </select>
-          {/* Reemplazamos la flecha fea del sistema operativo por un icono de Lucide */}
           <Icon name="ChevronDown" className={`${baseClass}__chevron`} />
         </div>
       </div>
-
-      {error && (
-        <span className={`${baseClass}__error-message`}>
-          {error}
-        </span>
-      )}
     </div>
   );
 };

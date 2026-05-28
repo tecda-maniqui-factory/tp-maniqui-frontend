@@ -1,5 +1,6 @@
 /* 
   Estilos del Átomo Input (Flat UI Design)
+  Se enfoca solo en el campo y el icono.
 */
 
 .input-wrapper {
@@ -13,16 +14,8 @@
   --input-icon-color: var(--text-muted);
   
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
   width: 100%;
   font-family: inherit;
-}
-
-.input__label {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: var(--text-secondary);
 }
 
 .input__field-container {
@@ -32,9 +25,9 @@
   border: 1px solid var(--input-border-color);
   background-color: var(--input-bg);
   transition: border-color 0.2s ease;
+  width: 100%;
 }
 
-/* Simula el efecto de foco nativo pero estilizado */
 .input__field-container:focus-within {
   border-color: var(--input-focus-border);
 }
@@ -64,7 +57,7 @@
   font-size: 1rem;
   color: var(--input-text);
   outline: none;
-  width: 100%; /* Evita desbordamientos */
+  width: 100%;
 }
 
 .input__element::placeholder {
@@ -82,12 +75,6 @@
   border-right-color: var(--input-error-color);
 }
 
-.input__error-message {
-  font-size: 0.75rem;
-  color: var(--input-error-color);
-  margin-top: -0.25rem;
-}
-
 /* Modifiers - Disabled */
 .input-wrapper--disabled {
   opacity: 0.6;
@@ -103,32 +90,9 @@
 }
 
 /* Modifiers - Variantes de Color (Flat UI) */
-.input-wrapper--primary {
-  --input-icon-bg: var(--color-primary);
-  --input-icon-color: var(--white);
-}
-
-.input-wrapper--secondary {
-  --input-icon-bg: var(--color-secondary);
-  --input-icon-color: var(--white);
-}
-
-.input-wrapper--danger {
-  --input-icon-bg: var(--color-danger);
-  --input-icon-color: var(--white);
-}
-
-.input-wrapper--success {
-  --input-icon-bg: var(--color-success);
-  --input-icon-color: var(--white);
-}
-
-.input-wrapper--warning {
-  --input-icon-bg: var(--color-warning);
-  --input-icon-color: var(--white);
-}
-
-.input-wrapper--info {
-  --input-icon-bg: var(--color-info);
-  --input-icon-color: var(--white);
-}
+.input-wrapper--primary { --input-icon-bg: var(--color-primary); --input-icon-color: var(--white); }
+.input-wrapper--secondary { --input-icon-bg: var(--color-secondary); --input-icon-color: var(--white); }
+.input-wrapper--danger { --input-icon-bg: var(--color-danger); --input-icon-color: var(--white); }
+.input-wrapper--success { --input-icon-bg: var(--color-success); --input-icon-color: var(--white); }
+.input-wrapper--warning { --input-icon-bg: var(--color-warning); --input-icon-color: var(--white); }
+.input-wrapper--info { --input-icon-bg: var(--color-info); --input-icon-color: var(--white); }

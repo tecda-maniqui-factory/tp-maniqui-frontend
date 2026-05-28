@@ -1,0 +1,73 @@
+.pagination {
+  --pagination-gap: 0.5rem;
+  --pagination-btn-size: 36px;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--pagination-gap);
+  margin-top: 1.5rem;
+  width: 100%;
+}
+
+.pagination__info {
+  font-size: 0.875rem;
+  color: var(--gray-600);
+  margin: 0 1rem;
+}
+
+.pagination__list {
+  display: flex;
+  gap: 0.25rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pagination__item {
+  display: flex;
+}
+
+/* Reutilizamos el concepto de botón para los números de página */
+.pagination__page-btn {
+  min-width: var(--pagination-btn-size);
+  height: var(--pagination-btn-size);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--gray-300);
+  background-color: var(--white);
+  color: var(--gray-700);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0 0.5rem;
+}
+
+.pagination__page-btn:hover:not(:disabled) {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.pagination__page-btn--active {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--white);
+}
+
+.pagination__page-btn--active:hover {
+  color: var(--white) !important;
+}
+
+.pagination__page-btn--ellipsis {
+  border: none;
+  background: transparent;
+  cursor: default;
+}
+
+.pagination__page-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: var(--gray-50);
+}

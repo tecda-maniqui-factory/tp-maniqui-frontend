@@ -1,46 +1,47 @@
-import { FC, ReactNode } from 'react';
-import Icon from '@/components/atoms/Icon';
+import { FC } from 'react';
+import Icon from '../atoms/Icon';
 import { icons } from 'lucide-react';
 import './StatCard.css';
 
 export interface StatCardProps {
-  label: string;
+  title: string;
   value: string | number;
   iconName: keyof typeof icons;
-  variant?: 'primary' | 'success' | 'warning' | 'danger' | 'default';
   trend?: {
-    value: string;
-    isUp: boolean;
+    value: number;
+    isUpward: boolean;
   };
-  className?: string;
+  variant?: 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'info';
 }
 
 /**
- * Organismo: StatCard
- * Muestra indicadores clave de rendimiento (KPIs).
+ * Componente Organismo: StatCard
+ * Tarjeta de estadísticas para el Dashboard.
  */
 const StatCard: FC<StatCardProps> = ({
-  label,
+  title,
   value,
   iconName,
-  variant = 'default',
   trend,
-  className = ''
+  variant = 'primary'
 }) => {
+  const baseClass = 'stat-card';
+  const variantClass = `${baseClass}--${variant}`;
+
   return (
-    <div className={`stat-card stat-card--${variant} ${className}`}>
-      <div className="stat-card__icon-container">
-        <Icon name={iconName} size={24} />
-      </div>
-      <div className="stat-card__content">
-        <span className="stat-card__label">{label}</span>
-        <span className="stat-card__value">{value}</span>
+    <div className={`${baseClass} ${variantClass}`}>
+      <div className={`${baseClass}__content`}>
+        <span className={`${baseClass}__title`}>{title}</span>
+        <h3 className={`${baseClass}__value`}>{value}</h3>
         {trend && (
-          <div className={`stat-card__trend stat-card__trend--${trend.isUp ? 'up' : 'down'}`}>
-            <Icon name={trend.isUp ? 'TrendingUp' : 'TrendingDown'} size={14} />
-            {trend.value}
+          <div className={`${baseClass}__trend ${trend.isUpward ? 'is-up' : 'is-down'}`}>
+            <Icon name={trend.isUpward ? 'TrendingUp' : 'TrendingDown'} size={14} />
+            <span>{trend.value}%</span>
           </div>
         )}
+      </div>
+      <div className={`${baseClass}__icon-wrapper`}>
+        <Icon name={iconName} className={`${baseClass}__icon`} />
       </div>
     </div>
   );

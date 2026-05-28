@@ -17,6 +17,8 @@ export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   variant?: 'primary' | 'secondary' | 'danger' | 'success' | 'warning' | 'info';
   /** Estado de error visual */
   hasError?: boolean;
+  /** Placeholder personalizado */
+  placeholder?: string;
 }
 
 /**
@@ -55,7 +57,7 @@ const Select: FC<SelectProps> = ({
           </div>
         )}
         
-        <div className={`${baseClass}__select-wrapper`}>
+        <div className={`${baseClass}__select-container`}>
           <select
             id={selectId}
             className={`${baseClass}__element`}

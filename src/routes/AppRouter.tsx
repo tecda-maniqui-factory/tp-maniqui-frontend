@@ -3,6 +3,7 @@ import { AuthPage } from '@/features/auth';
 import { ProductionPage } from '@/features/produccion';
 import { DashboardPage } from '@/features/dashboard';
 import MainLayout from '@/components/templates/MainLayout';
+import { SidebarItem } from '@/components/organisms/Sidebar';
 import NotificationContainer from '@/components/organisms/NotificationContainer';
 import Button from '@/components/atoms/Button';
 import ProtectedRoute from './ProtectedRoute';
@@ -48,7 +49,7 @@ const PrivateLayout: FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   
-  const SIDEBAR_ITEMS = [
+  const SIDEBAR_ITEMS: SidebarItem[] = [
     { 
       id: '/', 
       label: 'Dashboard', 

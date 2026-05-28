@@ -8,7 +8,7 @@ export interface User {
   name?: string; // Campo extra por si el backend lo devuelve
 }
 
-interface AuthContextType {
+export interface AuthContextType {
   isAuthenticated: boolean;
   user: User | null;
   token: string | null;

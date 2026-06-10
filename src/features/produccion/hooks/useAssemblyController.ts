@@ -48,8 +48,13 @@ export const useAssemblyController = (onSuccess?: () => void) => {
       setSelectedModeloId('');
       setNumeroSerie('');
       onSuccess?.();
-    } catch (err: unknown) {
-      notify(t(String(err)), 'danger');
+    } catch (err: any) {
+      const msg = err instanceof Error ? err.message : String(err);
+      if (msg === 'auth.error.session_expired') {
+        logout();
+      } else {
+        notify(t(msg), 'danger');
+      }
     } finally {
       setIsSubmitting(false);
     }

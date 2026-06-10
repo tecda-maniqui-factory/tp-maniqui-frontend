@@ -16,6 +16,15 @@ export const getSidebarItems = (pathname: string, role?: string): SidebarItem[] 
     },
   ];
 
+  if (role === 'vendedor' || role === 'gerente_prod') {
+    items.push({ 
+      id: '/ventas', 
+      label: 'Ventas', 
+      icon: 'ShoppingCart', 
+      isActive: pathname === '/ventas' 
+    });
+  }
+
   if (role === 'gerente_prod') {
     items.push({ 
       id: '/modelos', 

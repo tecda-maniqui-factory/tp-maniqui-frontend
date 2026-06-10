@@ -6,6 +6,7 @@ import { DashboardPage } from '@/features/dashboard';
 import { ModelCreationPage } from '@/features/modelos';
 import { SupplyPage } from '@/features/suministros';
 import ReportsPage from '@/features/reportes/ReportsPage';
+import { VentasPage } from '@/features/comercial';
 import { NotificationContainer } from '@/components/organisms';
 import { AuthContext } from '@/context';
 import { ErrorPage } from './ErrorPage';
@@ -56,6 +57,12 @@ export const AppRouter: FC = () => {
           path: 'reportes',
           element: auth.user?.rol === 'gerente_prod' 
             ? <ReportsPage /> 
+            : <Navigate to="/" replace />,
+        },
+        {
+          path: 'ventas',
+          element: (auth.user?.rol === 'gerente_prod' || auth.user?.rol === 'vendedor')
+            ? <VentasPage />
             : <Navigate to="/" replace />,
         },
       ],

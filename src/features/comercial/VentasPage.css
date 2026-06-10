@@ -1,0 +1,236 @@
+.sales-page {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.sales-page__loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 0;
+  gap: 1rem;
+  color: var(--text-secondary);
+}
+
+.sales-page__layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+@media (min-width: 1024px) {
+  .sales-page__layout {
+    grid-template-columns: 1.2fr 1fr;
+  }
+}
+
+.sales-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.sales-form__client-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.sales-form__client-row {
+  display: flex;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.sales-form__client-select-wrapper {
+  flex: 1;
+}
+
+.sales-form__new-client-btn {
+  white-space: nowrap;
+  align-self: flex-start;
+}
+
+.sales-form__options-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .sales-form__options-row {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.sales-form__mannequins-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.sales-form__section-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.sales-form__no-mannequins {
+  padding: 2rem;
+  background-color: var(--bg-icon-block);
+  border: 1px dashed var(--border-base);
+  border-radius: 6px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sales-form__no-mannequins-sub {
+  font-size: 0.875rem;
+}
+
+.sales-form__mannequins-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-height: 280px;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+  border: 1px solid var(--border-light);
+  border-radius: 6px;
+  padding: 0.75rem;
+  background-color: var(--bg-disabled);
+}
+
+/* Custom scrollbar for mannequins list */
+.sales-form__mannequins-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sales-form__mannequins-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sales-form__mannequins-list::-webkit-scrollbar-thumb {
+  background: var(--border-base);
+  border-radius: 3px;
+}
+
+.sales-form__mannequin-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-light);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  gap: 1rem;
+}
+
+.sales-form__mannequin-card:hover {
+  border-color: var(--border-base);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.sales-form__mannequin-card--selected {
+  border-color: var(--color-primary);
+  background-color: rgba(0, 136, 204, 0.03);
+}
+
+.sales-form__mannequin-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+.sales-form__mannequin-serial {
+  display: block;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--text-primary);
+}
+
+.sales-form__mannequin-model {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.sales-form__mannequin-price {
+  width: 140px;
+}
+
+.sales-form__summary {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  background-color: var(--bg-icon-block);
+  border-radius: 6px;
+  border: 1px solid var(--border-light);
+}
+
+.sales-form__summary-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.sales-form__summary-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--border-light);
+  padding-top: 0.5rem;
+  margin-top: 0.25rem;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.sales-form__total-val {
+  color: var(--color-success);
+}
+
+.sales-form__submit-btn {
+  width: 100%;
+  justify-content: center;
+}
+
+/* Modal Form Styles */
+.client-modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.client-modal-form__content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.client-modal-form__error {
+  padding: 0.75rem 1rem;
+  background-color: rgba(229, 20, 0, 0.08);
+  border: 1px solid var(--color-danger);
+  color: var(--color-danger);
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.client-modal-form__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  border-top: 1px solid var(--border-light);
+  padding-top: 1.25rem;
+}

@@ -1,6 +1,6 @@
 import { FC, ReactNode, use } from 'react';
 import { Navigate } from 'react-router-dom';
-import { AuthContext } from '@/context/AuthContext';
+import { AuthContext } from '@/context';
 
 interface ProtectedRouteProps {
   children: ReactNode;
@@ -21,7 +21,7 @@ const ProtectedRoute: FC<ProtectedRouteProps> = ({ children }) => {
     return <Navigate to="/login" replace />;
   }
 
-  return <>{children}</>;
+  return children;
 };
 
 export default ProtectedRoute;

@@ -9,7 +9,7 @@ import { productionService, Maniqui } from '../api/productionService';
  * Gestiona el estado de los maniquíes y la sincronización con el servidor.
  */
 export const useProductionController = () => {
-  const { token } = useAuth();
+  const { token, logout } = useAuth();
   const notify = useNotify();
   const { t } = useLanguage();
 
@@ -29,17 +29,36 @@ export const useProductionController = () => {
       
       setManiquies(list);
       setError(null);
-    } catch (err: any) {
-      const msg = t(err.message);
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : String(err);
+      
+      if (errorMessage === 'auth.error.session_expired') {
+        logout();
+        return;
+      }
+
+      const msg = t(errorMessage);
       setError(msg);
       notify(msg, 'danger', t('production.error.title'));
     } finally {
       setIsLoading(false);
     }
-  }, [token, notify, t]);
+  }, [token, logout, notify, t]);
 
   useEffect(() => {
-    fetchManiquies();
+    let isMounted = true;
+    
+    const loadData = async () => {
+      if (isMounted) {
+        await fetchManiquies();
+      }
+    };
+
+    loadData();
+    
+    return () => {
+      isMounted = false;
+    };
   }, [fetchManiquies]);
 
   const handlers = {

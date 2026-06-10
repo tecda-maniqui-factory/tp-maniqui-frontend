@@ -1,7 +1,7 @@
 import { FC, ReactNode, useState } from 'react';
-import Navbar from '../organisms/Navbar';
-import Sidebar, { SidebarItem } from '../organisms/Sidebar';
+import { Navbar, Sidebar, SidebarItem } from '../organisms';
 import { useAuth } from '@/hooks/useAuth';
+import { ENV } from '@/config/env.config';
 import './MainLayout.css';
 
 export interface MainLayoutProps {
@@ -21,7 +21,7 @@ export interface MainLayoutProps {
 const MainLayout: FC<MainLayoutProps> = ({
   children,
   sidebarItems,
-  title = "Tecda Maniquí ERP",
+  title = ENV.APP_NAME,
   onSidebarItemSelect,
   onLogout
 }) => {

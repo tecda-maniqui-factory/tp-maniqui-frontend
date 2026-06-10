@@ -23,6 +23,11 @@ export const productionService = {
     const response = await fetch(`${ENV.API_URL}/maniquies`, {
       headers: { 'Authorization': `Bearer ${token}` }
     });
+    
+    if (response.status === 401) {
+      throw new Error('auth.error.session_expired');
+    }
+
     if (!response.ok) throw new Error('production.error.fetch_failed');
     return response.json();
   },
@@ -35,6 +40,10 @@ export const productionService = {
     const response = await fetch(`${ENV.API_URL}/sistema/modelos`, {
       headers: { 'Authorization': `Bearer ${token}` }
     });
+
+    if (response.status === 401) {
+      throw new Error('auth.error.session_expired');
+    }
 
     if (!response.ok) throw new Error('production.error.models_failed');
 
@@ -49,7 +58,7 @@ export const productionService = {
   /**
    * Registra el ensamblaje de un nuevo maniquí.
    */
-  ensamblarManiqui: async (token: string, modelo_id: number, numero_serie: string): Promise<any> => {
+  ensamblarManiqui: async (token: string, modelo_id: number, numero_serie: string): Promise<unknown> => {
     const response = await fetch(`${ENV.API_URL}/maniquies/ensamblar`, {
       method: 'POST',
       headers: { 
@@ -58,6 +67,10 @@ export const productionService = {
       },
       body: JSON.stringify({ modelo_id, numero_serie })
     });
+
+    if (response.status === 401) {
+      throw new Error('auth.error.session_expired');
+    }
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));

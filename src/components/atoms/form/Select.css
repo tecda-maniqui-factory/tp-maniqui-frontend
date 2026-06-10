@@ -1,0 +1,118 @@
+/* 
+  Estilos del Átomo Select (Flat UI Design)
+*/
+
+.select-wrapper {
+  --select-height: var(--control-height);
+  --select-border-color: var(--border-base);
+  --select-bg: var(--bg-surface);
+  --select-text: var(--text-primary);
+  --select-error-color: var(--color-danger);
+  --select-focus-border: var(--color-info);
+  --select-icon-bg: var(--bg-icon-block);
+  --select-icon-color: var(--text-muted);
+  
+  display: flex;
+  width: 100%;
+  font-family: inherit;
+}
+
+.select__field-container {
+  position: relative;
+  display: flex;
+  height: var(--select-height);
+  border: 1px solid var(--select-border-color);
+  background-color: var(--select-bg);
+  transition: border-color 0.2s ease;
+  width: 100%;
+}
+
+.select__field-container:focus-within {
+  border-color: var(--select-focus-border);
+}
+
+.select__icon-wrapper {
+  width: var(--control-icon-w);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--select-icon-bg);
+  border-right: 1px solid var(--select-border-color);
+  color: var(--select-icon-color);
+}
+
+.select__icon {
+  width: 20px;
+  height: 20px;
+}
+
+.select__select-container {
+  position: relative;
+  flex-grow: 1;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.select__element {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: transparent;
+  padding: 0 2.5rem 0 1rem;
+  font-size: 1rem;
+  color: var(--select-text);
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  cursor: pointer;
+}
+
+.select__element:invalid,
+.select__element option[value=""][disabled] {
+  color: var(--text-placeholder);
+}
+
+.select__chevron {
+  position: absolute;
+  right: 1rem;
+  pointer-events: none;
+  color: var(--text-muted);
+  width: 20px;
+  height: 20px;
+}
+
+/* Modifiers - Error */
+.select-wrapper--error .select__field-container {
+  border-color: var(--select-error-color);
+}
+
+.select-wrapper--error .select__icon-wrapper {
+  background-color: var(--select-error-color);
+  color: var(--text-inverse);
+  border-right-color: var(--select-error-color);
+}
+
+/* Modifiers - Disabled */
+.select-wrapper--disabled {
+  opacity: 0.6;
+}
+
+.select-wrapper--disabled .select__element {
+  cursor: not-allowed;
+}
+
+.select-wrapper--disabled .select__icon-wrapper,
+.select-wrapper--disabled .select__field-container {
+  background-color: var(--bg-disabled-icon);
+}
+
+/* Modifiers - Variantes */
+.select-wrapper--primary { --select-icon-bg: var(--color-primary); --select-icon-color: var(--white); }
+.select-wrapper--secondary { --select-icon-bg: var(--color-secondary); --select-icon-color: var(--white); }
+.select-wrapper--danger { --select-icon-bg: var(--color-danger); --select-icon-color: var(--white); }
+.select-wrapper--success { --select-icon-bg: var(--color-success); --select-icon-color: var(--white); }
+.select-wrapper--warning { --select-icon-bg: var(--color-warning); --select-icon-color: var(--white); }
+.select-wrapper--info { --select-icon-bg: var(--color-info); --select-icon-color: var(--white); }

@@ -33,14 +33,17 @@ export const authService = {
 
     const data = await response.json();
     
-    // Normalización de la respuesta (soporta respuesta plana o anidada)
+    // Normalización de la respuesta (soporta usuario, user o respuesta plana)
+    const userData = data.usuario || data.user || data;
+
     return {
       token: data.token,
-      user: data.user || {
-        id: data.id,
-        username: data.username,
-        email: data.email,
-        rol: data.rol
+      user: {
+        id: userData.id,
+        username: userData.username,
+        email: userData.email,
+        rol: userData.rol,
+        name: userData.nombre || userData.nombre_completo
       }
     };
   },

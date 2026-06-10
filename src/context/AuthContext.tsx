@@ -5,7 +5,7 @@ export interface User {
   username: string;
   email?: string;
   rol: string;
-  name?: string; // Campo extra por si el backend lo devuelve
+  name?: string;
 }
 
 export interface AuthContextType {
@@ -23,7 +23,6 @@ export const AuthContext = createContext<AuthContextType | undefined>(undefined)
  * Gestiona el estado global de la sesión con persistencia en localStorage.
  */
 export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
-  // Inicialización perezosa (Lazy initialization) para evitar bloqueos en el hilo principal
   const [token, setToken] = useState<string | null>(() => {
     const savedToken = localStorage.getItem('auth_token');
     return (savedToken === 'undefined' || savedToken === 'null' || !savedToken) ? null : savedToken;

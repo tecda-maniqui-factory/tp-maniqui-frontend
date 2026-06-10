@@ -1,5 +1,5 @@
 import { use } from 'react';
-import { NotificationContext } from '@/context/NotificationContext';
+import { NotificationContext } from '@/context';
 
 /**
  * Hook de acceso rápido a las notificaciones globales.

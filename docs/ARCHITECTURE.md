@@ -4,7 +4,11 @@
 
 ### Atomic Design
 Clasificar componentes en:
-- **atoms/**: Componentes básicos (Button, Input, Badge, Icon). Todos los botones deben usar el componente `<Button />` y todos los iconos deben usar el componente `<Icon />`. PROHIBIDO usar emojis o elementos nativos (como `<button>` o `<span>` con clases de iconos) directamente para estos propósitos.
+- **atoms/**: Componentes básicos. Se dividen en:
+  - **display/**: `Icon`, `Badge`.
+  - **feedback/**: `Spinner`.
+  - **form/**: `Button`, `Input`, `Select`, `Checkbox`, `Switch`, `Textarea`, `RadioGroup`.
+  - Todos los botones deben usar el componente `<Button />` y todos los iconos deben usar el componente `<Icon />`. PROHIBIDO usar emojis o elementos nativos (como `<button>` o `<span>` con clases de iconos) directamente para estos propósitos.
 - **molecules/**: Combinación de átomos (SearchBar, FormField).
 - **organisms/**: Secciones complejas (Header, ReportTable).
 - **templates/**: Layouts de página.

@@ -5,63 +5,65 @@ import { useLanguage } from '@/hooks/useLanguage';
 import { productionService, Modelo } from '../api/productionService';
 
 /**
- * Controlador para el formulario de ensamblaje.
+ * Controlador para la Línea de Ensamblaje.
  */
 export const useAssemblyController = (onSuccess?: () => void) => {
-  const { token } = useAuth();
+  const { token, logout } = useAuth();
   const notify = useNotify();
   const { t } = useLanguage();
 
   const [modelos, setModelos] = useState<Modelo[]>([]);
-  const [selectedModelo, setSelectedModelo] = useState<string>('');
+  const [selectedModeloId, setSelectedModeloId] = useState<string>('');
   const [numeroSerie, setNumeroSerie] = useState<string>('');
+  
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoadingModels, setIsLoadingModels] = useState(false);
 
-  // Cargar modelos al montar el componente
   useEffect(() => {
-    const fetchModels = async () => {
+    let isMounted = true;
+    const initLine = async () => {
       if (!token) return;
       setIsLoadingModels(true);
       try {
-        const data = await productionService.getModelos(token);
-        setModelos(data.modelos || []); // Garantizamos array
-      } catch (err: any) {
-        notify(t(err.message), 'danger');
+        const modelsData = await productionService.getModelos(token);
+        if (isMounted) setModelos(modelsData.modelos || []);
+      } catch (err: unknown) {
+        if (String(err) === 'auth.error.session_expired') logout();
       } finally {
-        setIsLoadingModels(false);
+        if (isMounted) setIsLoadingModels(false);
       }
     };
-    fetchModels();
-  }, [token, notify, t]);
+    initLine();
+    return () => { isMounted = false; };
+  }, [token, logout]);
 
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!token || !selectedModelo || !numeroSerie) return;
+    if (!token || !selectedModeloId || !numeroSerie) return;
 
     setIsSubmitting(true);
     try {
-      await productionService.ensamblarManiqui(token, Number(selectedModelo), numeroSerie);
+      await productionService.ensamblarManiqui(token, Number(selectedModeloId), numeroSerie);
       notify(t('production.success.assembly'), 'success');
-      setSelectedModelo('');
+      setSelectedModeloId('');
       setNumeroSerie('');
       onSuccess?.();
-    } catch (err: any) {
-      notify(t(err.message), 'danger', t('production.error.title'));
+    } catch (err: unknown) {
+      notify(t(String(err)), 'danger');
     } finally {
       setIsSubmitting(false);
     }
-  }, [token, selectedModelo, numeroSerie, notify, t, onSuccess]);
+  }, [token, selectedModeloId, numeroSerie, notify, t, onSuccess]);
 
   const handlers = {
-    handleModelChange: (e: React.ChangeEvent<HTMLSelectElement>) => setSelectedModelo(e.target.value),
+    handleModelChange: (e: React.ChangeEvent<HTMLSelectElement>) => setSelectedModeloId(e.target.value),
     handleSerieChange: (e: React.ChangeEvent<HTMLInputElement>) => setNumeroSerie(e.target.value),
     handleSubmit
   };
 
   return {
     modelos,
-    selectedModelo,
+    selectedModelo: selectedModeloId,
     numeroSerie,
     isSubmitting,
     isLoadingModels,

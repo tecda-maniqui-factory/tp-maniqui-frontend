@@ -1,11 +1,11 @@
 import { Component, ErrorInfo, ReactNode } from 'react';
 import './ErrorBoundary.css';
 
-interface Props {
+export interface ErrorBoundaryProps {
   children: ReactNode;
 }
 
-interface State {
+export interface ErrorBoundaryState {
   hasError: boolean;
   error: Error | null;
   errorInfo: ErrorInfo | null;
@@ -16,17 +16,18 @@ interface State {
  * Atrapa los errores de renderizado de React en cualquier componente hijo
  * y muestra una pantalla amigable (y de debug) en lugar de una pantalla en blanco.
  */
-export class ErrorBoundary extends Component<Props, State> {
-  public state: State = {
+export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  public state: ErrorBoundaryState = {
     hasError: false,
     error: null,
     errorInfo: null
   };
 
-  public static getDerivedStateFromError(error: Error): State {
+  public static getDerivedStateFromError(error: Error): ErrorBoundaryState {
     // Actualiza el estado para que el próximo renderizado muestre la interfaz alternativa.
     return { hasError: true, error, errorInfo: null };
   }
+
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     // Capturamos el stack trace

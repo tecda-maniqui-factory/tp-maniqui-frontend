@@ -1,20 +1,18 @@
 import { FC } from 'react';
-import FormField from '@/components/molecules/FormField';
-import Select from '@/components/atoms/Select';
-import Input from '@/components/atoms/Input';
-import Button from '@/components/atoms/Button';
-import Spinner from '@/components/atoms/Spinner';
+import { FormField } from '@/components/molecules';
+import { Select, Input, Button, Spinner } from '@/components/atoms';
 import { useAssemblyController } from '../hooks/useAssemblyController';
+import { Modelo } from '../api/productionService';
 import './AssemblyForm.css';
 
-interface AssemblyFormProps {
+export interface AssemblyFormProps {
   onSuccess?: () => void;
   onCancel?: () => void;
 }
 
 /**
  * Organismo: AssemblyForm
- * Formulario para el registro técnico de ensamblaje.
+ * Formulario para el registro técnico de ensamblaje (Línea de Montaje).
  */
 export const AssemblyForm: FC<AssemblyFormProps> = ({ onSuccess, onCancel }) => {
   const { 
@@ -27,9 +25,9 @@ export const AssemblyForm: FC<AssemblyFormProps> = ({ onSuccess, onCancel }) => 
     t 
   } = useAssemblyController(onSuccess);
 
-  const modelOptions = (modelos || []).map(m => ({
-    value: m.id,
-    label: m.nombre || (m as any).nombre_modelo || (m as any).name || `Modelo ${m.id}`
+  const modelOptions = (modelos || []).map((m: Modelo) => ({
+    value: String(m.id),
+    label: m.nombre || `Modelo ${m.id}`
   }));
 
   return (

@@ -1,21 +1,19 @@
 {
   "$schema": "https://typedoc.org/schema.json",
-  "entryPoints": ["src/main.tsx", "src/components", "src/features"],
-  "entryPointStrategy": "expand",
+  "entryPoints": ["src/main.tsx"],
   "out": "docs/technical-reference",
-  "name": "TP Maniquí - Frontend Documentation",
+  "name": "TP Maniquí Frontend - Referencia Técnica",
   "includeVersion": true,
-  "exclude": ["**/*.css", "**/*.test.tsx", "node_modules"],
-  "theme": "default",
-  "readme": "README.md",
-  "plugin": [],
-  "categorizeByGroup": true,
-  "sort": ["kind", "instance-first", "alphabetical"],
+  "excludeExternals": true,
+  "excludeInternal": true,
   "cleanOutputDir": true,
-  "visibilityFilters": {
-    "protected": true,
-    "private": false,
-    "inherited": true,
-    "external": false
+  "githubPages": false,
+  "externalSymbolLinkMappings": {
+    "@types/react": {
+      "Component": "https://react.dev/reference/react/Component",
+      "Component.render": "https://react.dev/reference/react/Component#render",
+      "Component.setState": "https://react.dev/reference/react/Component#setstate",
+      "PureComponent": "https://react.dev/reference/react/PureComponent"
+    }
   }
 }

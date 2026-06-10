@@ -1,20 +1,25 @@
 import { useState, useCallback, ChangeEvent, FormEvent, use } from 'react';
 import { useLanguage } from '@/hooks/useLanguage';
-import { AuthContext } from '@/context/AuthContext';
-import { NotificationContext } from '@/context/NotificationContext';
+import { AuthContext, NotificationContext } from '@/context';
 import { authService } from '../api/authService';
 
-interface LoginState {
+export interface LoginState {
   username: string;
   password: string;
 }
 
-interface LoginErrors {
+export interface LoginErrors {
   username?: string;
   password?: string;
   form?: string;
 }
 
+/**
+ * Hook Controlador: useLoginController
+ * 
+ * Orquesta la lógica del formulario de Login, validaciones y estado de carga.
+ * Se comunica con authService para la autenticación y gestiona notificaciones.
+ */
 export const useLoginController = () => {
   const { t } = useLanguage();
   const auth = use(AuthContext);
@@ -57,17 +62,18 @@ export const useLoginController = () => {
       const response = await authService.login(formData.username, formData.password);
       auth.login(response.token, response.user);
       notification.showNotification(t('auth.success.login'), 'success');
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Login failed:', error);
-      const isNetworkError = error.message === 'Failed to fetch';
-      const errorKey = isNetworkError ? 'auth.error.server' : error.message;
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      const isNetworkError = errorMessage === 'Failed to fetch';
+      const errorKey = isNetworkError ? 'auth.error.server' : errorMessage;
       
       setErrors({ form: errorKey });
       notification.showNotification(t(errorKey), 'danger', t('auth.error.title'));
     } finally {
       setIsLoading(false);
     }
-  }, [formData, auth]);
+  }, [formData, auth, notification, t]);
 
   const handlers = {
     handleChange,

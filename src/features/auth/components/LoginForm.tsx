@@ -1,10 +1,6 @@
 import { FC } from 'react';
-import Input from '@/components/atoms/Input';
-import Button from '@/components/atoms/Button';
-import FormField from '@/components/molecules/FormField';
-import Card from '@/components/molecules/Card';
-import Spinner from '@/components/atoms/Spinner';
-import Alert from '@/components/molecules/Alert';
+import { Input, Button, Spinner } from '@/components/atoms';
+import { FormField, Card, Alert } from '@/components/molecules';
 import { useLoginController } from '../hooks/useLoginController';
 import './LoginForm.css';
 

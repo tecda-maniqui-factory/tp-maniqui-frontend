@@ -1,12 +1,10 @@
 import { FC, useState } from 'react';
-import PageHeader from '@/components/organisms/PageHeader';
-import Table, { TableColumn } from '@/components/molecules/Table';
-import Badge from '@/components/atoms/Badge';
-import Spinner from '@/components/atoms/Spinner';
-import Button from '@/components/atoms/Button';
-import Modal from '@/components/organisms/Modal';
+import { PageHeader, Modal } from '@/components/organisms';
+import { Spinner, Button } from '@/components/atoms';
 import { AssemblyForm } from './components/AssemblyForm';
+import { ProductionTable } from './components/ProductionTable';
 import { useProductionController } from './hooks/useProductionController';
+import { useAuth } from '@/hooks/useAuth';
 import './ProductionPage.css';
 
 /**
@@ -14,8 +12,11 @@ import './ProductionPage.css';
  * Consume el controlador para mostrar datos reales del inventario.
  */
 const ProductionPage: FC = () => {
+  const { user } = useAuth();
   const { maniquies, isLoading, handlers, t } = useProductionController();
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const isGerente = user?.rol === 'gerente_prod';
 
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
@@ -25,41 +26,17 @@ const ProductionPage: FC = () => {
     handlers.handleRefresh();
   };
 
-  const columns: TableColumn[] = [
-    { key: 'numero_serie', header: t('production.table.serie') },
-    { key: 'modelo_nombre', header: t('production.table.model') },
-    { key: 'status', header: t('production.table.status'), align: 'center' },
-    { key: 'fecha_ensamblaje', header: t('production.table.date') },
-  ];
-
-  const renderCell = (item: any, column: TableColumn) => {
-    if (column.key === 'status') {
-      const variant = item.status === 'Disponible' ? 'success' : 
-                      item.status === 'En Producción' ? 'warning' : 
-                      item.status === 'Vendido' ? 'info' : 'danger';
-      return <Badge variant={variant}>{item.status}</Badge>;
-    }
-    
-    if (column.key === 'fecha_ensamblaje') {
-      return item.fecha_ensamblaje ? new Date(item.fecha_ensamblaje).toLocaleDateString() : '-';
-    }
-
-    if (column.key === 'modelo_nombre') {
-      return item.Modelo?.nombre || item.modelo_nombre || '-';
-    }
-
-    return item[column.key];
-  };
-
   const headerActions = (
-    <div style={{ display: 'flex', gap: '1rem' }}>
-      <Button 
-        variant="primary" 
-        iconName="Plus" 
-        onClick={handleOpenModal}
-      >
-        {t('production.assembly.open_modal')}
-      </Button>
+    <div className="production-page__actions">
+      {isGerente && (
+        <Button 
+          variant="primary" 
+          iconName="Plus" 
+          onClick={handleOpenModal}
+        >
+          {t('production.assembly.open_modal')}
+        </Button>
+      )}
       <Button 
         variant="secondary" 
         iconName="RefreshCw" 
@@ -86,11 +63,7 @@ const ProductionPage: FC = () => {
             <p>{t('common.loading')}</p>
           </div>
         ) : (
-          <Table 
-            columns={columns} 
-            data={maniquies} 
-            renderCell={renderCell}
-          />
+          <ProductionTable data={maniquies} t={t} />
         )}
       </section>
 

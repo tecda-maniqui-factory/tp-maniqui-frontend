@@ -13,3 +13,8 @@
   gap: 1rem;
   color: var(--text-secondary);
 }
+
+.production-page__actions {
+  display: flex;
+  gap: 1rem;
+}

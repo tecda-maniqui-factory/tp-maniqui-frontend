@@ -2,14 +2,14 @@ import { createContext, useState, useCallback, ReactNode, FC, useMemo } from 're
 
 export type NotificationType = 'success' | 'danger' | 'warning' | 'info';
 
-interface Notification {
+export interface Notification {
   id: string;
   message: string;
   type: NotificationType;
   title?: string;
 }
 
-interface NotificationContextType {
+export interface NotificationContextType {
   notifications: Notification[];
   showNotification: (message: string, type?: NotificationType, title?: string) => void;
   hideNotification: (id: string) => void;
@@ -17,6 +17,10 @@ interface NotificationContextType {
 
 export const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
 
+/**
+ * Proveedor de Notificaciones: NotificationProvider
+ * Gestiona el estado de las notificaciones globales.
+ */
 export const NotificationProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
 

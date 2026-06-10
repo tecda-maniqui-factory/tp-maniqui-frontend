@@ -80,5 +80,31 @@ export const productionService = {
     }
 
     return response.json();
+  },
+
+  /**
+   * Registra un nuevo modelo con su receta de piezas.
+   */
+  createModelo: async (token: string, data: { nombre: string; partes: string[]; sexo_id: number }): Promise<any> => {
+    const response = await fetch(`${ENV.API_URL}/sistema/modelos`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
+
+    if (response.status === 401) {
+      throw new Error('auth.error.session_expired');
+    }
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      const msg = errorData.error || 'Error al guardar el modelo';
+      throw new Error(msg);
+    }
+
+    return response.json();
   }
 };

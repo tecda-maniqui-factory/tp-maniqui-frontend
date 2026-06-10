@@ -5,6 +5,8 @@ import { Input, Button, Spinner, Select } from '@/components/atoms';
 import { SkeletonPadPanel, SkeletonPart } from './components/SkeletonPadPanel';
 import { useLanguage } from '@/hooks/useLanguage';
 import { useNotify } from '@/hooks/useNotify';
+import { useAuth } from '@/hooks/useAuth';
+import { productionService } from '../produccion/api/productionService';
 
 /**
  * ModelCreationPage: Página para diseñar y registrar nuevos modelos de maniquíes.
@@ -12,6 +14,7 @@ import { useNotify } from '@/hooks/useNotify';
 export const ModelCreationPage: FC = () => {
   const { t } = useLanguage();
   const notify = useNotify();
+  const { token, logout } = useAuth();
 
   const [nombre, setNombre] = useState('');
   const [sexo, setSexo] = useState('');
@@ -28,17 +31,28 @@ export const ModelCreationPage: FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!nombre || !sexo || selectedParts.length === 0) return;
+    if (!nombre || !sexo || selectedParts.length === 0 || !token) return;
 
     setIsSubmitting(true);
-    // Simular llamada a API para crear el modelo
-    setTimeout(() => {
+    try {
+      await productionService.createModelo(token, {
+        nombre,
+        partes: selectedParts,
+        sexo_id: Number(sexo)
+      });
       notify(`Modelo "${nombre}" creado exitosamente con ${selectedParts.length} piezas.`, 'success');
       setNombre('');
       setSexo('');
       setSelectedParts(['CAB', 'TOR', 'BRA-I', 'BRA-D', 'PIE-I', 'PIE-D']);
+    } catch (err: any) {
+      if (err.message === 'auth.error.session_expired') {
+        logout();
+      } else {
+        notify(err.message || 'Error al guardar el modelo', 'danger');
+      }
+    } finally {
       setIsSubmitting(false);
-    }, 1000);
+    }
   };
 
   return (

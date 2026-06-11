@@ -243,3 +243,23 @@
   border-top: 1px solid var(--border-light);
   padding-top: 1.25rem;
 }
+
+.sales-form__mannequin-qty-price-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.sales-form__mannequin-qty-input {
+  width: 120px;
+}
+
+.sales-form__mannequin-serial-list {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--color-primary);
+  margin-top: 0.25rem;
+  font-family: monospace;
+  word-break: break-all;
+}
+

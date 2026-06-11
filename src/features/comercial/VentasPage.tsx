@@ -1,9 +1,10 @@
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 import { PageHeader, Modal } from '@/components/organisms';
-import { Spinner, Button, Select, Input, Checkbox } from '@/components/atoms';
+import { Spinner, Button, Select, Input } from '@/components/atoms';
 import { FormField, Card } from '@/components/molecules';
 import { VentasRecientesTable } from './components/VentasRecientesTable';
 import { useSalesController } from './hooks/useSalesController';
+import { Maniqui } from './api/comercialService';
 import './VentasPage.css';
 
 /**
@@ -21,6 +22,7 @@ export const VentasPage: FC = () => {
     isClienteModalOpen,
     selectedClienteId,
     selectedManiquiIds,
+    quantitiesByModel,
     metodoPago,
     moneda,
     tipoCambio,
@@ -37,12 +39,30 @@ export const VentasPage: FC = () => {
     setMoneda,
     setTipoCambio,
     setIsClienteModalOpen,
-    handleToggleManiqui,
+    handleModelQuantityChange,
     handleCreateCliente,
     handleRegisterSale,
     handleRefresh,
     t
   } = useSalesController();
+
+  // Agrupar stock disponible por modelo
+  const modelsWithStock = useMemo(() => {
+    const map: Record<number, { id: number; nombre: string; precio_venta: number; mannequins: Maniqui[] }> = {};
+    maniquiesDisponibles.forEach(m => {
+      if (!m.Modelo) return;
+      if (!map[m.modelo_id]) {
+        map[m.modelo_id] = {
+          id: m.modelo_id,
+          nombre: m.Modelo.nombre,
+          precio_venta: Number(m.Modelo.precio_venta || 0),
+          mannequins: []
+        };
+      }
+      map[m.modelo_id].mannequins.push(m);
+    });
+    return Object.values(map);
+  }, [maniquiesDisponibles]);
 
   const clientOptions = clientes.map(c => ({
     value: String(c.id),
@@ -161,13 +181,13 @@ export const VentasPage: FC = () => {
                   )}
                 </div>
 
-                {/* Selección de Maniquíes */}
+                {/* Selección de Maniquíes por Modelo y Cantidad */}
                 <div className="sales-form__mannequins-section">
                   <h3 className="sales-form__section-title">
                     {t('commercial.available_mannequins')}
                   </h3>
                   
-                  {maniquiesDisponibles.length === 0 ? (
+                  {modelsWithStock.length === 0 ? (
                     <div className="sales-form__no-mannequins">
                       <p>⚠️ No hay maniquíes con estado 'Disponible' para la venta.</p>
                       <p className="sales-form__no-mannequins-sub text-muted">
@@ -176,38 +196,56 @@ export const VentasPage: FC = () => {
                     </div>
                   ) : (
                     <div className="sales-form__mannequins-list">
-                      {maniquiesDisponibles.map((maniqui) => {
-                        const isChecked = selectedManiquiIds.includes(maniqui.id);
+                      {modelsWithStock.map((model) => {
+                        const qtySelected = quantitiesByModel[model.id] || 0;
+                        const subList = model.mannequins;
+                        const selectedSerials = subList.slice(0, qtySelected).map(mq => mq.numero_serie);
+                        const isChecked = qtySelected > 0;
+
                         return (
                           <div 
-                            key={maniqui.id} 
+                            key={model.id} 
                             className={`sales-form__mannequin-card ${isChecked ? 'sales-form__mannequin-card--selected' : ''}`}
-                            onClick={() => handleToggleManiqui(maniqui.id)}
+                            style={{ cursor: 'default' }}
                           >
                             <div className="sales-form__mannequin-info">
-                              <div onClick={(e) => e.stopPropagation()}>
-                                <Checkbox
-                                  checked={isChecked}
-                                  onChange={() => handleToggleManiqui(maniqui.id)}
-                                  disabled={isSubmitting}
-                                />
-                              </div>
                               <div>
-                                <span className="sales-form__mannequin-serial">{maniqui.numero_serie}</span>
-                                <span className="sales-form__mannequin-model">{maniqui.Modelo?.nombre || 'Modelo s/n'}</span>
+                                <span className="sales-form__mannequin-serial">{model.nombre}</span>
+                                <span className="sales-form__mannequin-model">
+                                  {subList.length} disponibles en stock
+                                </span>
+                                {isChecked && (
+                                  <span className="sales-form__mannequin-serial-list">
+                                    Seleccionados: {selectedSerials.join(', ')}
+                                  </span>
+                                )}
                               </div>
                             </div>
 
-                            <div 
-                              className="sales-form__mannequin-price-display"
-                            >
-                              <span>
-                                {(() => {
-                                  const basePrice = Number(maniqui.Modelo?.precio_venta || 0);
-                                  const price = moneda === 'USD' ? Number((basePrice / tipoCambio).toFixed(2)) : basePrice;
-                                  return price.toLocaleString();
-                                })()} {moneda}
-                              </span>
+                            <div className="sales-form__mannequin-qty-price-row">
+                              <div className="sales-form__mannequin-price-display">
+                                <span>
+                                  {(() => {
+                                    const basePrice = model.precio_venta;
+                                    const price = moneda === 'USD' ? Number((basePrice / tipoCambio).toFixed(2)) : basePrice;
+                                    return price.toLocaleString();
+                                  })()} {moneda}
+                                </span>
+                              </div>
+
+                              <div className="sales-form__mannequin-qty-input">
+                                <Input
+                                  type="number"
+                                  name={`qty-${model.id}`}
+                                  placeholder="0"
+                                  min={0}
+                                  max={subList.length}
+                                  value={qtySelected || ''}
+                                  onChange={(e) => handleModelQuantityChange(model.id, Number(e.target.value))}
+                                  disabled={isSubmitting}
+                                  iconName="Layers"
+                                />
+                              </div>
                             </div>
                           </div>
                         );

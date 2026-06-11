@@ -26,6 +26,7 @@ export const useSalesController = () => {
   // Estado del Formulario de Venta
   const [selectedClienteId, setSelectedClienteId] = useState<string>('');
   const [selectedManiquiIds, setSelectedManiquiIds] = useState<number[]>([]);
+  const [quantitiesByModel, setQuantitiesByModel] = useState<Record<number, number>>({});
   const [metodoPago, setMetodoPago] = useState<string>('Transferencia');
   const [moneda, setMoneda] = useState<'ARS' | 'USD'>('ARS');
   const [tipoCambio, setTipoCambio] = useState<number>(1000);
@@ -88,6 +89,45 @@ export const useSalesController = () => {
       isMounted = false;
     };
   }, [loadCommercialData]);
+
+  // Sincronizar cantidades seleccionadas ante recargas de stock
+  useEffect(() => {
+    const map: Record<number, number> = {};
+    maniquiesDisponibles.forEach(m => {
+      map[m.modelo_id] = (map[m.modelo_id] || 0) + 1;
+    });
+
+    setQuantitiesByModel(prev => {
+      let changed = false;
+      const updated = { ...prev };
+      Object.keys(updated).forEach(mIdStr => {
+        const mId = Number(mIdStr);
+        const maxStock = map[mId] || 0;
+        if ((updated[mId] || 0) > maxStock) {
+          updated[mId] = maxStock;
+          changed = true;
+        }
+      });
+      
+      if (changed) {
+        const newSelectedIds: number[] = [];
+        const groups: Record<number, Maniqui[]> = {};
+        maniquiesDisponibles.forEach(m => {
+          if (!groups[m.modelo_id]) groups[m.modelo_id] = [];
+          groups[m.modelo_id].push(m);
+        });
+        Object.keys(updated).forEach(mIdStr => {
+          const mId = Number(mIdStr);
+          const q = updated[mId] || 0;
+          const subList = groups[mId] || [];
+          newSelectedIds.push(...subList.slice(0, q).map(mq => mq.id));
+        });
+        setSelectedManiquiIds(newSelectedIds);
+        return updated;
+      }
+      return prev;
+    });
+  }, [maniquiesDisponibles]);
 
   // Manejar creación de cliente
   const handleCreateCliente = useCallback(async (e: React.FormEvent) => {
@@ -186,6 +226,7 @@ export const useSalesController = () => {
       // Limpiar formulario de ventas
       setSelectedClienteId('');
       setSelectedManiquiIds([]);
+      setQuantitiesByModel({});
       setMetodoPago('Transferencia');
       setMoneda('ARS');
       setTipoCambio(1000);
@@ -204,16 +245,35 @@ export const useSalesController = () => {
     }
   }, [token, selectedClienteId, selectedManiquiIds, maniquiesDisponibles, metodoPago, moneda, tipoCambio, loadCommercialData, notify, t, logout]);
 
-  // Alternar selección de maniquí
-  const handleToggleManiqui = (maniquiId: number) => {
-    setSelectedManiquiIds(prev => {
-      if (prev.includes(maniquiId)) {
-        return prev.filter(id => id !== maniquiId);
-      } else {
-        return [...prev, maniquiId];
-      }
+  // Manejar el cambio de cantidad por modelo
+  const handleModelQuantityChange = useCallback((modelId: number, qty: number) => {
+    const map: Record<number, Maniqui[]> = {};
+    maniquiesDisponibles.forEach(m => {
+      if (!map[m.modelo_id]) map[m.modelo_id] = [];
+      map[m.modelo_id].push(m);
     });
-  };
+
+    const list = map[modelId] || [];
+    const maxStock = list.length;
+    const targetQty = Math.max(0, Math.min(maxStock, qty));
+
+    setQuantitiesByModel(prev => {
+      const updated = { ...prev, [modelId]: targetQty };
+
+      // Reconstruir selectedManiquiIds
+      const newSelectedIds: number[] = [];
+      Object.keys(updated).forEach(mIdStr => {
+        const mId = Number(mIdStr);
+        const q = updated[mId] || 0;
+        const subList = map[mId] || [];
+        const ids = subList.slice(0, q).map(mq => mq.id);
+        newSelectedIds.push(...ids);
+      });
+
+      setSelectedManiquiIds(newSelectedIds);
+      return updated;
+    });
+  }, [maniquiesDisponibles]);
 
   // Calcular total
   const totalSale = selectedManiquiIds.reduce((sum, id) => {
@@ -232,6 +292,7 @@ export const useSalesController = () => {
     isCreatingCliente,
     selectedClienteId,
     selectedManiquiIds,
+    quantitiesByModel,
     metodoPago,
     moneda,
     tipoCambio,
@@ -248,7 +309,7 @@ export const useSalesController = () => {
     setMoneda,
     setTipoCambio,
     setIsClienteModalOpen,
-    handleToggleManiqui,
+    handleModelQuantityChange,
     handleCreateCliente,
     handleRegisterSale,
     handleRefresh: loadCommercialData,

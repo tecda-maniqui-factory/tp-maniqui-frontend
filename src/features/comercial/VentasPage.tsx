@@ -23,6 +23,7 @@ export const VentasPage: FC = () => {
     selectedManiquiIds,
     metodoPago,
     moneda,
+    tipoCambio,
     totalSale,
     newClienteNombre,
     newClienteCuit,
@@ -34,6 +35,7 @@ export const VentasPage: FC = () => {
     setSelectedClienteId,
     setMetodoPago,
     setMoneda,
+    setTipoCambio,
     setIsClienteModalOpen,
     handleToggleManiqui,
     handleCreateCliente,
@@ -121,7 +123,7 @@ export const VentasPage: FC = () => {
                 </div>
 
                 {/* Forma de Pago y Moneda */}
-                <div className="sales-form__options-row">
+                <div className={`sales-form__options-row ${moneda === 'USD' ? 'sales-form__options-row--three-cols' : ''}`}>
                   <FormField label={t('commercial.payment_method')} required>
                     <Select
                       options={paymentOptions}
@@ -141,6 +143,22 @@ export const VentasPage: FC = () => {
                       iconName="DollarSign"
                     />
                   </FormField>
+
+                  {moneda === 'USD' && (
+                    <FormField label="Cotización (ARS/USD)" required>
+                      <Input
+                        type="number"
+                        name="tipo-cambio"
+                        placeholder="Ej: 1000"
+                        value={tipoCambio || ''}
+                        onChange={(e) => setTipoCambio(Number(e.target.value))}
+                        disabled={isSubmitting}
+                        iconName="TrendingUp"
+                        required
+                        min={1}
+                      />
+                    </FormField>
+                  )}
                 </div>
 
                 {/* Selección de Maniquíes */}
@@ -184,7 +202,11 @@ export const VentasPage: FC = () => {
                               className="sales-form__mannequin-price-display"
                             >
                               <span>
-                                {Number(maniqui.Modelo?.precio_venta || 0).toLocaleString()} {moneda}
+                                {(() => {
+                                  const basePrice = Number(maniqui.Modelo?.precio_venta || 0);
+                                  const price = moneda === 'USD' ? Number((basePrice / tipoCambio).toFixed(2)) : basePrice;
+                                  return price.toLocaleString();
+                                })()} {moneda}
                               </span>
                             </div>
                           </div>

@@ -28,6 +28,7 @@ export const useSalesController = () => {
   const [selectedManiquiIds, setSelectedManiquiIds] = useState<number[]>([]);
   const [metodoPago, setMetodoPago] = useState<string>('Transferencia');
   const [moneda, setMoneda] = useState<'ARS' | 'USD'>('ARS');
+  const [tipoCambio, setTipoCambio] = useState<number>(1000);
 
   // Estado del Formulario de Nuevo Cliente
   const [newClienteNombre, setNewClienteNombre] = useState('');
@@ -156,7 +157,8 @@ export const useSalesController = () => {
     // Armar el payload de maniquíes
     const maniquiesPayload = selectedManiquiIds.map(id => {
       const maniqui = maniquiesDisponibles.find(m => m.id === id);
-      const price = Number(maniqui?.Modelo?.precio_venta || 0);
+      const basePrice = Number(maniqui?.Modelo?.precio_venta || 0);
+      const price = moneda === 'USD' ? Number((basePrice / tipoCambio).toFixed(2)) : basePrice;
       return {
         maniqui_id: id,
         precio_final: price
@@ -186,6 +188,7 @@ export const useSalesController = () => {
       setSelectedManiquiIds([]);
       setMetodoPago('Transferencia');
       setMoneda('ARS');
+      setTipoCambio(1000);
 
       // Recargar datos actualizados (ventas e inventario disponible)
       await loadCommercialData();
@@ -199,7 +202,7 @@ export const useSalesController = () => {
     } finally {
       setIsSubmitting(false);
     }
-  }, [token, selectedClienteId, selectedManiquiIds, maniquiesDisponibles, metodoPago, moneda, loadCommercialData, notify, t, logout]);
+  }, [token, selectedClienteId, selectedManiquiIds, maniquiesDisponibles, metodoPago, moneda, tipoCambio, loadCommercialData, notify, t, logout]);
 
   // Alternar selección de maniquí
   const handleToggleManiqui = (maniquiId: number) => {
@@ -215,7 +218,8 @@ export const useSalesController = () => {
   // Calcular total
   const totalSale = selectedManiquiIds.reduce((sum, id) => {
     const maniqui = maniquiesDisponibles.find(m => m.id === id);
-    const price = Number(maniqui?.Modelo?.precio_venta || 0);
+    const basePrice = Number(maniqui?.Modelo?.precio_venta || 0);
+    const price = moneda === 'USD' ? Number((basePrice / tipoCambio).toFixed(2)) : basePrice;
     return sum + price;
   }, 0);
 
@@ -230,6 +234,7 @@ export const useSalesController = () => {
     selectedManiquiIds,
     metodoPago,
     moneda,
+    tipoCambio,
     totalSale,
     newClienteNombre,
     newClienteCuit,
@@ -241,6 +246,7 @@ export const useSalesController = () => {
     setSelectedClienteId,
     setMetodoPago,
     setMoneda,
+    setTipoCambio,
     setIsClienteModalOpen,
     handleToggleManiqui,
     handleCreateCliente,

@@ -63,6 +63,9 @@
   .sales-form__options-row {
     grid-template-columns: 1fr 1fr;
   }
+  .sales-form__options-row--three-cols {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
 }
 
 .sales-form__mannequins-section {

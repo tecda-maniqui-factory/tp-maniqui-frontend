@@ -199,7 +199,7 @@ export const useSalesController = () => {
     } finally {
       setIsSubmitting(false);
     }
-  }, [token, selectedClienteId, selectedManiquiIds, maniquiesPrecios, metodoPago, moneda, loadCommercialData, notify, t, logout]);
+  }, [token, selectedClienteId, selectedManiquiIds, maniquiesDisponibles, metodoPago, moneda, loadCommercialData, notify, t, logout]);
 
   // Alternar selección de maniquí
   const handleToggleManiqui = (maniquiId: number) => {

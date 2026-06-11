@@ -162,8 +162,14 @@
   color: var(--text-muted);
 }
 
-.sales-form__mannequin-price {
-  width: 140px;
+.sales-form__mannequin-price-display {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  background-color: var(--bg-icon-block);
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  border: 1px solid var(--border-light);
 }
 
 .sales-form__summary {

@@ -26,7 +26,6 @@ export const useSalesController = () => {
   // Estado del Formulario de Venta
   const [selectedClienteId, setSelectedClienteId] = useState<string>('');
   const [selectedManiquiIds, setSelectedManiquiIds] = useState<number[]>([]);
-  const [maniquiesPrecios, setManiquiesPrecios] = useState<Record<number, number>>({});
   const [metodoPago, setMetodoPago] = useState<string>('Transferencia');
   const [moneda, setMoneda] = useState<'ARS' | 'USD'>('ARS');
 
@@ -156,7 +155,8 @@ export const useSalesController = () => {
 
     // Armar el payload de maniquíes
     const maniquiesPayload = selectedManiquiIds.map(id => {
-      const price = maniquiesPrecios[id] || 0;
+      const maniqui = maniquiesDisponibles.find(m => m.id === id);
+      const price = Number(maniqui?.Modelo?.precio_venta || 0);
       return {
         maniqui_id: id,
         precio_final: price
@@ -166,7 +166,7 @@ export const useSalesController = () => {
     // Validar precios
     const precioInvalido = maniquiesPayload.some(m => m.precio_final <= 0 || isNaN(m.precio_final));
     if (precioInvalido) {
-      notify(t('commercial.error.invalid_price'), 'warning');
+      notify('El precio de venta del modelo debe ser mayor a cero.', 'warning');
       return;
     }
 
@@ -184,7 +184,6 @@ export const useSalesController = () => {
       // Limpiar formulario de ventas
       setSelectedClienteId('');
       setSelectedManiquiIds([]);
-      setManiquiesPrecios({});
       setMetodoPago('Transferencia');
       setMoneda('ARS');
 
@@ -206,29 +205,18 @@ export const useSalesController = () => {
   const handleToggleManiqui = (maniquiId: number) => {
     setSelectedManiquiIds(prev => {
       if (prev.includes(maniquiId)) {
-        const updated = prev.filter(id => id !== maniquiId);
-        // Limpiar precio
-        const updatedPrices = { ...maniquiesPrecios };
-        delete updatedPrices[maniquiId];
-        setManiquiesPrecios(updatedPrices);
-        return updated;
+        return prev.filter(id => id !== maniquiId);
       } else {
         return [...prev, maniquiId];
       }
     });
   };
 
-  // Manejar cambio de precio de un maniquí específico
-  const handlePriceChange = (maniquiId: number, price: number) => {
-    setManiquiesPrecios(prev => ({
-      ...prev,
-      [maniquiId]: price
-    }));
-  };
-
   // Calcular total
   const totalSale = selectedManiquiIds.reduce((sum, id) => {
-    return sum + (maniquiesPrecios[id] || 0);
+    const maniqui = maniquiesDisponibles.find(m => m.id === id);
+    const price = Number(maniqui?.Modelo?.precio_venta || 0);
+    return sum + price;
   }, 0);
 
   return {
@@ -238,10 +226,8 @@ export const useSalesController = () => {
     isLoading,
     isSubmitting,
     isCreatingCliente,
-    isClienteModalOpen,
     selectedClienteId,
     selectedManiquiIds,
-    maniquiesPrecios,
     metodoPago,
     moneda,
     totalSale,
@@ -257,7 +243,6 @@ export const useSalesController = () => {
     setMoneda,
     setIsClienteModalOpen,
     handleToggleManiqui,
-    handlePriceChange,
     handleCreateCliente,
     handleRegisterSale,
     handleRefresh: loadCommercialData,

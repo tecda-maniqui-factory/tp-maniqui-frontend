@@ -21,7 +21,6 @@ export const VentasPage: FC = () => {
     isClienteModalOpen,
     selectedClienteId,
     selectedManiquiIds,
-    maniquiesPrecios,
     metodoPago,
     moneda,
     totalSale,
@@ -37,7 +36,6 @@ export const VentasPage: FC = () => {
     setMoneda,
     setIsClienteModalOpen,
     handleToggleManiqui,
-    handlePriceChange,
     handleCreateCliente,
     handleRegisterSale,
     handleRefresh,
@@ -183,19 +181,11 @@ export const VentasPage: FC = () => {
                             </div>
 
                             <div 
-                              className="sales-form__mannequin-price"
-                              onClick={(e) => e.stopPropagation()} // Evitar deseleccionar al editar precio
+                              className="sales-form__mannequin-price-display"
                             >
-                              <Input
-                                type="number"
-                                name={`price-${maniqui.id}`}
-                                placeholder={t('commercial.unit_price')}
-                                value={maniquiesPrecios[maniqui.id] ?? ''}
-                                onChange={(e) => handlePriceChange(maniqui.id, Number(e.target.value))}
-                                disabled={!isChecked || isSubmitting}
-                                iconName="Tag"
-                                required={isChecked}
-                              />
+                              <span>
+                                {Number(maniqui.Modelo?.precio_venta || 0).toLocaleString()} {moneda}
+                              </span>
                             </div>
                           </div>
                         );

@@ -26,6 +26,7 @@ export interface Maniqui {
   status: string;
   Modelo?: {
     nombre: string;
+    precio_venta?: number | string;
   };
 }
 

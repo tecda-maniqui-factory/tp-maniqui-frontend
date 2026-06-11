@@ -1,4 +1,5 @@
 import { FC, use } from 'react';
+import { createPortal } from 'react-dom';
 import { NotificationContext } from '@/context';
 import { Alert } from '@/components/molecules';
 import './NotificationContainer.css';
@@ -12,7 +13,7 @@ const NotificationContainer: FC = () => {
 
   if (!context || context.notifications.length === 0) return null;
 
-  return (
+  return createPortal(
     <div className="notification-container">
       {context.notifications.map((notification) => (
         <Alert
@@ -25,7 +26,8 @@ const NotificationContainer: FC = () => {
           {notification.message}
         </Alert>
       ))}
-    </div>
+    </div>,
+    document.body
   );
 };
 

@@ -169,12 +169,13 @@ export const VentasPage: FC = () => {
                             onClick={() => handleToggleManiqui(maniqui.id)}
                           >
                             <div className="sales-form__mannequin-info">
-                              <Checkbox
-                                label=""
-                                checked={isChecked}
-                                onChange={() => {}} // Manejado por el click en el card
-                                disabled={isSubmitting}
-                              />
+                              <div onClick={(e) => e.stopPropagation()}>
+                                <Checkbox
+                                  checked={isChecked}
+                                  onChange={() => handleToggleManiqui(maniqui.id)}
+                                  disabled={isSubmitting}
+                                />
+                              </div>
                               <div>
                                 <span className="sales-form__mannequin-serial">{maniqui.numero_serie}</span>
                                 <span className="sales-form__mannequin-model">{maniqui.Modelo?.nombre || 'Modelo s/n'}</span>

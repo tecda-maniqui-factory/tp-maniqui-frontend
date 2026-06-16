@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 import { Table, Card } from '@/components/molecules';
 import { Button, Badge } from '@/components/atoms';
 import { StockCriticoData } from '../api/dashboardService';
@@ -17,14 +17,14 @@ interface StockCriticoWidgetProps {
  * Muestra alertas de stock crítico directamente en el Dashboard con acciones funcionales.
  */
 export const StockCriticoWidget: FC<StockCriticoWidgetProps> = ({ data, isLoading, onPedir, t, userRole, ordenesActivas = [] }) => {
-  const columns = [
+  const columns = useMemo(() => [
     { key: 'modelo', header: t('dashboard.stock.model') || 'Modelo' },
     { key: 'tipo_parte', header: t('dashboard.stock.part') || 'Pieza' },
     { key: 'cantidad_disponible', header: t('dashboard.stock.available') || 'Stock', align: 'center' as const },
     ...(userRole === 'gerente_prod' || userRole === 'operario' ? [
       { key: 'actions', header: t('dashboard.stock.actions') || 'Acción', align: 'center' as const }
     ] : [])
-  ];
+  ], [t, userRole]);
 
   const renderCell = (item: StockCriticoData, col: any) => {
     if (col.key === 'cantidad_disponible') {

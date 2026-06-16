@@ -11,6 +11,19 @@ import './VentasPage.css';
  * VentasPage Component
  * Vista principal del Módulo Comercial para registrar y consultar transacciones de venta.
  */
+const paymentOptions = [
+  { value: 'Transferencia', label: 'Transferencia Bancaria' },
+  { value: 'Efectivo', label: 'Efectivo' },
+  { value: 'Tarjeta', label: 'Tarjeta de Crédito/Débito' },
+  { value: 'Mercado Pago', label: 'Mercado Pago' },
+  { value: 'Otros', label: 'Otros' }
+];
+
+const currencyOptions = [
+  { value: 'ARS', label: 'ARS (Pesos)' },
+  { value: 'USD', label: 'USD (Dólares)' }
+];
+
 export const VentasPage: FC = () => {
   const {
     clientes,
@@ -70,23 +83,10 @@ export const VentasPage: FC = () => {
     return Object.values(map);
   }, [maniquiesDisponibles]);
 
-  const clientOptions = clientes.map(c => ({
+  const clientOptions = useMemo(() => clientes.map(c => ({
     value: String(c.id),
     label: `${c.nombre} (CUIT: ${c.cuit_cuil})`
-  }));
-
-  const paymentOptions = [
-    { value: 'Transferencia', label: 'Transferencia Bancaria' },
-    { value: 'Efectivo', label: 'Efectivo' },
-    { value: 'Tarjeta', label: 'Tarjeta de Crédito/Débito' },
-    { value: 'Mercado Pago', label: 'Mercado Pago' },
-    { value: 'Otros', label: 'Otros' }
-  ];
-
-  const currencyOptions = [
-    { value: 'ARS', label: 'ARS (Pesos)' },
-    { value: 'USD', label: 'USD (Dólares)' }
-  ];
+  })), [clientes]);
 
   const headerActions = (
     <Button

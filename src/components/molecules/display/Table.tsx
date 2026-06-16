@@ -15,10 +15,12 @@ export interface TableProps<T> {
   isHoverable?: boolean;
   className?: string;
   renderCell?: (item: T, column: TableColumn) => ReactNode;
+  rowKey?: (item: T) => string | number;
 }
 
 /**
  * Componente de Tabla flexible siguiendo BEM y Atomic Design.
+ * Soporta scope="col" accesible y personalización del rowKey.
  */
 const Table = <T extends Record<string, any>>({
   columns,
@@ -27,7 +29,8 @@ const Table = <T extends Record<string, any>>({
   isCompact = false,
   isHoverable = true,
   className = '',
-  renderCell
+  renderCell,
+  rowKey
 }: TableProps<T>) => {
   const tableClasses = [
     'table',
@@ -40,6 +43,11 @@ const Table = <T extends Record<string, any>>({
     isHoverable ? 'table__row--hoverable' : ''
   ].filter(Boolean).join(' ');
 
+  const getRowKey = (item: T, index: number): string | number => {
+    if (rowKey) return rowKey(item);
+    return item.id !== undefined ? item.id : index;
+  };
+
   return (
     <div className="table-container">
       <table className={tableClasses}>
@@ -47,6 +55,7 @@ const Table = <T extends Record<string, any>>({
           <tr className="table__row">
             {columns.map((col) => (
               <th 
+                scope="col"
                 key={col.key} 
                 className={`table__header-cell table__header-cell--${col.align || 'left'}`}
               >
@@ -57,18 +66,21 @@ const Table = <T extends Record<string, any>>({
         </thead>
         <tbody className="table__body">
           {data && data.length > 0 ? (
-            data.map((item, index) => (
-              <tr key={item.id || index} className={rowClasses}>
-                {columns.map((col) => (
-                  <td 
-                    key={`${item.id || index}-${col.key}`} 
-                    className={`table__cell table__cell--${col.align || 'left'}`}
-                  >
-                    {renderCell ? renderCell(item, col) : (item[col.key] as ReactNode)}
-                  </td>
-                ))}
-              </tr>
-            ))
+            data.map((item, index) => {
+              const key = getRowKey(item, index);
+              return (
+                <tr key={key} className={rowClasses}>
+                  {columns.map((col) => (
+                    <td 
+                      key={`${key}-${col.key}`} 
+                      className={`table__cell table__cell--${col.align || 'left'}`}
+                    >
+                      {renderCell ? renderCell(item, col) : (item[col.key] as ReactNode)}
+                    </td>
+                  ))}
+                </tr>
+              );
+            })
           ) : (
             <tr className="table__row">
               <td colSpan={columns.length} className="table__cell table__cell--center">
@@ -86,6 +98,5 @@ const Table = <T extends Record<string, any>>({
     </div>
   );
 };
-
 
 export default Table;

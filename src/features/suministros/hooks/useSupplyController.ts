@@ -151,14 +151,14 @@ export const useSupplyController = () => {
       const partMap: Record<string, string> = {
         'Cabeza': 'CAB',
         'Torso': 'TOR',
-        'Brazo Izquierdo': 'BRI',
-        'Brazo Derecho': 'BRD',
-        'Pierna Izquierda': 'PII',
-        'Pierna Derecha': 'PID',
-        'Brazo I': 'BRI',
-        'Brazo D': 'BRD',
-        'Pierna I': 'PII',
-        'Pierna D': 'PID'
+        'Brazo Izquierdo': 'BRA-I',
+        'Brazo Derecho': 'BRA-D',
+        'Pierna Izquierda': 'PIE-I',
+        'Pierna Derecha': 'PIE-D',
+        'Brazo I': 'BRA-I',
+        'Brazo D': 'BRA-D',
+        'Pierna I': 'PIE-I',
+        'Pierna D': 'PIE-D'
       };
       
       setTipoPieza(partMap[orden.tipo_parte] || orden.tipo_parte);

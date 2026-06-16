@@ -84,10 +84,10 @@ export const SupplyPage: FC = () => {
               options={[
                 { value: 'CAB', label: 'Cabeza' },
                 { value: 'TOR', label: 'Torso' },
-                { value: 'BRI', label: 'Brazo Izquierdo' },
-                { value: 'BRD', label: 'Brazo Derecho' },
-                { value: 'PII', label: 'Pierna Izquierda' },
-                { value: 'PID', label: 'Pierna Derecha' }
+                { value: 'BRA-I', label: 'Brazo Izquierdo' },
+                { value: 'BRA-D', label: 'Brazo Derecho' },
+                { value: 'PIE-I', label: 'Pierna Izquierda' },
+                { value: 'PIE-D', label: 'Pierna Derecha' }
               ]}
               iconName="Package"
               value={tipoPieza}

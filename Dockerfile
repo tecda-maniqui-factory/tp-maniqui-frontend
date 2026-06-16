@@ -17,7 +17,7 @@ COPY src ./src
 COPY public ./public
 
 # Instalar dependencias compilando a produccion
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --frozen-lockfile --ignore-scripts
 RUN pnpm build
 
 # --- Stage 2: Servidor Web ---

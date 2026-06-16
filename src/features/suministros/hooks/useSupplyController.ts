@@ -26,6 +26,10 @@ export const useSupplyController = () => {
   const [cantidad, setCantidad] = useState('10');
   
   const [ordenesActivas, setOrdenesActivas] = useState<OrdenCompra[]>([]);
+  const [proveedorOptions, setProveedorOptions] = useState<{ value: string; label: string }[]>([
+    { value: 'INT', label: 'Planta Principal (Interna)' },
+    { value: 'EXT-A', label: 'Proveedor Externo A' }
+  ]);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoadingModels, setIsLoadingModels] = useState(false);
@@ -47,6 +51,36 @@ export const useSupplyController = () => {
     initModels();
     return () => { isMounted = false; };
   }, [token, logout]);
+
+  // Fetch Providers
+  useEffect(() => {
+    let isMounted = true;
+    const loadProveedores = async () => {
+      if (!token) return;
+      try {
+        const response = await fetch(`${ENV.API_URL}/sistema/proveedores`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (response.ok) {
+          const data = await response.json();
+          const externalOptions = data.map((p: any) => ({
+            value: p.codigo,
+            label: p.nombre
+          }));
+          if (isMounted) {
+            setProveedorOptions([
+              { value: 'INT', label: 'Planta Principal (Interna)' },
+              ...externalOptions
+            ]);
+          }
+        }
+      } catch (err) {
+        console.error('Error loading proveedores:', err);
+      }
+    };
+    loadProveedores();
+    return () => { isMounted = false; };
+  }, [token]);
 
   // Setup SSE
   useEffect(() => {
@@ -110,15 +144,21 @@ export const useSupplyController = () => {
     handleCantidadChange: (e: React.ChangeEvent<HTMLInputElement>) => setCantidad(e.target.value),
     handleSubmit,
     handleCompletarOrden: (orden: OrdenCompra) => {
-      setProveedor('EXT-A');
+      // Seleccionar dinámicamente el primer proveedor externo disponible, o por defecto 'EXT-A'
+      const primerProveedorExterno = proveedorOptions.find(opt => opt.value !== 'INT');
+      setProveedor(primerProveedorExterno ? primerProveedorExterno.value : 'EXT-A');
       
       const partMap: Record<string, string> = {
         'Cabeza': 'CAB',
         'Torso': 'TOR',
-        'Brazo Izquierdo': 'BRA-I',
-        'Brazo Derecho': 'BRA-D',
-        'Pierna Izquierda': 'PIE-I',
-        'Pierna Derecha': 'PIE-D'
+        'Brazo Izquierdo': 'BRI',
+        'Brazo Derecho': 'BRD',
+        'Pierna Izquierda': 'PII',
+        'Pierna Derecha': 'PID',
+        'Brazo I': 'BRI',
+        'Brazo D': 'BRD',
+        'Pierna I': 'PII',
+        'Pierna D': 'PID'
       };
       
       setTipoPieza(partMap[orden.tipo_parte] || orden.tipo_parte);
@@ -141,6 +181,7 @@ export const useSupplyController = () => {
     isSubmitting,
     isLoadingModels,
     handlers,
-    t
+    t,
+    proveedorOptions
   };
 };

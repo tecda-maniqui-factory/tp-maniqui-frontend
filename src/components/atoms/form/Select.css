@@ -53,6 +53,7 @@
   height: 100%;
   display: flex;
   align-items: center;
+  min-width: 0;
 }
 
 .select__element {
@@ -68,6 +69,9 @@
   -webkit-appearance: none;
   -moz-appearance: none;
   cursor: pointer;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .select__element:invalid,

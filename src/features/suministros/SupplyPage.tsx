@@ -15,7 +15,8 @@ export const SupplyPage: FC = () => {
     ordenesActivas,
     isSubmitting,
     isLoadingModels,
-    handlers
+    handlers,
+    proveedorOptions
   } = useSupplyController();
 
   const modelOptions = modelos.map((m: Modelo) => ({
@@ -59,10 +60,7 @@ export const SupplyPage: FC = () => {
           <h3>Formulario de Ingreso</h3>
           <FormField label="Proveedor / Origen">
             <Select 
-              options={[
-                { value: 'INT', label: 'Planta Principal (Interna)' },
-                { value: 'EXT-A', label: 'Proveedor Externo A' }
-              ]}
+              options={proveedorOptions}
               iconName="Truck"
               value={proveedor}
               onChange={handlers.handleProveedorChange}
@@ -86,10 +84,10 @@ export const SupplyPage: FC = () => {
               options={[
                 { value: 'CAB', label: 'Cabeza' },
                 { value: 'TOR', label: 'Torso' },
-                { value: 'BRA-I', label: 'Brazo Izquierdo' },
-                { value: 'BRA-D', label: 'Brazo Derecho' },
-                { value: 'PIE-I', label: 'Pierna Izquierda' },
-                { value: 'PIE-D', label: 'Pierna Derecha' }
+                { value: 'BRI', label: 'Brazo Izquierdo' },
+                { value: 'BRD', label: 'Brazo Derecho' },
+                { value: 'PII', label: 'Pierna Izquierda' },
+                { value: 'PID', label: 'Pierna Derecha' }
               ]}
               iconName="Package"
               value={tipoPieza}

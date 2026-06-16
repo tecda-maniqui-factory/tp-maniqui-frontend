@@ -23,7 +23,7 @@
 
 @media (min-width: 1024px) {
   .sales-page__layout {
-    grid-template-columns: 1.2fr 1fr;
+    grid-template-columns: 1.5fr 1fr;
   }
 }
 
@@ -40,31 +40,48 @@
 
 .sales-form__client-row {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.75rem;
   width: 100%;
 }
 
+@media (min-width: 480px) {
+  .sales-form__client-row {
+    flex-wrap: nowrap;
+  }
+}
+
 .sales-form__client-select-wrapper {
   flex: 1;
+  min-width: 0;
 }
 
 .sales-form__new-client-btn {
   white-space: nowrap;
-  align-self: flex-start;
+  align-self: center;
 }
 
 .sales-form__options-row {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1rem;
+  gap: 1.25rem;
+}
+
+.sales-form__options-row > * {
+  min-width: 0;
 }
 
 @media (min-width: 640px) {
   .sales-form__options-row {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   }
+  
   .sales-form__options-row--three-cols {
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+  
+  .sales-form__options-row--three-cols > *:first-child {
+    grid-column: span 2;
   }
 }
 
@@ -261,5 +278,142 @@
   margin-top: 0.25rem;
   font-family: monospace;
   word-break: break-all;
+}
+
+/* Sale Detail Modal Styles */
+.sale-detail-modal {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.sale-detail-modal__loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 0;
+  gap: 1rem;
+  color: var(--text-secondary);
+}
+
+.sale-detail-modal__content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.sale-detail-modal__summary-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  background-color: var(--bg-icon-block);
+  border: 1px solid var(--border-light);
+  padding: 1rem;
+  border-radius: 6px;
+}
+
+@media (min-width: 640px) {
+  .sale-detail-modal__summary-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.sale-detail-modal__info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.sale-detail-modal__info-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.sale-detail-modal__info-value {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.sale-detail-modal__items-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.sale-detail-modal__items-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border-light);
+  padding-bottom: 0.5rem;
+}
+
+.sale-detail-modal__items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-height: 200px;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+.sale-detail-modal__item-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border-disabled);
+}
+
+.sale-detail-modal__item-row:last-child {
+  border-bottom: none;
+}
+
+.sale-detail-modal__item-desc {
+  display: flex;
+  flex-direction: column;
+}
+
+.sale-detail-modal__item-name {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.sale-detail-modal__item-serial {
+  font-size: 0.75rem;
+  font-family: monospace;
+}
+
+.sale-detail-modal__item-price {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.sale-detail-modal__total-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 2px solid var(--border-base);
+  padding-top: 1rem;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.sale-detail-modal__total-value {
+  color: var(--color-success);
+}
+
+.sale-detail-modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  border-top: 1px solid var(--border-light);
+  padding-top: 1rem;
 }
 

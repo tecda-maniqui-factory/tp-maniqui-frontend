@@ -8,13 +8,16 @@ export const getSidebarItems = (pathname: string, role?: string): SidebarItem[] 
       icon: 'Activity', 
       isActive: pathname === '/' 
     },
-    { 
+  ];
+
+  if (role === 'operario' || role === 'gerente_prod') {
+    items.push({ 
       id: '/produccion', 
       label: 'Producción', 
       icon: 'Factory', 
       isActive: pathname === '/produccion' 
-    },
-  ];
+    });
+  }
 
   if (role === 'vendedor' || role === 'gerente_prod') {
     items.push({ 

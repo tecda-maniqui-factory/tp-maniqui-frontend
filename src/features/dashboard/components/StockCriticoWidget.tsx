@@ -8,18 +8,22 @@ interface StockCriticoWidgetProps {
   isLoading?: boolean;
   onPedir: (item: StockCriticoData) => void;
   t: (key: string) => string;
+  userRole?: string;
+  ordenesActivas?: any[];
 }
 
 /**
  * Widget: StockCriticoWidget
  * Muestra alertas de stock crítico directamente en el Dashboard con acciones funcionales.
  */
-export const StockCriticoWidget: FC<StockCriticoWidgetProps> = ({ data, isLoading, onPedir, t }) => {
+export const StockCriticoWidget: FC<StockCriticoWidgetProps> = ({ data, isLoading, onPedir, t, userRole, ordenesActivas = [] }) => {
   const columns = [
     { key: 'modelo', header: t('dashboard.stock.model') || 'Modelo' },
     { key: 'tipo_parte', header: t('dashboard.stock.part') || 'Pieza' },
     { key: 'cantidad_disponible', header: t('dashboard.stock.available') || 'Stock', align: 'center' as const },
-    { key: 'actions', header: t('dashboard.stock.actions') || 'Acción', align: 'center' as const }
+    ...(userRole === 'gerente_prod' || userRole === 'operario' ? [
+      { key: 'actions', header: t('dashboard.stock.actions') || 'Acción', align: 'center' as const }
+    ] : [])
   ];
 
   const renderCell = (item: StockCriticoData, col: any) => {
@@ -31,14 +35,19 @@ export const StockCriticoWidget: FC<StockCriticoWidgetProps> = ({ data, isLoadin
       );
     }
     if (col.key === 'actions') {
+      const isOrdered = ordenesActivas.some(
+        o => o.modelo_nombre === item.modelo && o.tipo_parte === item.tipo_parte
+      );
+
       return (
         <Button 
-          variant="info" 
+          variant={isOrdered ? "success" : "info"} 
           size="compact" 
-          iconName="Plus" 
+          iconName={isOrdered ? "Check" : "Plus"} 
           onClick={() => onPedir(item)}
+          isDisabled={isOrdered}
         >
-          {t('dashboard.stock.order_btn') || 'Pedir'}
+          {isOrdered ? (t('dashboard.stock.ordered_btn') || 'Pedido') : (t('dashboard.stock.order_btn') || 'Pedir')}
         </Button>
       );
     }

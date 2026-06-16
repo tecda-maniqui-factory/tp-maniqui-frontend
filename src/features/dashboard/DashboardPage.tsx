@@ -9,7 +9,7 @@ import './DashboardPage.css';
  * Proporciona una vista general del estado del sistema y alertas críticas.
  */
 const DashboardPage: FC = () => {
-  const { stockCritico, isLoading, handlers, t } = useDashboardController();
+  const { stockCritico, ordenesActivas, isLoading, handlers, t, user } = useDashboardController();
 
   return (
     <div className="dashboard-page">
@@ -26,6 +26,8 @@ const DashboardPage: FC = () => {
               isLoading={isLoading}
               onPedir={handlers.handlePedirPieza}
               t={t}
+              userRole={user?.rol}
+              ordenesActivas={ordenesActivas}
             />
           </div>
         </div>

@@ -1,0 +1,18 @@
+{
+  "output": {
+    "filePath": "repomix-output.txt",
+    "style": "plain"
+  },
+  "ignore": {
+    "customPatterns": [
+      "docs/icons.json",
+      "docs/technical-reference/**",
+      "capturas/**",
+      "pnpm-lock.yaml",
+      "graphify-out/**",
+      ".omg/**",
+      "node_modules/**",
+      ".git/**"
+    ]
+  }
+}

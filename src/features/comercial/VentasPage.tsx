@@ -1,6 +1,6 @@
 import { FC, useMemo } from 'react';
 import { PageHeader, Modal } from '@/components/organisms';
-import { Spinner, Button, Select, Input } from '@/components/atoms';
+import { Spinner, Button, Select, Input, Badge } from '@/components/atoms';
 import { FormField, Card } from '@/components/molecules';
 import { VentasRecientesTable } from './components/VentasRecientesTable';
 import { useSalesController } from './hooks/useSalesController';
@@ -43,7 +43,13 @@ export const VentasPage: FC = () => {
     handleCreateCliente,
     handleRegisterSale,
     handleRefresh,
-    t
+    t,
+    // Detalle de Venta
+    selectedVentaDetalle,
+    isDetailModalOpen,
+    isDetailLoading,
+    handleViewDetail,
+    handleCloseDetailModal
   } = useSalesController();
 
   // Agrupar stock disponible por modelo
@@ -293,8 +299,10 @@ export const VentasPage: FC = () => {
                 total: v.total,
                 nro_factura: v.nro_factura || `FAC-${v.id}`,
                 cae: v.cae,
-                moneda: v.moneda
+                moneda: v.moneda,
+                metodo_pago: v.metodo_pago
               }))} 
+              onViewDetail={handleViewDetail}
             />
           </div>
         </div>
@@ -371,6 +379,95 @@ export const VentasPage: FC = () => {
             </Button>
           </div>
         </form>
+      </Modal>
+
+      {/* Modal para Mostrar Detalle de Venta */}
+      <Modal
+        isOpen={isDetailModalOpen}
+        onClose={handleCloseDetailModal}
+        title={`Detalle de Venta: ${selectedVentaDetalle?.nro_factura || 'Comprobante'}`}
+      >
+        <div className="sale-detail-modal">
+          {isDetailLoading ? (
+            <div className="sale-detail-modal__loading">
+              <Spinner size={30} variant="primary" />
+              <p>Cargando información detallada...</p>
+            </div>
+          ) : selectedVentaDetalle ? (
+            <div className="sale-detail-modal__content">
+              {/* Resumen del Comprobante */}
+              <div className="sale-detail-modal__summary-grid">
+                <div className="sale-detail-modal__info-item">
+                  <span className="sale-detail-modal__info-label">Cliente:</span>
+                  <span className="sale-detail-modal__info-value">
+                    {clientes.find(c => c.id === selectedVentaDetalle.cliente_id)?.nombre || 
+                     `Cliente #${selectedVentaDetalle.cliente_id}`}
+                  </span>
+                </div>
+                <div className="sale-detail-modal__info-item">
+                  <span className="sale-detail-modal__info-label">Fecha:</span>
+                  <span className="sale-detail-modal__info-value">
+                    {new Date(selectedVentaDetalle.fecha_venta).toLocaleString()}
+                  </span>
+                </div>
+                <div className="sale-detail-modal__info-item">
+                  <span className="sale-detail-modal__info-label">Método de Pago:</span>
+                  <span className="sale-detail-modal__info-value">
+                    {selectedVentaDetalle.metodo_pago}
+                  </span>
+                </div>
+                <div className="sale-detail-modal__info-item">
+                  <span className="sale-detail-modal__info-label">Estado AFIP:</span>
+                  <span className="sale-detail-modal__info-value">
+                    {selectedVentaDetalle.cae ? (
+                      <Badge variant="success">Validado (CAE: {selectedVentaDetalle.cae})</Badge>
+                    ) : (
+                      <Badge variant="warning">Pendiente</Badge>
+                    )}
+                  </span>
+                </div>
+              </div>
+
+              {/* Items Vendidos */}
+              <div className="sale-detail-modal__items-section">
+                <h4 className="sale-detail-modal__items-title">Productos / Maniquíes Vendidos</h4>
+                <div className="sale-detail-modal__items-list">
+                  {selectedVentaDetalle.Detalle_Ventas?.map((detalle: any, idx: number) => {
+                    const modelName = detalle.maniqui?.Modelo?.nombre || 'Maniquí Ensamblado';
+                    const serial = detalle.maniqui?.numero_serie || `ID: ${detalle.maniqui_id}`;
+                    return (
+                      <div key={detalle.id || idx} className="sale-detail-modal__item-row">
+                        <div className="sale-detail-modal__item-desc">
+                          <span className="sale-detail-modal__item-name">{modelName}</span>
+                          <span className="sale-detail-modal__item-serial text-muted">S/N: {serial}</span>
+                        </div>
+                        <div className="sale-detail-modal__item-price">
+                          {Number(detalle.precio_final).toLocaleString()} {selectedVentaDetalle.moneda}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Total */}
+              <div className="sale-detail-modal__total-container">
+                <span className="sale-detail-modal__total-label">Total Facturado:</span>
+                <span className="sale-detail-modal__total-value">
+                  {Number(selectedVentaDetalle.total).toLocaleString()} {selectedVentaDetalle.moneda}
+                </span>
+              </div>
+
+              <div className="sale-detail-modal__actions">
+                <Button variant="secondary" onClick={handleCloseDetailModal}>
+                  Cerrar
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <p>No se pudo cargar el detalle.</p>
+          )}
+        </div>
       </Modal>
     </div>
   );

@@ -23,6 +23,11 @@ export const useSalesController = () => {
   const [isCreatingCliente, setIsCreatingCliente] = useState(false);
   const [isClienteModalOpen, setIsClienteModalOpen] = useState(false);
 
+  // Estados de Detalle de Venta
+  const [selectedVentaDetalle, setSelectedVentaDetalle] = useState<any | null>(null);
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+  const [isDetailLoading, setIsDetailLoading] = useState(false);
+
   // Estado del Formulario de Venta
   const [selectedClienteId, setSelectedClienteId] = useState<string>('');
   const [selectedManiquiIds, setSelectedManiquiIds] = useState<number[]>([]);
@@ -283,6 +288,31 @@ export const useSalesController = () => {
     return sum + price;
   }, 0);
 
+  const handleViewDetail = useCallback(async (id: number) => {
+    if (!token) return;
+    setIsDetailLoading(true);
+    setIsDetailModalOpen(true);
+    try {
+      const detail = await comercialService.getVentaById(token, id);
+      setSelectedVentaDetalle(detail);
+    } catch (err: any) {
+      const msg = err instanceof Error ? err.message : String(err);
+      if (msg === 'auth.error.session_expired') {
+        logout();
+      } else {
+        notify('Error al cargar el detalle de la venta', 'danger');
+      }
+      setIsDetailModalOpen(false);
+    } finally {
+      setIsDetailLoading(false);
+    }
+  }, [token, logout, notify]);
+
+  const handleCloseDetailModal = useCallback(() => {
+    setIsDetailModalOpen(false);
+    setSelectedVentaDetalle(null);
+  }, []);
+
   return {
     clientes,
     maniquiesDisponibles,
@@ -313,6 +343,12 @@ export const useSalesController = () => {
     handleCreateCliente,
     handleRegisterSale,
     handleRefresh: loadCommercialData,
-    t
+    t,
+    // Detalle de Venta
+    selectedVentaDetalle,
+    isDetailModalOpen,
+    isDetailLoading,
+    handleViewDetail,
+    handleCloseDetailModal
   };
 };

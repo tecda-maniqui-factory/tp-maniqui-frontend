@@ -3,13 +3,23 @@ import { useAuth } from '@/hooks/useAuth';
 import { useNotify } from '@/hooks/useNotify';
 import { useLanguage } from '@/hooks/useLanguage';
 import { dashboardService, StockCriticoData } from '../api/dashboardService';
+import { ENV } from '@/config/env.config';
+
+export interface OrdenCompra {
+  id: string;
+  modelo_nombre: string;
+  tipo_parte: string;
+  fecha: string;
+  estado: 'pendiente' | 'completada';
+}
 
 export const useDashboardController = () => {
-  const { token, logout } = useAuth();
+  const { token, logout, user } = useAuth();
   const notify = useNotify();
   const { t } = useLanguage();
 
   const [stockCritico, setStockCritico] = useState<StockCriticoData[]>([]);
+  const [ordenesActivas, setOrdenesActivas] = useState<OrdenCompra[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const fetchStockCritico = useCallback(async () => {
@@ -32,11 +42,52 @@ export const useDashboardController = () => {
   useEffect(() => {
     let isMounted = true;
     if (isMounted) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       fetchStockCritico();
     }
     return () => { isMounted = false; };
   }, [fetchStockCritico]);
+
+  // Configurar SSE para actualizaciones en tiempo real
+  useEffect(() => {
+    if (!token) return;
+
+    const eventSource = new EventSource(`${ENV.API_URL}/notificaciones/stream?token=${token}`);
+
+    eventSource.addEventListener('sync_ordenes', (e) => {
+      const data = JSON.parse(e.data);
+      setOrdenesActivas(data);
+    });
+
+    eventSource.addEventListener('nueva_orden', (e) => {
+      const data = JSON.parse(e.data);
+      setOrdenesActivas(prev => {
+        if (prev.some(o => o.id === data.id)) return prev;
+        return [...prev, data];
+      });
+      // Refrescar stock crítico para ver si cambió algo
+      fetchStockCritico();
+    });
+
+    eventSource.addEventListener('orden_completada', (e) => {
+      const data = JSON.parse(e.data);
+      setOrdenesActivas(prev => prev.filter(o => o.id !== data.id));
+      // Refrescar al completarse una orden de compra (ingreso de stock)
+      fetchStockCritico();
+    });
+
+    eventSource.addEventListener('stock_actualizado', () => {
+      // Refrescar al consumirse stock (ensamblajes)
+      fetchStockCritico();
+    });
+
+    eventSource.onerror = (e) => {
+      console.error('SSE Error en Dashboard', e);
+    };
+
+    return () => {
+      eventSource.close();
+    };
+  }, [token, fetchStockCritico]);
 
   const handlePedirPieza = async (item: StockCriticoData) => {
     if (!token) return;
@@ -54,11 +105,13 @@ export const useDashboardController = () => {
 
   return {
     stockCritico,
+    ordenesActivas,
     isLoading,
     handlers: {
       handleRefresh: fetchStockCritico,
       handlePedirPieza
     },
-    t
+    t,
+    user
   };
 };

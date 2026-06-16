@@ -75,9 +75,15 @@ export const useLoginController = () => {
     }
   }, [formData, auth, notification, t]);
 
+  const fillCredentials = useCallback((username: string, password: string) => {
+    setFormData({ username, password });
+    setErrors({});
+  }, []);
+
   const handlers = {
     handleChange,
-    handleSubmit
+    handleSubmit,
+    fillCredentials
   };
 
   return {

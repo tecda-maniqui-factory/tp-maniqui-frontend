@@ -23,36 +23,44 @@ interface VentasRecientesTableProps {
  */
 export const VentasRecientesTable: FC<VentasRecientesTableProps> = ({ data, onViewDetail }) => {
   const columns = [
-    { header: 'Factura', accessor: 'nro_factura' },
-    { header: 'Cliente', accessor: 'cliente' },
-    { header: 'Fecha', accessor: (row: VentaData) => new Date(row.fecha).toLocaleDateString() },
-    { 
-      header: 'Total', 
-      accessor: (row: VentaData) => `${row.total.toLocaleString()} ${row.moneda}` 
-    },
-    { 
-      header: 'Estado AFIP', 
-      accessor: (row: VentaData) => (
-        <Badge variant={row.cae ? 'success' : 'warning'}>
-          {row.cae ? 'Validado' : 'Pendiente'}
+    { key: 'nro_factura', header: 'Factura' },
+    { key: 'cliente', header: 'Cliente' },
+    { key: 'fecha', header: 'Fecha' },
+    { key: 'total', header: 'Total' },
+    { key: 'estado_afip', header: 'Estado AFIP' },
+    { key: 'acciones', header: 'Acciones', align: 'center' as const }
+  ];
+
+  const renderCell = (item: VentaData, col: any) => {
+    if (col.key === 'fecha') {
+      return new Date(item.fecha).toLocaleDateString();
+    }
+    if (col.key === 'total') {
+      return `${item.total.toLocaleString()} ${item.moneda}`;
+    }
+    if (col.key === 'estado_afip') {
+      return (
+        <Badge variant={item.cae ? 'success' : 'warning'}>
+          {item.cae ? 'Validado' : 'Pendiente'}
         </Badge>
-      ) 
-    },
-    {
-      header: 'Acciones',
-      accessor: (row: VentaData) => (
-        <Button variant="secondary" size="compact" iconName="Eye" onClick={() => onViewDetail?.(row.id)}>
+      );
+    }
+    if (col.key === 'acciones') {
+      return (
+        <Button variant="secondary" size="compact" iconName="Eye" onClick={() => onViewDetail?.(item.id)}>
           Ver
         </Button>
-      )
+      );
     }
-  ];
+    return item[col.key as keyof VentaData] as any;
+  };
 
   return (
     <Card title="Últimas Ventas Realizadas">
       <Table 
         columns={columns} 
         data={data} 
+        renderCell={renderCell}
       />
     </Card>
   );

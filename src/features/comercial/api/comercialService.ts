@@ -67,6 +67,15 @@ export const comercialService = {
     return response.json();
   },
 
+  getVentaById: async (token: string, id: number): Promise<any> => {
+    const response = await fetch(`${ENV.API_URL}/ventas/${id}`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    if (response.status === 401) throw new Error('auth.error.session_expired');
+    if (!response.ok) throw new Error('Error al cargar detalle de venta');
+    return response.json();
+  },
+
   createVenta: async (token: string, data: { cliente_id: number; metodo_pago: string; moneda: string; maniquies: { maniqui_id: number; precio_final: number }[] }): Promise<Venta> => {
     const response = await fetch(`${ENV.API_URL}/ventas`, {
       method: 'POST',

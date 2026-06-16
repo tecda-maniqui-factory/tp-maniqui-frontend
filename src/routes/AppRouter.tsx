@@ -39,7 +39,9 @@ export const AppRouter: FC = () => {
         },
         {
           path: 'produccion',
-          element: <ProductionPage />,
+          element: (auth.user?.rol === 'gerente_prod' || auth.user?.rol === 'operario')
+            ? <ProductionPage />
+            : <Navigate to="/" replace />,
         },
         {
           path: 'modelos',

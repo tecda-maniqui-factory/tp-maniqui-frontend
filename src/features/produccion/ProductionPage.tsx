@@ -16,7 +16,7 @@ const ProductionPage: FC = () => {
   const { maniquies, isLoading, handlers, t } = useProductionController();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const isGerente = user?.rol === 'gerente_prod';
+  const puedeEnsamblar = user?.rol === 'gerente_prod' || user?.rol === 'operario';
 
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
@@ -28,7 +28,7 @@ const ProductionPage: FC = () => {
 
   const headerActions = (
     <div className="production-page__actions">
-      {isGerente && (
+      {puedeEnsamblar && (
         <Button 
           variant="primary" 
           iconName="Plus" 

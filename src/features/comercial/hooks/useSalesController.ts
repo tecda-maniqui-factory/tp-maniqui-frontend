@@ -87,9 +87,11 @@ export const useSalesController = () => {
 
   useEffect(() => {
     let isMounted = true;
-    if (isMounted) {
-      loadCommercialData();
-    }
+    Promise.resolve().then(() => {
+      if (isMounted) {
+        loadCommercialData();
+      }
+    });
     return () => {
       isMounted = false;
     };
@@ -102,35 +104,39 @@ export const useSalesController = () => {
       map[m.modelo_id] = (map[m.modelo_id] || 0) + 1;
     });
 
-    setQuantitiesByModel(prev => {
-      let changed = false;
-      const updated = { ...prev };
-      Object.keys(updated).forEach(mIdStr => {
-        const mId = Number(mIdStr);
-        const maxStock = map[mId] || 0;
-        if ((updated[mId] || 0) > maxStock) {
-          updated[mId] = maxStock;
-          changed = true;
-        }
-      });
-      
-      if (changed) {
-        const newSelectedIds: number[] = [];
-        const groups: Record<number, Maniqui[]> = {};
-        maniquiesDisponibles.forEach(m => {
-          if (!groups[m.modelo_id]) groups[m.modelo_id] = [];
-          groups[m.modelo_id].push(m);
-        });
+    Promise.resolve().then(() => {
+      setQuantitiesByModel(prev => {
+        let changed = false;
+        const updated = { ...prev };
         Object.keys(updated).forEach(mIdStr => {
           const mId = Number(mIdStr);
-          const q = updated[mId] || 0;
-          const subList = groups[mId] || [];
-          newSelectedIds.push(...subList.slice(0, q).map(mq => mq.id));
+          const maxStock = map[mId] || 0;
+          if ((updated[mId] || 0) > maxStock) {
+            updated[mId] = maxStock;
+            changed = true;
+          }
         });
-        setSelectedManiquiIds(newSelectedIds);
-        return updated;
-      }
-      return prev;
+        
+        if (changed) {
+          const newSelectedIds: number[] = [];
+          const groups: Record<number, Maniqui[]> = {};
+          maniquiesDisponibles.forEach(m => {
+            if (!groups[m.modelo_id]) groups[m.modelo_id] = [];
+            groups[m.modelo_id].push(m);
+          });
+          Object.keys(updated).forEach(mIdStr => {
+            const mId = Number(mIdStr);
+            const q = updated[mId] || 0;
+            const subList = groups[mId] || [];
+            newSelectedIds.push(...subList.slice(0, q).map(mq => mq.id));
+          });
+          Promise.resolve().then(() => {
+            setSelectedManiquiIds(newSelectedIds);
+          });
+          return updated;
+        }
+        return prev;
+      });
     });
   }, [maniquiesDisponibles]);
 

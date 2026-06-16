@@ -195,7 +195,7 @@ export const VentasPage: FC = () => {
                   
                   {modelsWithStock.length === 0 ? (
                     <div className="sales-form__no-mannequins">
-                      <p>⚠️ No hay maniquíes con estado 'Disponible' para la venta.</p>
+                      <p>⚠️ No hay maniquíes con estado &apos;Disponible&apos; para la venta.</p>
                       <p className="sales-form__no-mannequins-sub text-muted">
                         Vaya a la sección de producción para ensamblar nuevos maniquíes.
                       </p>

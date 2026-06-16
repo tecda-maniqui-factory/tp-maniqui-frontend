@@ -41,9 +41,11 @@ export const useDashboardController = () => {
 
   useEffect(() => {
     let isMounted = true;
-    if (isMounted) {
-      fetchStockCritico();
-    }
+    Promise.resolve().then(() => {
+      if (isMounted) {
+        fetchStockCritico();
+      }
+    });
     return () => { isMounted = false; };
   }, [fetchStockCritico]);
 

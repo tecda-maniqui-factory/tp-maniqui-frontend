@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useNotify } from '@/hooks/useNotify';
 import { useLanguage } from '@/hooks/useLanguage';
@@ -18,7 +18,7 @@ export const useSalesController = () => {
   const [ventas, setVentas] = useState<Venta[]>([]);
 
   // Estados de UI/Carga
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(!!token);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isCreatingCliente, setIsCreatingCliente] = useState(false);
   const [isClienteModalOpen, setIsClienteModalOpen] = useState(false);
@@ -30,7 +30,6 @@ export const useSalesController = () => {
 
   // Estado del Formulario de Venta
   const [selectedClienteId, setSelectedClienteId] = useState<string>('');
-  const [selectedManiquiIds, setSelectedManiquiIds] = useState<number[]>([]);
   const [quantitiesByModel, setQuantitiesByModel] = useState<Record<number, number>>({});
   const [metodoPago, setMetodoPago] = useState<string>('Transferencia');
   const [moneda, setMoneda] = useState<'ARS' | 'USD'>('ARS');
@@ -42,10 +41,45 @@ export const useSalesController = () => {
   const [newClienteEmail, setNewClienteEmail] = useState('');
   const [clienteError, setClienteError] = useState<string | null>(null);
 
+  // Cargar cantidades seleccionadas y caparlas al stock disponible en tiempo de renderizado
+  const cappedQuantitiesByModel = useMemo(() => {
+    const map: Record<number, number> = {};
+    maniquiesDisponibles.forEach(m => {
+      map[m.modelo_id] = (map[m.modelo_id] || 0) + 1;
+    });
+
+    const capped: Record<number, number> = {};
+    Object.keys(quantitiesByModel).forEach(mIdStr => {
+      const mId = Number(mIdStr);
+      const val = quantitiesByModel[mId] || 0;
+      const max = map[mId] || 0;
+      capped[mId] = Math.min(val, max);
+    });
+    return capped;
+  }, [quantitiesByModel, maniquiesDisponibles]);
+
+  // Derivar selectedManiquiIds a partir de cappedQuantitiesByModel e inventario disponible
+  const selectedManiquiIds = useMemo(() => {
+    const ids: number[] = [];
+    const groups: Record<number, Maniqui[]> = {};
+    maniquiesDisponibles.forEach(m => {
+      if (!groups[m.modelo_id]) groups[m.modelo_id] = [];
+      groups[m.modelo_id].push(m);
+    });
+
+    Object.keys(cappedQuantitiesByModel).forEach(mIdStr => {
+      const mId = Number(mIdStr);
+      const q = cappedQuantitiesByModel[mId] || 0;
+      const subList = groups[mId] || [];
+      ids.push(...subList.slice(0, q).map(mq => mq.id));
+    });
+    return ids;
+  }, [cappedQuantitiesByModel, maniquiesDisponibles]);
+
   // Cargar todos los datos comerciales iniciales
-  const loadCommercialData = useCallback(async () => {
+  const loadCommercialData = useCallback(async (showLoading = false) => {
     if (!token) return;
-    setIsLoading(true);
+    if (showLoading) setIsLoading(true);
     try {
       const [clientesData, maniquiesData, ventasData] = await Promise.all([
         comercialService.getClientes(token),
@@ -81,64 +115,23 @@ export const useSalesController = () => {
         notify(t('commercial.error.fetch_failed'), 'danger');
       }
     } finally {
-      setIsLoading(false);
+      if (showLoading) setIsLoading(false);
     }
   }, [token, logout, notify, t]);
 
   useEffect(() => {
     let isMounted = true;
-    Promise.resolve().then(() => {
+    const init = async () => {
+      await Promise.resolve();
       if (isMounted) {
-        loadCommercialData();
+        loadCommercialData(false);
       }
-    });
+    };
+    init();
     return () => {
       isMounted = false;
     };
   }, [loadCommercialData]);
-
-  // Sincronizar cantidades seleccionadas ante recargas de stock
-  useEffect(() => {
-    const map: Record<number, number> = {};
-    maniquiesDisponibles.forEach(m => {
-      map[m.modelo_id] = (map[m.modelo_id] || 0) + 1;
-    });
-
-    Promise.resolve().then(() => {
-      setQuantitiesByModel(prev => {
-        let changed = false;
-        const updated = { ...prev };
-        Object.keys(updated).forEach(mIdStr => {
-          const mId = Number(mIdStr);
-          const maxStock = map[mId] || 0;
-          if ((updated[mId] || 0) > maxStock) {
-            updated[mId] = maxStock;
-            changed = true;
-          }
-        });
-        
-        if (changed) {
-          const newSelectedIds: number[] = [];
-          const groups: Record<number, Maniqui[]> = {};
-          maniquiesDisponibles.forEach(m => {
-            if (!groups[m.modelo_id]) groups[m.modelo_id] = [];
-            groups[m.modelo_id].push(m);
-          });
-          Object.keys(updated).forEach(mIdStr => {
-            const mId = Number(mIdStr);
-            const q = updated[mId] || 0;
-            const subList = groups[mId] || [];
-            newSelectedIds.push(...subList.slice(0, q).map(mq => mq.id));
-          });
-          Promise.resolve().then(() => {
-            setSelectedManiquiIds(newSelectedIds);
-          });
-          return updated;
-        }
-        return prev;
-      });
-    });
-  }, [maniquiesDisponibles]);
 
   // Manejar creación de cliente
   const handleCreateCliente = useCallback(async (e: React.FormEvent) => {
@@ -236,14 +229,13 @@ export const useSalesController = () => {
 
       // Limpiar formulario de ventas
       setSelectedClienteId('');
-      setSelectedManiquiIds([]);
       setQuantitiesByModel({});
       setMetodoPago('Transferencia');
       setMoneda('ARS');
       setTipoCambio(1000);
 
       // Recargar datos actualizados (ventas e inventario disponible)
-      await loadCommercialData();
+      await loadCommercialData(false);
     } catch (err: any) {
       const msg = err instanceof Error ? err.message : String(err);
       if (msg === 'auth.error.session_expired') {
@@ -268,22 +260,7 @@ export const useSalesController = () => {
     const maxStock = list.length;
     const targetQty = Math.max(0, Math.min(maxStock, qty));
 
-    setQuantitiesByModel(prev => {
-      const updated = { ...prev, [modelId]: targetQty };
-
-      // Reconstruir selectedManiquiIds
-      const newSelectedIds: number[] = [];
-      Object.keys(updated).forEach(mIdStr => {
-        const mId = Number(mIdStr);
-        const q = updated[mId] || 0;
-        const subList = map[mId] || [];
-        const ids = subList.slice(0, q).map(mq => mq.id);
-        newSelectedIds.push(...ids);
-      });
-
-      setSelectedManiquiIds(newSelectedIds);
-      return updated;
-    });
+    setQuantitiesByModel(prev => ({ ...prev, [modelId]: targetQty }));
   }, [maniquiesDisponibles]);
 
   // Calcular total
@@ -326,9 +303,10 @@ export const useSalesController = () => {
     isLoading,
     isSubmitting,
     isCreatingCliente,
+    isClienteModalOpen,
     selectedClienteId,
     selectedManiquiIds,
-    quantitiesByModel,
+    quantitiesByModel: cappedQuantitiesByModel,
     metodoPago,
     moneda,
     tipoCambio,
@@ -348,7 +326,7 @@ export const useSalesController = () => {
     handleModelQuantityChange,
     handleCreateCliente,
     handleRegisterSale,
-    handleRefresh: loadCommercialData,
+    handleRefresh: () => loadCommercialData(true),
     t,
     // Detalle de Venta
     selectedVentaDetalle,

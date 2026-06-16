@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useNotify } from '@/hooks/useNotify';
 import { useLanguage } from '@/hooks/useLanguage';
@@ -20,11 +20,11 @@ export const useDashboardController = () => {
 
   const [stockCritico, setStockCritico] = useState<StockCriticoData[]>([]);
   const [ordenesActivas, setOrdenesActivas] = useState<OrdenCompra[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(!!token);
 
-  const fetchStockCritico = useCallback(async () => {
+  const fetchStockCritico = useCallback(async (showLoading = false) => {
     if (!token) return;
-    setIsLoading(true);
+    if (showLoading) setIsLoading(true);
     try {
       const data = await dashboardService.getStockCritico(token);
       setStockCritico(data);
@@ -35,18 +35,26 @@ export const useDashboardController = () => {
         notify(t('dashboard.error.fetch_failed'), 'danger');
       }
     } finally {
-      setIsLoading(false);
+      if (showLoading) setIsLoading(false);
     }
   }, [token, logout, notify, t]);
 
   useEffect(() => {
     let isMounted = true;
-    Promise.resolve().then(() => {
+    const init = async () => {
+      await Promise.resolve();
       if (isMounted) {
-        fetchStockCritico();
+        fetchStockCritico(false);
       }
-    });
+    };
+    init();
     return () => { isMounted = false; };
+  }, [fetchStockCritico]);
+
+  // Mantener una referencia mutable a la última versión de fetchStockCritico
+  const fetchStockCriticoRef = useRef(fetchStockCritico);
+  useEffect(() => {
+    fetchStockCriticoRef.current = fetchStockCritico;
   }, [fetchStockCritico]);
 
   // Configurar SSE para actualizaciones en tiempo real
@@ -67,19 +75,19 @@ export const useDashboardController = () => {
         return [...prev, data];
       });
       // Refrescar stock crítico para ver si cambió algo
-      fetchStockCritico();
+      fetchStockCriticoRef.current();
     });
 
     eventSource.addEventListener('orden_completada', (e) => {
       const data = JSON.parse(e.data);
       setOrdenesActivas(prev => prev.filter(o => o.id !== data.id));
       // Refrescar al completarse una orden de compra (ingreso de stock)
-      fetchStockCritico();
+      fetchStockCriticoRef.current();
     });
 
     eventSource.addEventListener('stock_actualizado', () => {
       // Refrescar al consumirse stock (ensamblajes)
-      fetchStockCritico();
+      fetchStockCriticoRef.current();
     });
 
     eventSource.onerror = (e) => {
@@ -89,7 +97,7 @@ export const useDashboardController = () => {
     return () => {
       eventSource.close();
     };
-  }, [token, fetchStockCritico]);
+  }, [token]);
 
   const handlePedirPieza = async (item: StockCriticoData) => {
     if (!token) return;
@@ -110,7 +118,7 @@ export const useDashboardController = () => {
     ordenesActivas,
     isLoading,
     handlers: {
-      handleRefresh: fetchStockCritico,
+      handleRefresh: () => fetchStockCritico(true),
       handlePedirPieza
     },
     t,

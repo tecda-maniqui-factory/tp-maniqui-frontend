@@ -1,0 +1,6 @@
+{
+  "projectType": "react-frontend",
+  "hooks": {
+    "pre-commit": "pnpm run lint"
+  }
+}

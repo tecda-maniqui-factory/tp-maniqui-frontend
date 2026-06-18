@@ -2,10 +2,17 @@ import { FC } from 'react';
 import Button from '@/components/atoms/form/Button';;
 import './Pagination.css';
 
+/**
+ * Props for the Pagination component.
+ */
 export interface PaginationProps {
+  /** The currently active page (1-indexed). */
   currentPage: number;
+  /** Total number of available pages. */
   totalPages: number;
+  /** Callback triggered when a different page is selected. */
   onPageChange: (page: number) => void;
+  /** Optional custom CSS class name. */
   className?: string;
 }
 

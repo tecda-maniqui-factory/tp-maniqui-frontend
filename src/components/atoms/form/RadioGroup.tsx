@@ -1,22 +1,35 @@
 import { FC, InputHTMLAttributes, useId } from 'react';
 import './Radio.css';
 
+/**
+ * Props for the individual Radio option component.
+ */
 export interface RadioProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
+  /** Optional display label for this radio option. */
   label?: string;
 }
 
+/**
+ * Props for the RadioGroup container component.
+ */
 export interface RadioGroupProps {
+  /** Name attribute shared by the radio inputs for grouping. */
   name: string;
+  /** List of options to render in the group. */
   options: { value: string; label: string; disabled?: boolean }[];
+  /** Current selected value. */
   value?: string;
+  /** Callback triggered when a radio option selection changes. */
   onChange: (value: string) => void;
+  /** Layout orientation. */
   orientation?: 'row' | 'column';
+  /** Optional additional CSS class. */
   className?: string;
 }
 
 /**
- * Átomo: Radio
- * Componente individual de opción circular (Radio button) con estilo Flat UI.
+ * Atom Component: Radio
+ * Individual circular option selector (Radio button) with Flat UI styling.
  */
 export const Radio: FC<RadioProps> = ({ label, className = '', id, ...props }) => {
   const generatedId = useId();
@@ -34,8 +47,8 @@ export const Radio: FC<RadioProps> = ({ label, className = '', id, ...props }) =
 };
 
 /**
- * Átomo: RadioGroup
- * Orquestador de múltiples opciones Radio.
+ * Atom Component: RadioGroup
+ * Group container that coordinates multiple individual Radio button options.
  */
 export const RadioGroup: FC<RadioGroupProps> = ({
   name,

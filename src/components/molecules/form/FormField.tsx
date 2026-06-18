@@ -1,13 +1,23 @@
 import { FC, ReactNode, useId, Children, isValidElement, cloneElement } from 'react';
 import './FormField.css';
 
+/**
+ * Props for the FormField component.
+ */
 export interface FormFieldProps {
+  /** Optional label text to display above the form control. */
   label?: string;
+  /** Optional validation error message. If present, it styles the field in error state. */
   error?: string;
+  /** Optional help text to guide the user when no error is present. */
   helperText?: string;
+  /** If true, adds a required indicator to the label. */
   required?: boolean;
+  /** The child form control element (e.g. Input, Select). */
   children: ReactNode;
+  /** Additional custom CSS class name. */
   className?: string;
+  /** ID to manually link the label with the child control. If omitted, one is generated automatically. */
   htmlFor?: string;
 }
 

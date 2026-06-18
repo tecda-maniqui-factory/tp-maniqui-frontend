@@ -2,10 +2,17 @@ import { FC } from 'react';
 import Icon from '@/components/atoms/display/Icon';;
 import './CredentialOverlay.css';
 
+/**
+ * Props for the CredentialOverlay component.
+ */
 interface CredentialOverlayProps {
+  /** Callback triggered when a fast credential option is selected. */
   onSelect: (username: string, pass: string) => void;
 }
 
+/**
+ * Component that displays quick credentials for testing different user roles in development/demo environments.
+ */
 export const CredentialOverlay: FC<CredentialOverlayProps> = ({ onSelect }) => {
   const credentials = [
     {

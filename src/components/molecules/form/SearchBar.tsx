@@ -3,9 +3,15 @@ import Input from '@/components/atoms/form/Input';
 import Button from '@/components/atoms/form/Button';;
 import './SearchBar.css';
 
+/**
+ * Props for the SearchBar component.
+ */
 export interface SearchBarProps {
+  /** Optional placeholder text inside the input. */
   placeholder?: string;
+  /** Optional callback triggered with the search query upon submission. */
   onSearch?: (value: string) => void;
+  /** Optional custom CSS class name. */
   className?: string;
 }
 

@@ -3,20 +3,23 @@ import { createPortal } from 'react-dom';
 import Icon from '@/components/atoms/display/Icon';;
 import './Modal.css';
 
+/**
+ * Props for the Modal component.
+ */
 export interface ModalProps {
-  /** Indica si el modal está abierto o cerrado */
+  /** Indicates whether the modal window is currently open. */
   isOpen: boolean;
-  /** Función para cerrar el modal */
+  /** Callback triggered to request closing the modal. */
   onClose: () => void;
-  /** Título del modal */
+  /** Header title text displayed at the top of the modal. */
   title: string;
-  /** Contenido principal */
+  /** Main body content to render inside the modal. */
   children: ReactNode;
-  /** Botones o acciones del pie del modal */
+  /** Optional actions/buttons component to show in the footer area. */
   footer?: ReactNode;
-  /** Clase extra para el contenedor interno */
+  /** Optional additional CSS class for custom container styling. */
   className?: string;
-  /** Determina si hacer clic fuera del modal lo cierra (default: true) */
+  /** Toggles overlay backdrop click dismissal (default: true). */
   closeOnOverlayClick?: boolean;
 }
 

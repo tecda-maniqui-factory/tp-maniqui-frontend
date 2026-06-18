@@ -1,5 +1,12 @@
 import { SidebarItem } from '@/components/organisms/layout/Sidebar';;
 
+/**
+ * Generates the list of sidebar navigation items based on the user's role and the current pathname.
+ *
+ * @param pathname - The current active path/route.
+ * @param role - The role of the authenticated user.
+ * @returns An array of sidebar item configurations.
+ */
 export const getSidebarItems = (pathname: string, role?: string): SidebarItem[] => {
   const items: SidebarItem[] = [
     { 

@@ -4,22 +4,33 @@ import { AuthContext } from '@/context/AuthContext';
 import { NotificationContext } from '@/context/NotificationContext';;
 import { authService } from '../api/authService';
 
+/**
+ * Holds the login form input values.
+ */
 export interface LoginState {
+  /** The username inputted by the user. */
   username: string;
+  /** The password inputted by the user. */
   password: string;
 }
 
+/**
+ * Structure for representing form validation or processing errors.
+ */
 export interface LoginErrors {
+  /** Validation error for the username field. */
   username?: string;
+  /** Validation error for the password field. */
   password?: string;
+  /** Global form or authentication request error message. */
   form?: string;
 }
 
 /**
- * Hook Controlador: useLoginController
- * 
- * Orquesta la lógica del formulario de Login, validaciones y estado de carga.
- * Se comunica con authService para la autenticación y gestiona notificaciones.
+ * Controller hook for the Login Page.
+ * Orchestrates login form state, validations, loading states, API request triggers, and alerts.
+ *
+ * @returns Object containing form state, errors, loading indicators, event handlers, and translator.
  */
 export const useLoginController = () => {
   const { t } = useLanguage();

@@ -1,20 +1,37 @@
 import { ReactNode } from 'react';
 import './Table.css';
 
+/**
+ * Configuration for a table column.
+ */
 export interface TableColumn {
+  /** Unique key identifying the column. */
   key: string;
+  /** Label or header component for the column header. */
   header: ReactNode;
+  /** Alignment of column values. */
   align?: 'left' | 'center' | 'right';
 }
 
+/**
+ * Props for the Table component.
+ */
 export interface TableProps<T> {
+  /** Array of column configurations. */
   columns: TableColumn[];
+  /** Array of data items to populate rows. */
   data: T[];
+  /** Optional element to display in the table footer. */
   footer?: ReactNode;
+  /** Toggle compact spacing layout style. */
   isCompact?: boolean;
+  /** Toggle row hover styling. */
   isHoverable?: boolean;
+  /** Additional CSS class name. */
   className?: string;
+  /** Optional custom renderer for cell content. */
   renderCell?: (item: T, column: TableColumn) => ReactNode;
+  /** Callback to retrieve a unique key for each row. */
   rowKey?: (item: T) => string | number;
 }
 

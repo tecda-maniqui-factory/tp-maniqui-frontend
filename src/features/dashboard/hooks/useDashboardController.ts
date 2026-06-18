@@ -5,14 +5,29 @@ import { useLanguage } from '@/hooks/useLanguage';
 import { dashboardService, StockCriticoData } from '../api/dashboardService';
 import { ENV } from '@/config/env.config';
 
+/**
+ * Represents a purchase order in the dashboard context.
+ */
 export interface OrdenCompra {
+  /** Unique identifier of the purchase order. */
   id: string;
+  /** Name of the mannequin model. */
   modelo_nombre: string;
+  /** The specific type of part ordered. */
   tipo_parte: string;
+  /** The date/time string of the order. */
   fecha: string;
+  /** The status of the purchase order. */
   estado: 'pendiente' | 'completada';
 }
 
+/**
+ * Controller hook for the main Dashboard view.
+ * Handles critical stock fetching, list of active purchase orders, real-time Server-Sent Events (SSE) subscriptions,
+ * and purchase order trigger handlers.
+ *
+ * @returns State properties, action handlers, current authenticated user, and translation utility.
+ */
 export const useDashboardController = () => {
   const { token, logout, user } = useAuth();
   const notify = useNotify();

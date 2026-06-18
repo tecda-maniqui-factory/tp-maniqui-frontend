@@ -3,21 +3,31 @@ import Icon from '@/components/atoms/display/Icon';;
 import { icons } from 'lucide-react';
 import './Sidebar.css';
 
+/**
+ * Structure representing an item in the sidebar navigation.
+ */
 export interface SidebarItem {
+  /** The unique route path/ID associated with this item. */
   id: string;
+  /** The display label for the item. */
   label: string;
+  /** Lucide icon name. */
   icon: keyof typeof icons;
+  /** Indicates if this item is currently active. */
   isActive?: boolean;
 }
 
+/**
+ * Props for the Sidebar component.
+ */
 export interface SidebarProps {
-  /** Indica si la barra lateral está abierta */
+  /** Indicates if the sidebar is open/expanded. */
   isOpen: boolean;
-  /** Lista de enlaces de navegación */
+  /** List of navigation items. */
   items: SidebarItem[];
-  /** Función que se ejecuta al seleccionar un elemento */
+  /** Callback triggered when a sidebar item is clicked. */
   onSelect: (id: string) => void;
-  /** Función para cerrar la barra (en móviles) */
+  /** Optional callback to close/collapse the sidebar. */
   onClose?: () => void;
 }
 

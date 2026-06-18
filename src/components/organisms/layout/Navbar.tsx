@@ -2,14 +2,17 @@ import { FC } from 'react';
 import Icon from '@/components/atoms/display/Icon';;
 import './Navbar.css';
 
+/**
+ * Props for the Navbar component.
+ */
 export interface NavbarProps {
-/** Nombre del usuario a mostrar en la barra */
-userName?: string;
-/** Título de la aplicación */
-title?: string;
-/** Función para manejar el clic en el botón de hamburguesa (para abrir/cerrar sidebar) */
-onMenuToggle?: () => void;
-  /** Función para manejar el cierre de sesión */
+  /** Name of the authenticated user to display. */
+  userName?: string;
+  /** Title text shown in the header. */
+  title?: string;
+  /** Optional callback to toggle the mobile menu sidebar. */
+  onMenuToggle?: () => void;
+  /** Optional callback to trigger logout. */
   onLogout?: () => void;
 }
 

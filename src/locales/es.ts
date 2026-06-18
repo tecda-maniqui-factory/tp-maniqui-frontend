@@ -1,3 +1,6 @@
+/**
+ * Dictionary containing Spanish translation keys and values for the UI.
+ */
 export const translations: Record<string, string> = {
   'common.loading': 'Cargando...',
   'common.save': 'Guardar',

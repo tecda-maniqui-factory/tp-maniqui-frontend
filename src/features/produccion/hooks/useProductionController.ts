@@ -5,8 +5,11 @@ import { useLanguage } from '@/hooks/useLanguage';
 import { productionService, Maniqui } from '../api/productionService';
 
 /**
- * Controlador para la Feature de Producción.
- * Gestiona el estado de los maniquíes y la sincronización con el servidor.
+ * Controller hook for the Production Feature dashboard.
+ * Manages fetching the list of mannequins in production, loading states, error handling,
+ * and page refreshing actions.
+ *
+ * @returns State properties, refresh handler, and translation utility.
  */
 export const useProductionController = () => {
   const { token, logout } = useAuth();

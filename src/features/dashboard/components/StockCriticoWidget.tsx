@@ -5,29 +5,49 @@ import Button from '@/components/atoms/form/Button';
 import Badge from '@/components/atoms/display/Badge';;
 import { StockCriticoData } from '../api/dashboardService';
 
+/**
+ * Represents an active purchase order for replenishment.
+ */
 interface OrdenActiva {
+  /** The name of the model of the mannequin. */
   modelo_nombre: string;
+  /** The specific type of part ordered. */
   tipo_parte: string;
 }
 
+/**
+ * Configuration for a table column.
+ */
 interface Column {
+  /** Key identifying the data property. */
   key: string;
+  /** Display label for the column header. */
   header: string;
+  /** Alignment of content within cells. */
   align?: 'left' | 'center' | 'right';
 }
 
+/**
+ * Props for the StockCriticoWidget component.
+ */
 interface StockCriticoWidgetProps {
+  /** List of items in critical stock level. */
   data: StockCriticoData[];
+  /** Optional loading state indicator. */
   isLoading?: boolean;
+  /** Callback triggered to request parts/orders for an item. */
   onPedir: (item: StockCriticoData) => void;
+  /** Translator function. */
   t: (key: string) => string;
+  /** Role of the authenticated user to restrict actions. */
   userRole?: string;
+  /** List of active orders to prevent double ordering. */
   ordenesActivas?: OrdenActiva[];
 }
 
 /**
- * Widget: StockCriticoWidget
- * Muestra alertas de stock crítico directamente en el Dashboard con acciones funcionales.
+ * Widget Component: StockCriticoWidget
+ * Displays critical stock alert tables on the dashboard with interactive order request actions.
  */
 export const StockCriticoWidget: FC<StockCriticoWidgetProps> = ({ data, isLoading, onPedir, t, userRole, ordenesActivas = [] }) => {
   const columns = useMemo(() => [

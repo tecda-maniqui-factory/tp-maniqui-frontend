@@ -1,14 +1,17 @@
 import { FC, TextareaHTMLAttributes, useId } from 'react';
 import './Textarea.css';
 
+/**
+ * Props for the Textarea component.
+ */
 export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
-  /** Estado de error visual */
+  /** Visual error state indicator. */
   hasError?: boolean;
 }
 
 /**
- * Componente Átomo: Textarea
- * Solo el campo multilínea.
+ * Atom Component: Textarea
+ * Multiline text input field styled with Flat UI aesthetics.
  */
 const Textarea: FC<TextareaProps> = ({
   hasError = false,

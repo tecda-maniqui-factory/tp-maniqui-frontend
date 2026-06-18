@@ -4,30 +4,51 @@ import Card from '@/components/molecules/display/Card';;
 import Button from '@/components/atoms/form/Button';
 import Badge from '@/components/atoms/display/Badge';;
 
+/**
+ * Represents a sale entry record within the table.
+ */
 interface VentaData {
+  /** Unique identifier of the sale. */
   id: number;
+  /** Name of the customer. */
   cliente: string;
+  /** Sale timestamp or date string. */
   fecha: string;
+  /** Total cost amount of the sale. */
   total: number;
+  /** Invoice identifier number. */
   nro_factura: string;
+  /** Optional Authorization Code (CAE) from AFIP. */
   cae?: string;
+  /** Sale currency. */
   moneda: 'ARS' | 'USD';
 }
 
+/**
+ * Represents a column configuration for the table.
+ */
 interface Column {
+  /** The key pointing to the item data property. */
   key: string;
+  /** Header label of the column. */
   header: string;
+  /** Alignment of the cell text. */
   align?: 'left' | 'center' | 'right';
 }
 
+/**
+ * Props for the VentasRecientesTable component.
+ */
 interface VentasRecientesTableProps {
+  /** List of recent sales data to display. */
   data: VentaData[];
+  /** Callback triggered when clicking to view details of a specific sale. */
   onViewDetail?: (id: number) => void;
 }
 
 /**
- * Componente de Negocio: VentasRecientesTable
- * Muestra el historial comercial integrando campos de facturación electrónica.
+ * Business Component: VentasRecientesTable
+ * Displays recent sales transaction history, integrated with AFIP billing status badges.
  */
 export const VentasRecientesTable: FC<VentasRecientesTableProps> = ({ data, onViewDetail }) => {
   const columns = [

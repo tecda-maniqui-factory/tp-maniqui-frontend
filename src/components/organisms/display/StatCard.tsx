@@ -3,14 +3,24 @@ import Icon from '@/components/atoms/display/Icon';;
 import { icons } from 'lucide-react';
 import './StatCard.css';
 
+/**
+ * Props for the StatCard component.
+ */
 export interface StatCardProps {
+  /** The title label of the statistic. */
   title: string;
+  /** The value/number to display. */
   value: string | number;
+  /** Lucide icon name for the display icon. */
   iconName: keyof typeof icons;
+  /** Optional trend data showing percentage growth/decline. */
   trend?: {
+    /** The percentage value. */
     value: number;
+    /** If true, indicates upward trend, otherwise downward. */
     isUpward: boolean;
   };
+  /** Color styling variant. */
   variant?: 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'info';
 }
 

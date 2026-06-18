@@ -5,11 +5,19 @@ import { useAuth } from '@/hooks/useAuth';
 import { ENV } from '@/config/env.config';
 import './MainLayout.css';
 
+/**
+ * Props for the MainLayout template component.
+ */
 export interface MainLayoutProps {
+  /** The child elements representing the page content. */
   children: ReactNode;
+  /** List of items to populate the sidebar navigation list. */
   sidebarItems: SidebarItem[];
+  /** Optional header title for the navigation bar. */
   title?: string;
+  /** Callback triggered when a sidebar navigation item is selected. */
   onSidebarItemSelect?: (id: string) => void;
+  /** Callback triggered when the logout button is clicked. */
   onLogout?: () => void;
 }
 

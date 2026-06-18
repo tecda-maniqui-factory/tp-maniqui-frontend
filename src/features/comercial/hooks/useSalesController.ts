@@ -5,7 +5,11 @@ import { useLanguage } from '@/hooks/useLanguage';
 import { comercialService, Cliente, Venta, Maniqui, VentaRaw, VentaDetalle } from '../api/comercialService';
 
 /**
- * Hook Controlador para el Módulo Comercial - Ventas y Clientes.
+ * Controller hook for the Commercial/Sales module.
+ * Manages the state and operations for listing sales, creating clients, registering new sales,
+ * selecting items, selecting currencies, managing exchange rates, and viewing detailed invoice information.
+ *
+ * @returns An object containing data lists, forms, modals, loading indicators, action handlers, and the translator.
  */
 export const useSalesController = () => {
   const { token, logout } = useAuth();

@@ -8,6 +8,9 @@ import Select from '@/components/atoms/form/Select';;
 import { useSupplyController } from './hooks/useSupplyController';
 import { Modelo } from '../produccion/api/productionService';
 
+/**
+ * SupplyPage: View to manage supply orders and record part replenishment arrivals.
+ */
 export const SupplyPage: FC = () => {
   const {
     modelos,

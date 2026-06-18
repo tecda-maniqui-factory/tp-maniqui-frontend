@@ -1,17 +1,19 @@
 import { FC, InputHTMLAttributes, useId } from 'react';
 import './Switch.css';
 
+/**
+ * Props for the Switch toggle component.
+ */
 export interface SwitchProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
-  /** Texto descriptivo opcional al lado del switch */
+  /** Optional descriptive text displayed next to the switch. */
   label?: string;
-  /** Variante de color cuando está activo */
+  /** Color variant of the switch when active. */
   variant?: 'primary' | 'secondary' | 'danger' | 'success' | 'warning' | 'info';
 }
 
 /**
- * Átomo: Switch (Toggle)
- * 
- * Un interruptor binario con estilo Flat UI.
+ * Atom Component: Switch (Toggle)
+ * A binary toggle switch styled according to Flat UI guidelines.
  */
 const Switch: FC<SwitchProps> = ({
   label,

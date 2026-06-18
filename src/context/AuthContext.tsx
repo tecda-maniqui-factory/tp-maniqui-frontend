@@ -1,26 +1,46 @@
 import { createContext, useState, ReactNode, FC, useMemo, useCallback } from 'react';
 
+/**
+ * Represents a user profile in the application.
+ */
 export interface User {
+  /** Unique identifier of the user. */
   id: number;
+  /** Username for authentication and display. */
   username: string;
+  /** Optional email address of the user. */
   email?: string;
+  /** Role of the user, which controls permissions (e.g. 'gerente_prod', 'operario', 'vendedor'). */
   rol: string;
+  /** Optional full name of the user. */
   name?: string;
 }
 
+/**
+ * Shape of the authentication context state and actions.
+ */
 export interface AuthContextType {
+  /** Indicates whether a user is currently logged in. */
   isAuthenticated: boolean;
+  /** The current user profile, or null if unauthenticated. */
   user: User | null;
+  /** The session token, or null if unauthenticated. */
   token: string | null;
+  /** Authenticates the user and sets the credentials. */
   login: (token: string, user: User) => void;
+  /** Logs out the user and clears all credentials. */
   logout: () => void;
 }
 
+/**
+ * Context for managing and consuming authentication state.
+ */
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 /**
- * Proveedor de Autenticación: AuthProvider
- * Gestiona el estado global de la sesión con persistencia en localStorage.
+ * AuthProvider component that manages global session state with localStorage persistence.
+ *
+ * @param props - Component props containing children elements.
  */
 export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [token, setToken] = useState<string | null>(() => {

@@ -6,14 +6,29 @@ import { productionService, Modelo } from '../../produccion/api/productionServic
 import { supplyService } from '../api/supplyService';
 import { ENV } from '@/config/env.config';
 
+/**
+ * Represents a purchase order in the supply context.
+ */
 export interface OrdenCompra {
+  /** Unique identifier of the purchase order. */
   id: string;
+  /** Name of the mannequin model. */
   modelo_nombre: string;
+  /** The specific type of part ordered. */
   tipo_parte: string;
+  /** The date/time string of the order. */
   fecha: string;
+  /** The status of the purchase order. */
   estado: 'pendiente' | 'completada';
 }
 
+/**
+ * Controller hook for the Supply/Replenishment page.
+ * Manages fetching mannequin models, loading suppliers, tracking active purchase orders via real-time SSE,
+ * handling manual inventory entry form submissions, and pre-filling the entry form when completing an active purchase order.
+ *
+ * @returns State properties, options lists, action handlers, and the translation utility.
+ */
 export const useSupplyController = () => {
   const { token, logout } = useAuth();
   const notify = useNotify();

@@ -4,8 +4,13 @@ import Badge from '@/components/atoms/display/Badge';;
 import { Maniqui } from '../api/productionService';
 import { getProductionColumns } from '../config/production.config';
 
+/**
+ * Props for the ProductionTable component.
+ */
 export interface ProductionTableProps {
+  /** List of mannequin records in production or inventory. */
   data: Maniqui[];
+  /** Translator function. */
   t: (key: string) => string;
 }
 

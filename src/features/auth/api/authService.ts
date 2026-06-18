@@ -3,19 +3,38 @@ import { ENV } from '@/config/env.config';
 /**
  * Servicio de API para la Feature de Autenticación.
  */
+/**
+ * Structure of the response returned by the login endpoint.
+ */
 export interface LoginResponse {
+  /** The JSON Web Token (JWT) for the authenticated session. */
   token: string;
+  /** The authenticated user profile details. */
   user: {
+    /** Unique identifier of the user. */
     id: number;
+    /** Username of the user. */
     username: string;
+    /** Email of the user. */
     email: string;
+    /** Role of the user. */
     rol: string;
+    /** Optional display name of the user. */
+    name?: string;
   };
 }
 
+/**
+ * Service to handle authentication API calls.
+ */
 export const authService = {
   /**
-   * Envía las credenciales al backend para obtener un token JWT.
+   * Sends user credentials to the backend API to obtain a JWT session token.
+   *
+   * @param username - The username of the user trying to log in.
+   * @param password - The password of the user.
+   * @returns A promise resolving to the LoginResponse containing token and user info.
+   * @throws An error with a message key if credentials or API request fails.
    */
   login: async (username: string, password: string): Promise<LoginResponse> => {
     const response = await fetch(`${ENV.API_URL}/auth/login`, {

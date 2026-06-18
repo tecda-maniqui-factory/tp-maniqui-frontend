@@ -5,7 +5,11 @@ import { useLanguage } from '@/hooks/useLanguage';
 import { productionService, Modelo } from '../api/productionService';
 
 /**
- * Controlador para la Línea de Ensamblaje.
+ * Controller hook for the Mannequin Assembly Form.
+ * Handles loading available mannequin models, form state management, submission execution, and validations.
+ *
+ * @param onSuccess - Optional callback triggered upon successful mannequin assembly registration.
+ * @returns State properties, form control methods, action handlers, and translation utility.
  */
 export const useAssemblyController = (onSuccess?: () => void) => {
   const { token, logout } = useAuth();

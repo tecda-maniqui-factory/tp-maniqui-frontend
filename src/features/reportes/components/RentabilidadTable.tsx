@@ -4,29 +4,49 @@ import Card from '@/components/molecules/display/Card';;
 import Icon from '@/components/atoms/display/Icon';
 import Badge from '@/components/atoms/display/Badge';;
 
+/**
+ * Represents a row of profitability data.
+ */
 interface RentabilidadData {
+  /** Serial number of the mannequin. */
   maniqui_serie: string;
+  /** Name of the mannequin model. */
   modelo: string;
+  /** Sugested list/sale price. */
   precio_lista: number;
+  /** Total cost of parts used. */
   costo_total_piezas: number;
+  /** Gross profit margin (gain) in dollars/currency. */
   margen_bruto: number;
+  /** Gross profit margin percentage. */
   porcentaje_margen: number;
 }
 
+/**
+ * Configuration for a table column.
+ */
 interface Column {
+  /** Unique key identifying the item property. */
   key: string;
+  /** Label header text. */
   header: string;
+  /** Alignment of content within the column. */
   align?: 'left' | 'center' | 'right';
 }
 
+/**
+ * Props for the RentabilidadTable component.
+ */
 interface RentabilidadTableProps {
+  /** Array of profitability data. */
   data: RentabilidadData[];
+  /** Optional loading indicator state. */
   isLoading?: boolean;
 }
 
 /**
- * Componente de Negocio: RentabilidadTable
- * Muestra el análisis de márgenes basado en la Vista_Rentabilidad del backend.
+ * Business Component: RentabilidadTable
+ * Renders a data table summarizing profit margins and net revenue per assembled mannequin unit.
  */
 export const RentabilidadTable: FC<RentabilidadTableProps> = ({ data, isLoading }) => {
   const columns = [

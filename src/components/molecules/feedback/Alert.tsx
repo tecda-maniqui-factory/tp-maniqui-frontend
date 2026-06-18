@@ -3,21 +3,25 @@ import Icon from '@/components/atoms/display/Icon';;
 import { icons } from 'lucide-react';
 import './Alert.css';
 
+/**
+ * Props for the Alert component.
+ */
 export interface AlertProps {
-  /** Título principal de la alerta */
+  /** Optional header title for the alert. */
   title?: string;
-  /** Mensaje de la alerta */
+  /** Content message to display inside the alert. */
   children: ReactNode;
-  /** Variante de color (Flat UI) */
+  /** Color variant of the alert following Flat UI palettes. */
   variant?: 'primary' | 'secondary' | 'danger' | 'success' | 'warning' | 'info';
-  /** Icono personalizado. Si no se pasa, usa uno por defecto según la variante. */
+  /** Optional custom Lucide icon name. If omitted, uses a default based on variant. */
   iconName?: keyof typeof icons;
-  /** Función opcional para cerrar la alerta */
+  /** Optional callback to close/dismiss the alert. */
   onClose?: () => void;
-  /** Clase CSS adicional */
+  /** Additional custom CSS class name. */
   className?: string;
 }
 
+/** Default Lucide icon mapped to each alert style variant. */
 const defaultIcons: Record<string, keyof typeof icons> = {
   primary: 'Info',
   secondary: 'Info',

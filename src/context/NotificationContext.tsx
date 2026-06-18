@@ -1,25 +1,45 @@
 import { createContext, useState, useCallback, ReactNode, FC, useMemo } from 'react';
 
+/**
+ * Supported notification visual styles.
+ */
 export type NotificationType = 'success' | 'danger' | 'warning' | 'info';
 
+/**
+ * Structure of a notification object.
+ */
 export interface Notification {
+  /** Unique identifier of the notification. */
   id: string;
+  /** Message body of the notification. */
   message: string;
+  /** Type of the notification affecting its styling. */
   type: NotificationType;
+  /** Optional title of the notification. */
   title?: string;
 }
 
+/**
+ * Shape of the notification context state and functions.
+ */
 export interface NotificationContextType {
+  /** List of currently active notifications. */
   notifications: Notification[];
+  /** Shows a new notification with specified parameters. */
   showNotification: (message: string, type?: NotificationType, title?: string) => void;
+  /** Dismisses a notification by its ID. */
   hideNotification: (id: string) => void;
 }
 
+/**
+ * Context for managing and triggering notifications.
+ */
 export const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
 
 /**
- * Proveedor de Notificaciones: NotificationProvider
- * Gestiona el estado de las notificaciones globales.
+ * NotificationProvider component that manages the list of active notifications.
+ *
+ * @param props - Component props containing children elements.
  */
 export const NotificationProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [notifications, setNotifications] = useState<Notification[]>([]);

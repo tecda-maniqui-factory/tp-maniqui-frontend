@@ -2,7 +2,16 @@ import { ENV } from '@/config/env.config';
 
 export const supplyService = {
   /**
-   * Registra el ingreso de piezas desde un proveedor.
+   * Registers the arrival of mannequin parts from a supplier.
+   *
+   * @param token - Authentication bearer token.
+   * @param origen_codigo - Code representing the origin supplier (e.g. 'Nacional', 'Importado').
+   * @param tipo_parte_codigo - Code of the part type (e.g. 'C', 'T').
+   * @param modelo_id - ID of the mannequin model.
+   * @param cantidad - Quantity of parts arriving.
+   * @param costo - Unit cost of the parts.
+   * @returns A promise resolving when the transaction is saved.
+   * @throws Session expired error or API response error.
    */
   ingresarPiezas: async (token: string, origen_codigo: string, tipo_parte_codigo: string, modelo_id: number, cantidad: number, costo: number): Promise<void> => {
     const response = await fetch(`${ENV.API_URL}/piezas/ingreso`, {

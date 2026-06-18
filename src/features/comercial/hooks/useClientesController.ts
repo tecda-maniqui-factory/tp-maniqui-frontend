@@ -5,7 +5,11 @@ import { useLanguage } from '@/hooks/useLanguage';
 import { comercialService, Cliente } from '../api/comercialService';
 
 /**
- * Hook Controlador para el Módulo de Gestión de Clientes.
+ * Controller hook for the Customer Management sub-module.
+ * Handles customer listings, search filtering, client registration form state,
+ * submission loading indicators, form validation, and modal toggles.
+ *
+ * @returns State properties, form control methods, action handlers, and translation utility.
  */
 export const useClientesController = () => {
   const { token, logout } = useAuth();

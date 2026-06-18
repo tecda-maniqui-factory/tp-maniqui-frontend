@@ -1,13 +1,23 @@
 import { Component, ErrorInfo, ReactNode } from 'react';
 import './ErrorBoundary.css';
 
+/**
+ * Props for the ErrorBoundary component.
+ */
 export interface ErrorBoundaryProps {
+  /** The child elements to be monitored for errors. */
   children: ReactNode;
 }
 
+/**
+ * State of the ErrorBoundary component.
+ */
 export interface ErrorBoundaryState {
+  /** Indicates whether an error has been caught. */
   hasError: boolean;
+  /** The actual error object that was caught. */
   error: Error | null;
+  /** Additional component stack information about the error. */
   errorInfo: ErrorInfo | null;
 }
 

@@ -8,8 +8,13 @@ import { useAssemblyController } from '../hooks/useAssemblyController';
 import { Modelo } from '../api/productionService';
 import './AssemblyForm.css';
 
+/**
+ * Props for the AssemblyForm component.
+ */
 export interface AssemblyFormProps {
+  /** Callback triggered when a mannequin is successfully assembled and registered. */
   onSuccess?: () => void;
+  /** Callback triggered when the assembly process is cancelled. */
   onCancel?: () => void;
 }
 

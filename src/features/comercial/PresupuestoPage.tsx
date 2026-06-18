@@ -16,14 +16,27 @@ import { productionService, Modelo } from '../produccion/api/productionService';
 import { comercialService, Cliente } from './api/comercialService';
 import './PresupuestoPage.css';
 
+/**
+ * Represents an item in the budget/quote estimation list.
+ */
 interface QuoteItem {
+  /** Model ID reference. */
   id: number;
+  /** Name of the model. */
   nombre: string;
+  /** Quantity of mannequins estimated. */
   cantidad: number;
+  /** Unit price of the model. */
   precioUnitario: number;
+  /** Subtotal cost (cantidad * precioUnitario). */
   subtotal: number;
 }
 
+/**
+ * Budget calculator page component.
+ * Allows simulating costs for customers, adding models to a draft invoice,
+ * performing currency conversion, and outputting/printing the final estimate.
+ */
 export const PresupuestoPage: FC = () => {
   const { token, logout } = useAuth();
   const notify = useNotify();

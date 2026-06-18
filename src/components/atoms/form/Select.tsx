@@ -3,21 +3,29 @@ import Icon from '../display/Icon';
 import { icons } from 'lucide-react';
 import './Select.css';
 
+/**
+ * Represents an option inside the Select component.
+ */
 export interface SelectOption {
+  /** Value of the option. */
   value: string | number;
+  /** Human-readable label for the option. */
   label: string;
 }
 
+/**
+ * Props for the Select component.
+ */
 export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
-  /** Opciones a mostrar en el select */
+  /** Options to display in the dropdown. */
   options: SelectOption[];
-  /** Icono opcional a mostrar a la izquierda */
+  /** Optional icon name (from Lucide) to show on the left. */
   iconName?: keyof typeof icons;
-  /** Variante visual que define el color del bloque del icono (Flat UI) */
+  /** Visual variant affecting the icon block background. */
   variant?: 'primary' | 'secondary' | 'danger' | 'success' | 'warning' | 'info';
-  /** Estado de error visual */
+  /** Visual error state indicator. */
   hasError?: boolean;
-  /** Placeholder personalizado */
+  /** Custom placeholder option text. */
   placeholder?: string;
 }
 

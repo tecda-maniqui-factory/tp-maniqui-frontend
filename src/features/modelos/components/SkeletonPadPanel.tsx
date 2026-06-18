@@ -3,20 +3,32 @@ import Icon from '@/components/atoms/display/Icon';
 import styles from './SkeletonPadPanel.module.css';
 import { icons } from 'lucide-react';
 
+/**
+ * Supported mannequin skeleton part codes.
+ */
 export type SkeletonPart = 'CAB' | 'TOR' | 'BRA-D' | 'BRA-I' | 'PIE-D' | 'PIE-I';
 
+/**
+ * Props for the SkeletonPadPanel component.
+ */
 export interface SkeletonPadPanelProps {
-  /** Partes seleccionadas para este diseño de modelo */
+  /** List of mannequin skeleton parts currently selected. */
   selectedParts?: SkeletonPart[];
-  /** Callback al seleccionar una parte */
+  /** Callback triggered when a part is selected or toggled. */
   onPartSelect?: (part: SkeletonPart) => void;
-  /** Traducciones */
+  /** Translation helper function. */
   t: (key: string) => string;
 }
 
+/**
+ * Configuration structure for a skeleton pad element.
+ */
 interface PadConfig {
+  /** Skeleton part code. */
   id: SkeletonPart;
+  /** Lucide icon name to display. */
   icon: keyof typeof icons;
+  /** Localized translation key for the part label. */
   labelKey: string;
 }
 

@@ -1,10 +1,17 @@
 import { FC, ReactNode } from 'react';
 import './PageHeader.css';
 
+/**
+ * Props for the PageHeader component.
+ */
 export interface PageHeaderProps {
+  /** The primary page title. */
   title: string;
+  /** Optional secondary description/sub-header text. */
   description?: string;
+  /** Optional actions (e.g. Buttons) to render on the right side. */
   actions?: ReactNode;
+  /** Additional custom CSS class name. */
   className?: string;
 }
 

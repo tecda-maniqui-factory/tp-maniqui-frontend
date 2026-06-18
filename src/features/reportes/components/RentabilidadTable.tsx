@@ -1,52 +1,53 @@
 import { FC } from 'react';
 import Table from '@/components/molecules/display/Table';
-import Card from '@/components/molecules/display/Card';;
+import Card from '@/components/molecules/display/Card';
 import Icon from '@/components/atoms/display/Icon';
-import Badge from '@/components/atoms/display/Badge';;
+import Badge from '@/components/atoms/display/Badge';
 
 /**
- * Represents a row of profitability data.
+ * Representa una fila de datos de rentabilidad.
  */
-interface RentabilidadData {
-  /** Serial number of the mannequin. */
+export interface RentabilidadData {
+  /** Número de serie del maniquí. */
   maniqui_serie: string;
-  /** Name of the mannequin model. */
+  /** Nombre del modelo del maniquí. */
   modelo: string;
-  /** Sugested list/sale price. */
+  /** Precio de lista sugerido de venta. */
   precio_lista: number;
-  /** Total cost of parts used. */
+  /** Costo total de las piezas utilizadas. */
   costo_total_piezas: number;
-  /** Gross profit margin (gain) in dollars/currency. */
+  /** Margen de ganancia bruto en valor monetario. */
   margen_bruto: number;
-  /** Gross profit margin percentage. */
+  /** Porcentaje del margen de ganancia bruto. */
   porcentaje_margen: number;
 }
 
 /**
- * Configuration for a table column.
+ * Configuración para una columna de la tabla.
  */
-interface Column {
-  /** Unique key identifying the item property. */
+export interface Column {
+  /** Clave que identifica la propiedad del objeto de datos. */
   key: string;
-  /** Label header text. */
+  /** Texto que se mostrará en la cabecera. */
   header: string;
-  /** Alignment of content within the column. */
+  /** Alineación del contenido dentro de la columna. */
   align?: 'left' | 'center' | 'right';
 }
 
 /**
- * Props for the RentabilidadTable component.
+ * Propiedades del componente {@link RentabilidadTable}.
  */
-interface RentabilidadTableProps {
-  /** Array of profitability data. */
+export interface RentabilidadTableProps {
+  /** Array de datos de rentabilidad. */
   data: RentabilidadData[];
-  /** Optional loading indicator state. */
+  /** Indicador opcional de estado de carga. */
   isLoading?: boolean;
 }
 
 /**
- * Business Component: RentabilidadTable
- * Renders a data table summarizing profit margins and net revenue per assembled mannequin unit.
+ * Componente de Negocio: RentabilidadTable
+ * 
+ * Renderiza una tabla de datos resumiendo márgenes de ganancias y ganancia neta por unidad de maniquí armada.
  */
 export const RentabilidadTable: FC<RentabilidadTableProps> = ({ data, isLoading }) => {
   const columns = [

@@ -1,27 +1,45 @@
 import { FC } from 'react';
-import Button from '@/components/atoms/form/Button';;
+import Button from '@/components/atoms/form/Button';
 import './Pagination.css';
 
 /**
- * Props for the Pagination component.
+ * Propiedades del componente {@link Pagination}.
  */
 export interface PaginationProps {
-  /** The currently active page (1-indexed). */
+  /** Número de la página actualmente activa (indexada en 1). */
   currentPage: number;
-  /** Total number of available pages. */
+  /** Cantidad total de páginas disponibles. */
   totalPages: number;
-  /** Callback triggered when a different page is selected. */
+  /** 
+   * Función callback disparada cuando el usuario selecciona una página diferente.
+   * Recibe el número de la página de destino.
+   */
   onPageChange: (page: number) => void;
-  /** Optional custom CSS class name. */
+  /** Clase CSS adicional para personalizar márgenes del contenedor. */
   className?: string;
 }
 
 /**
- * Molécula: Pagination
+ * Componente Molécula: Pagination
  * 
- * Controles de navegación para listados paginados.
+ * Controles de navegación responsivos para listados paginados.
+ * Integra dos componentes {@link Button} (anterior/siguiente) con una lista interactiva de páginas.
+ * Cumple con accesibilidad WAI-ARIA utilizando etiquetas `aria-label` y el atributo `aria-current`.
+ * 
+ * @param props - Propiedades definidas en {@link PaginationProps}.
+ * 
+ * @example
+ * ```tsx
+ * const [page, setPage] = useState(1);
+ * 
+ * <Pagination 
+ *   currentPage={page} 
+ *   totalPages={10} 
+ *   onPageChange={setPage} 
+ * />
+ * ```
  */
-const Pagination: FC<PaginationProps> = ({
+export const Pagination: FC<PaginationProps> = ({
   currentPage,
   totalPages,
   onPageChange,

@@ -50,7 +50,7 @@ export interface CardProps {
  * </Card>
  * ```
  */
-const Card: FC<CardProps> = ({
+export const Card: FC<CardProps> = ({
   title,
   children,
   footer,

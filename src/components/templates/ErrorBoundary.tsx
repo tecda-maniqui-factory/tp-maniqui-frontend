@@ -2,29 +2,41 @@ import { Component, ErrorInfo, ReactNode } from 'react';
 import './ErrorBoundary.css';
 
 /**
- * Props for the ErrorBoundary component.
+ * Propiedades del componente {@link ErrorBoundary}.
  */
 export interface ErrorBoundaryProps {
-  /** The child elements to be monitored for errors. */
+  /** Los elementos hijos que serán monitoreados por el límite de error. */
   children: ReactNode;
 }
 
 /**
- * State of the ErrorBoundary component.
+ * Estado interno del componente {@link ErrorBoundary}.
  */
 export interface ErrorBoundaryState {
-  /** Indicates whether an error has been caught. */
+  /** Indica si se ha capturado un error en alguno de los componentes hijos. */
   hasError: boolean;
-  /** The actual error object that was caught. */
+  /** El objeto de error capturado. */
   error: Error | null;
-  /** Additional component stack information about the error. */
+  /** Información adicional sobre la pila de componentes en la que ocurrió el error. */
   errorInfo: ErrorInfo | null;
 }
 
 /**
  * Componente Template: ErrorBoundary
- * Atrapa los errores de renderizado de React en cualquier componente hijo
- * y muestra una pantalla amigable (y de debug) en lugar de una pantalla en blanco.
+ * 
+ * Límite de error (Error Boundary) basado en clases de React.
+ * Captura de forma robusta cualquier error en el ciclo de vida o durante el renderizado
+ * de los componentes descendientes. En lugar de colapsar toda la aplicación y mostrar una pantalla
+ * en blanco, renderiza una interfaz amigable de recuperación y depuración mostrando detalles del
+ * error y permitiendo recargar la aplicación de forma segura.
+ * 
+ * @example
+ * ```tsx
+ * // Envoltura del enrutador o componentes clave
+ * <ErrorBoundary>
+ *   <DashboardPage />
+ * </ErrorBoundary>
+ * ```
  */
 export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   public state: ErrorBoundaryState = {

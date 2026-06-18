@@ -1,46 +1,47 @@
 import { FC } from 'react';
 import Table from '@/components/molecules/display/Table';
-import Card from '@/components/molecules/display/Card';;
+import Card from '@/components/molecules/display/Card';
 import Button from '@/components/atoms/form/Button';
-import Badge from '@/components/atoms/display/Badge';;
+import Badge from '@/components/atoms/display/Badge';
 
 /**
- * Represents a row of critical stock data.
+ * Representa una fila de datos de stock crítico.
  */
-interface StockCriticoData {
-  /** Name of the mannequin model. */
+export interface StockCriticoData {
+  /** Nombre del modelo del maniquí. */
   modelo: string;
-  /** Type of the part (e.g. 'Cabeza', 'Torso'). */
+  /** Tipo de pieza (ej: 'Cabeza', 'Torso'). */
   tipo_parte: string;
-  /** Number of units available. */
+  /** Número de unidades disponibles. */
   cantidad_disponible: number;
 }
 
 /**
- * Configuration for a table column.
+ * Configuración para una columna de la tabla.
  */
-interface Column {
-  /** Unique key identifying the item property. */
+export interface Column {
+  /** Clave que identifica la propiedad del objeto de datos. */
   key: string;
-  /** Label header text. */
+  /** Texto que se mostrará en la cabecera. */
   header: string;
-  /** Alignment of content within the column. */
+  /** Alineación del contenido dentro de la columna. */
   align?: 'left' | 'center' | 'right';
 }
 
 /**
- * Props for the StockCriticoTable component.
+ * Propiedades del componente {@link StockCriticoTable}.
  */
-interface StockCriticoTableProps {
-  /** Array of critical stock item data. */
+export interface StockCriticoTableProps {
+  /** Array de datos de elementos con stock crítico. */
   data: StockCriticoData[];
-  /** Optional loading indicator state. */
+  /** Indicador opcional de estado de carga. */
   isLoading?: boolean;
 }
 
 /**
- * Business Component: StockCriticoTable
- * Shows critical part inventory levels (under 5 units) with options to trigger purchase orders.
+ * Componente de Negocio: StockCriticoTable
+ * 
+ * Muestra los niveles de inventario de piezas críticas (menos de 5 unidades) con opciones para iniciar órdenes de compra.
  */
 export const StockCriticoTable: FC<StockCriticoTableProps> = ({ data, isLoading }) => {
   const columns = [

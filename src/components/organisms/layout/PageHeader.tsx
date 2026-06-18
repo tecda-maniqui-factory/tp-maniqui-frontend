@@ -2,26 +2,42 @@ import { FC, ReactNode } from 'react';
 import './PageHeader.css';
 
 /**
- * Props for the PageHeader component.
+ * Propiedades del componente {@link PageHeader}.
  */
 export interface PageHeaderProps {
-  /** The primary page title. */
+  /** El título principal de la página (ej: "Clientes", "Reportes"). */
   title: string;
-  /** Optional secondary description/sub-header text. */
+  /** Descripción secundaria u opcional de la página. */
   description?: string;
-  /** Optional actions (e.g. Buttons) to render on the right side. */
+  /** Componentes o botones de acción opcionales que se ubican en la parte derecha del encabezado. */
   actions?: ReactNode;
-  /** Additional custom CSS class name. */
+  /** Clase CSS adicional para personalizar los estilos del contenedor. */
   className?: string;
 }
 
 /**
- * Organismo: PageHeader
+ * Componente Organismo: PageHeader
  * 
- * Encabezado estandarizado para las páginas del ERP.
- * Separa la información del título de las acciones de la página.
+ * Encabezado estandarizado para las páginas del sistema.
+ * Agrupa la información de cabecera (título y descripción) y las acciones globales
+ * de la vista (como botones para agregar nuevos elementos) en un diseño flexible y responsivo.
+ * 
+ * @param props - Propiedades que cumplen con {@link PageHeaderProps}.
+ * 
+ * @example
+ * ```tsx
+ * <PageHeader
+ *   title="Gestión de Clientes"
+ *   description="Administra los clientes y sus cuentas asociadas en el sistema."
+ *   actions={
+ *     <Button variant="success" iconName="Plus" onClick={openCreateModal}>
+ *       Nuevo Cliente
+ *     </Button>
+ *   }
+ * />
+ * ```
  */
-const PageHeader: FC<PageHeaderProps> = ({
+export const PageHeader: FC<PageHeaderProps> = ({
   title,
   description,
   actions,

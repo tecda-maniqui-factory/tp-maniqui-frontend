@@ -71,7 +71,7 @@ const defaultIcons: Record<string, keyof typeof icons> = {
  * </Alert>
  * ```
  */
-const Alert: FC<AlertProps> = ({
+export const Alert: FC<AlertProps> = ({
   title,
   children,
   variant = 'info',

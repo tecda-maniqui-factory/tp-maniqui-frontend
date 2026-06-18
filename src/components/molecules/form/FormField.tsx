@@ -67,7 +67,7 @@ export interface FormFieldProps {
  * </FormField>
  * ```
  */
-const FormField: FC<FormFieldProps> = ({
+export const FormField: FC<FormFieldProps> = ({
   label,
   error,
   helperText,

@@ -1,5 +1,5 @@
 import { use } from 'react';
-import { NotificationContext } from '@/context/NotificationContext';;
+import { NotificationContext } from '@/context/NotificationContext';
 
 /**
  * Hook personalizado para disparar notificaciones en cualquier parte de la aplicación.

@@ -39,7 +39,7 @@ export interface SearchBarProps {
  * />
  * ```
  */
-const SearchBar: FC<SearchBarProps> = ({
+export const SearchBar: FC<SearchBarProps> = ({
   placeholder = "Buscar...",
   onSearch,
   className = ''

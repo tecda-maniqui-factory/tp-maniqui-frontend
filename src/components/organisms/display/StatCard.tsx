@@ -1,34 +1,61 @@
 import { FC } from 'react';
-import Icon from '@/components/atoms/display/Icon';;
+import Icon from '@/components/atoms/display/Icon';
 import { icons } from 'lucide-react';
 import './StatCard.css';
 
 /**
- * Props for the StatCard component.
+ * Propiedades del componente {@link StatCard}.
  */
 export interface StatCardProps {
-  /** The title label of the statistic. */
+  /** El título o etiqueta de la estadística (ej: "Ventas Totales"). */
   title: string;
-  /** The value/number to display. */
+  /** El valor numérico o texto principal a mostrar (ej: 15000 o "$12,450"). */
   value: string | number;
-  /** Lucide icon name for the display icon. */
+  /** Nombre del icono de la librería Lucide que se mostrará en la tarjeta. */
   iconName: keyof typeof icons;
-  /** Optional trend data showing percentage growth/decline. */
+  /** Datos opcionales de tendencia que muestran crecimiento o decrecimiento. */
   trend?: {
-    /** The percentage value. */
+    /** El valor porcentual de la tendencia (ej: 12.5). */
     value: number;
-    /** If true, indicates upward trend, otherwise downward. */
+    /** Si es true indica tendencia ascendente (verde), de lo contrario descendente (rojo). */
     isUpward: boolean;
   };
-  /** Color styling variant. */
+  /** 
+   * Variante visual que determina el color temático de la tarjeta (Flat UI).
+   * @default 'primary'
+   */
   variant?: 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'info';
 }
 
 /**
  * Componente Organismo: StatCard
- * Tarjeta de estadísticas para el Dashboard.
+ * 
+ * Tarjeta de estadísticas diseñada para tableros de control (Dashboard).
+ * Muestra una métrica clave, un icono representativo y un indicador opcional de tendencia porcentual.
+ * 
+ * @param props - Propiedades definidas en {@link StatCardProps}.
+ * 
+ * @example
+ * ```tsx
+ * // Tarjeta de estadísticas simple
+ * <StatCard
+ *   title="Productos Activos"
+ *   value={120}
+ *   iconName="Package"
+ *   variant="info"
+ * />
+ * 
+ * // Tarjeta de estadísticas con tendencia ascendente
+ * <StatCard
+ *   title="Ingresos Mensuales"
+ *   value="$245,000"
+ *   iconName="DollarSign"
+ *   variant="success"
+ *   trend={{ value: 15.4, isUpward: true }}
+ * />
+ * ```
  */
-const StatCard: FC<StatCardProps> = ({
+export const StatCard: FC<StatCardProps> = ({
   title,
   value,
   iconName,

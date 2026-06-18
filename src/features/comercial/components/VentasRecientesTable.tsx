@@ -1,54 +1,55 @@
 import { FC } from 'react';
 import Table from '@/components/molecules/display/Table';
-import Card from '@/components/molecules/display/Card';;
+import Card from '@/components/molecules/display/Card';
 import Button from '@/components/atoms/form/Button';
-import Badge from '@/components/atoms/display/Badge';;
+import Badge from '@/components/atoms/display/Badge';
 
 /**
- * Represents a sale entry record within the table.
+ * Representa un registro de entrada de venta dentro de la tabla.
  */
-interface VentaData {
-  /** Unique identifier of the sale. */
+export interface VentaData {
+  /** Identificador único de la venta. */
   id: number;
-  /** Name of the customer. */
+  /** Nombre del cliente. */
   cliente: string;
-  /** Sale timestamp or date string. */
+  /** Fecha o cadena de fecha de la venta. */
   fecha: string;
-  /** Total cost amount of the sale. */
+  /** Monto total de la venta. */
   total: number;
-  /** Invoice identifier number. */
+  /** Número de factura asociado. */
   nro_factura: string;
-  /** Optional Authorization Code (CAE) from AFIP. */
+  /** Código de Autorización Electrónico (CAE) opcional de la AFIP. */
   cae?: string;
-  /** Sale currency. */
+  /** Moneda de la venta. */
   moneda: 'ARS' | 'USD';
 }
 
 /**
- * Represents a column configuration for the table.
+ * Representa la configuración de columna para la tabla.
  */
-interface Column {
-  /** The key pointing to the item data property. */
+export interface Column {
+  /** La clave asociada al campo de los datos. */
   key: string;
-  /** Header label of the column. */
+  /** Etiqueta de cabecera de la columna. */
   header: string;
-  /** Alignment of the cell text. */
+  /** Alineación del texto de la celda. */
   align?: 'left' | 'center' | 'right';
 }
 
 /**
- * Props for the VentasRecientesTable component.
+ * Propiedades del componente {@link VentasRecientesTable}.
  */
-interface VentasRecientesTableProps {
-  /** List of recent sales data to display. */
+export interface VentasRecientesTableProps {
+  /** Listado de datos de ventas recientes a mostrar. */
   data: VentaData[];
-  /** Callback triggered when clicking to view details of a specific sale. */
+  /** Función callback que se ejecuta al presionar ver detalle de una venta específica. */
   onViewDetail?: (id: number) => void;
 }
 
 /**
- * Business Component: VentasRecientesTable
- * Displays recent sales transaction history, integrated with AFIP billing status badges.
+ * Componente de Negocio: VentasRecientesTable
+ * 
+ * Muestra el historial de transacciones de ventas recientes, integrando estados de facturación AFIP.
  */
 export const VentasRecientesTable: FC<VentasRecientesTableProps> = ({ data, onViewDetail }) => {
   const columns = [

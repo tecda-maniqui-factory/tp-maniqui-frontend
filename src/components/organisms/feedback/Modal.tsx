@@ -1,33 +1,60 @@
 import React, { FC, ReactNode, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
-import Icon from '@/components/atoms/display/Icon';;
+import Icon from '@/components/atoms/display/Icon';
 import './Modal.css';
 
 /**
- * Props for the Modal component.
+ * Propiedades del componente {@link Modal}.
  */
 export interface ModalProps {
-  /** Indicates whether the modal window is currently open. */
+  /** Indica si la ventana modal se encuentra abierta y visible. */
   isOpen: boolean;
-  /** Callback triggered to request closing the modal. */
+  /** Función callback que se ejecuta al solicitar el cierre de la ventana modal. */
   onClose: () => void;
-  /** Header title text displayed at the top of the modal. */
+  /** Título o encabezado que se muestra en la parte superior del modal. */
   title: string;
-  /** Main body content to render inside the modal. */
+  /** Contenido principal que se renderizará en el cuerpo del modal. */
   children: ReactNode;
-  /** Optional actions/buttons component to show in the footer area. */
+  /** Contenido opcional (ej: botones de acción) a mostrar en el pie (footer) del modal. */
   footer?: ReactNode;
-  /** Optional additional CSS class for custom container styling. */
+  /** Clase CSS adicional para personalizar los estilos del contenedor del modal. */
   className?: string;
-  /** Toggles overlay backdrop click dismissal (default: true). */
+  /** 
+   * Determina si el modal debe cerrarse al hacer clic fuera del mismo en la capa de overlay.
+   * @default true
+   */
   closeOnOverlayClick?: boolean;
 }
 
 /**
  * Componente Organismo: Modal
- * Ventana emergente renderizada mediante un Portal de React al final del body.
+ * 
+ * Ventana emergente (overlay/dialog) renderizada de forma accesible en el final de `<body>` 
+ * utilizando `createPortal` de React. Maneja automáticamente el bloqueo de scroll del cuerpo del
+ * documento y el atajo de teclado ESC para mejorar la experiencia de usuario.
+ * 
+ * @param props - Propiedades definidas en {@link ModalProps}.
+ * 
+ * @example
+ * ```tsx
+ * const [abierto, setAbierto] = useState(false);
+ * 
+ * <Modal
+ *   isOpen={abierto}
+ *   onClose={() => setAbierto(false)}
+ *   title="Confirmar eliminación"
+ *   footer={
+ *     <>
+ *       <Button variant="secondary" onClick={() => setAbierto(false)}>Cancelar</Button>
+ *       <Button variant="danger" onClick={confirmDelete}>Eliminar</Button>
+ *     </>
+ *   }
+ * >
+ *   <p>¿Estás seguro de que deseas eliminar este producto permanentemente?</p>
+ * </Modal>
+ * ```
  */
-const Modal: FC<ModalProps> = ({
+export const Modal: FC<ModalProps> = ({
   isOpen,
   onClose,
   title,
@@ -88,7 +115,7 @@ const Modal: FC<ModalProps> = ({
         <div className="modal__body">
           {children}
         </div>
-
+ 
         {footer && (
           <div className="modal__footer">
             {footer}

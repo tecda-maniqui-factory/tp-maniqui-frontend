@@ -1,58 +1,73 @@
 import { FC } from 'react';
-import Icon from '@/components/atoms/display/Icon';;
+import Icon from '@/components/atoms/display/Icon';
 import './Navbar.css';
 
 /**
- * Props for the Navbar component.
+ * Propiedades del componente {@link Navbar}.
  */
 export interface NavbarProps {
-  /** Name of the authenticated user to display. */
+  /** Nombre del usuario autenticado que se mostrará en la esquina derecha. */
   userName?: string;
-  /** Title text shown in the header. */
+  /** Título principal de la aplicación o sección actual mostrado a la izquierda. */
   title?: string;
-  /** Optional callback to toggle the mobile menu sidebar. */
+  /** Función callback opcional para alternar la visibilidad de la barra lateral (sidebar) en móviles. */
   onMenuToggle?: () => void;
-  /** Optional callback to trigger logout. */
+  /** Función callback opcional que se ejecuta al presionar el botón de cierre de sesión. */
   onLogout?: () => void;
 }
 
 /**
-* Componente Organismo: Navbar
- * Barra de navegación superior (Header).
-*/
-const Navbar: FC<NavbarProps> = ({
-userName = 'Usuario',
+ * Componente Organismo: Navbar
+ * 
+ * Barra de navegación superior principal (encabezado/header).
+ * Muestra el logotipo de la aplicación, el título del panel actual, el nombre del usuario
+ * autenticado y botones interactivos para alternar el menú móvil y cerrar la sesión.
+ * 
+ * @param props - Propiedades definidas en {@link NavbarProps}.
+ * 
+ * @example
+ * ```tsx
+ * <Navbar
+ *   title="Panel de Producción"
+ *   userName="Juan Pérez"
+ *   onMenuToggle={toggleSidebar}
+ *   onLogout={handleLogout}
+ * />
+ * ```
+ */
+export const Navbar: FC<NavbarProps> = ({
+  userName = 'Usuario',
   title = 'TP Maniquí',
-onMenuToggle,
-onLogout
+  onMenuToggle,
+  onLogout
 }) => {
-return (
-<header className="navbar">
-<div className="navbar__left">
-{onMenuToggle && (
-  <button className="navbar__menu-btn" onClick={onMenuToggle} aria-label="Toggle menu">
-    <Icon name="Menu" />
-</button>
-)}
-<div className="navbar__brand">
-    <Icon name="Activity" className="navbar__logo" />
+  return (
+    <header className="navbar">
+      <div className="navbar__left">
+        {onMenuToggle && (
+          <button className="navbar__menu-btn" onClick={onMenuToggle} aria-label="Toggle menu">
+            <Icon name="Menu" />
+          </button>
+        )}
+        <div className="navbar__brand">
+          <Icon name="Activity" className="navbar__logo" />
           <h1 className="navbar__title">{title}</h1>
-  </div>
-</div>
+        </div>
+      </div>
 
-<div className="navbar__right">
-<div className="navbar__user-info">
-<div className="navbar__avatar">
-    <Icon name="User" />
+      <div className="navbar__right">
+        <div className="navbar__user-info">
+          <div className="navbar__avatar">
+            <Icon name="User" />
           </div>
-  <span className="navbar__username">{userName}</span>
-</div>
+          <span className="navbar__username">{userName}</span>
+        </div>
 
-{onLogout && (
-  <button className="navbar__logout-btn" onClick={onLogout} aria-label="Cerrar sesión">
-      <Icon name="LogOut" />
-      </button>
-      )}
+        {onLogout && (
+          <button className="navbar__logout-btn" onClick={onLogout} aria-label="Cerrar sesión">
+            <Icon name="LogOut" />
+          </button>
+        )}
       </div>
     </header>
   );

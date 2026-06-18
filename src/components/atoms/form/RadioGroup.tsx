@@ -49,6 +49,17 @@ export interface RadioGroupProps {
  * cuando no se especifica un `id` explícito.
  * 
  * @param props - Propiedades definidas en {@link RadioProps}.
+ * 
+ * @example
+ * ```tsx
+ * // Botón de opción de selección individual
+ * <Radio
+ *   label="Aceptar términos"
+ *   name="terminos"
+ *   value="si"
+ *   onChange={(e) => console.log(e.target.value)}
+ * />
+ * ```
  */
 export const Radio: FC<RadioProps> = ({ label, className = '', id, ...props }) => {
   const generatedId = useId();

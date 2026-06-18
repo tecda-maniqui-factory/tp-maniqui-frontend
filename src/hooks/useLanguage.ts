@@ -2,7 +2,22 @@ import { useState, useCallback } from 'react';
 import { translations } from '@/locales/es';
 
 /**
- * Hook para gestionar las traducciones y el lenguaje de la aplicación.
+ * Hook personalizado para gestionar las traducciones y la localización del ERP.
+ * 
+ * Actualmente provee traducción estática basada en un diccionario en español.
+ * Retorna una función de traducción `t` y el idioma activo `lang`.
+ * 
+ * @returns Un objeto con la función de traducción `t` y el idioma activo `lang`.
+ * 
+ * @example
+ * ```tsx
+ * import { useLanguage } from '@/hooks/useLanguage';
+ * 
+ * const Title = () => {
+ *   const { t } = useLanguage();
+ *   return <h2>{t('dashboard.title')}</h2>;
+ * };
+ * ```
  */
 export const useLanguage = () => {
   const [lang] = useState('es');

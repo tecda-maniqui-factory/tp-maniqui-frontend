@@ -1,33 +1,53 @@
 import { FC, ReactNode, useState } from 'react';
 import Navbar from '@/components/organisms/layout/Navbar';
-import Sidebar, { SidebarItem } from '@/components/organisms/layout/Sidebar';;
+import Sidebar, { SidebarItem } from '@/components/organisms/layout/Sidebar';
 import { useAuth } from '@/hooks/useAuth';
 import { ENV } from '@/config/env.config';
 import './MainLayout.css';
 
 /**
- * Props for the MainLayout template component.
+ * Propiedades del componente {@link MainLayout}.
  */
 export interface MainLayoutProps {
-  /** The child elements representing the page content. */
+  /** El contenido principal de la página actual que se renderizará en el centro. */
   children: ReactNode;
-  /** List of items to populate the sidebar navigation list. */
+  /** Listado de opciones de navegación para la barra lateral. */
   sidebarItems: SidebarItem[];
-  /** Optional header title for the navigation bar. */
+  /** Título del encabezado de navegación (Navbar). Por defecto usa `ENV.APP_NAME`. */
   title?: string;
-  /** Callback triggered when a sidebar navigation item is selected. */
+  /** Función callback ejecutada al seleccionar una opción del Sidebar. */
   onSidebarItemSelect?: (id: string) => void;
-  /** Callback triggered when the logout button is clicked. */
+  /** Función callback ejecutada al hacer clic en el botón de cerrar sesión. */
   onLogout?: () => void;
 }
 
 /**
- * Template: MainLayout
+ * Componente Template: MainLayout
  * 
- * Orquestador principal de la interfaz del ERP.
- * Maneja el estado del Sidebar (Abierto/Cerrado) para Desktop y Mobile.
+ * Orquestador y estructura visual principal de la interfaz de usuario del ERP.
+ * Define la rejilla (grid) general, incluyendo la barra de navegación superior (Navbar),
+ * la barra lateral responsiva (Sidebar) y el área de contenido principal. Controla el estado
+ * de despliegue/cierre de la barra lateral dependiendo del tamaño de pantalla (Mobile/Desktop).
+ * 
+ * @param props - Propiedades definidas en {@link MainLayoutProps}.
+ * 
+ * @example
+ * ```tsx
+ * const items = [
+ *   { id: 'home', label: 'Inicio', icon: 'Home', isActive: true },
+ *   { id: 'settings', label: 'Configuración', icon: 'Settings' }
+ * ];
+ * 
+ * <MainLayout
+ *   sidebarItems={items}
+ *   onSidebarItemSelect={(id) => navigate(id)}
+ *   onLogout={logout}
+ * >
+ *   <DashboardView />
+ * </MainLayout>
+ * ```
  */
-const MainLayout: FC<MainLayoutProps> = ({
+export const MainLayout: FC<MainLayoutProps> = ({
   children,
   sidebarItems,
   title = ENV.APP_NAME,

@@ -1,40 +1,62 @@
 import { FC } from 'react';
-import Icon from '@/components/atoms/display/Icon';;
+import Icon from '@/components/atoms/display/Icon';
 import { icons } from 'lucide-react';
 import './Sidebar.css';
 
 /**
- * Structure representing an item in the sidebar navigation.
+ * Estructura de datos que representa una opción de navegación en la barra lateral.
  */
 export interface SidebarItem {
-  /** The unique route path/ID associated with this item. */
+  /** Ruta o identificador único asociado a la opción (ej: "/ventas" o "sales"). */
   id: string;
-  /** The display label for the item. */
+  /** Texto legible que se mostrará en el menú lateral. */
   label: string;
-  /** Lucide icon name. */
+  /** Nombre del icono de Lucide que acompañará al texto. */
   icon: keyof typeof icons;
-  /** Indicates if this item is currently active. */
+  /** Indica si la opción de menú se encuentra actualmente activa o seleccionada. */
   isActive?: boolean;
 }
 
 /**
- * Props for the Sidebar component.
+ * Propiedades del componente {@link Sidebar}.
  */
 export interface SidebarProps {
-  /** Indicates if the sidebar is open/expanded. */
+  /** Indica si la barra lateral móvil está desplegada o visible. */
   isOpen: boolean;
-  /** List of navigation items. */
+  /** Listado de opciones de navegación a renderizar. */
   items: SidebarItem[];
-  /** Callback triggered when a sidebar item is clicked. */
+  /** Función callback que se activa al hacer clic en una opción de menú, recibiendo su identificador. */
   onSelect: (id: string) => void;
-  /** Optional callback to close/collapse the sidebar. */
+  /** Función callback opcional para cerrar o colapsar la barra lateral (generalmente en móviles). */
   onClose?: () => void;
 }
 
 /**
  * Componente Organismo: Sidebar
+ * 
+ * Barra lateral de navegación principal de la aplicación.
+ * Provee un menú lateral colapsable y responsivo con enlaces representados por iconos y etiquetas.
+ * Incluye un overlay de fondo oscuro (backdrop) para colapsarse automáticamente en resoluciones móviles.
+ * 
+ * @param props - Propiedades definidas en {@link SidebarProps}.
+ * 
+ * @example
+ * ```tsx
+ * const menuItems = [
+ *   { id: 'dashboard', label: 'Inicio', icon: 'LayoutDashboard', isActive: true },
+ *   { id: 'produccion', label: 'Producción', icon: 'Hammer' },
+ *   { id: 'comercial', label: 'Ventas', icon: 'DollarSign' }
+ * ];
+ * 
+ * <Sidebar
+ *   isOpen={isSidebarOpen}
+ *   items={menuItems}
+ *   onSelect={(id) => handleNavigate(id)}
+ *   onClose={toggleSidebar}
+ * />
+ * ```
  */
-const Sidebar: FC<SidebarProps> = ({
+export const Sidebar: FC<SidebarProps> = ({
   isOpen,
   items,
   onSelect,

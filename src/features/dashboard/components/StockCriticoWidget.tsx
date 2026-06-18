@@ -1,53 +1,54 @@
 import { FC, useMemo } from 'react';
 import Table from '@/components/molecules/display/Table';
-import Card from '@/components/molecules/display/Card';;
+import Card from '@/components/molecules/display/Card';
 import Button from '@/components/atoms/form/Button';
-import Badge from '@/components/atoms/display/Badge';;
+import Badge from '@/components/atoms/display/Badge';
 import { StockCriticoData } from '../api/dashboardService';
 
 /**
- * Represents an active purchase order for replenishment.
+ * Representa una orden de compra activa para reabastecimiento.
  */
-interface OrdenActiva {
-  /** The name of the model of the mannequin. */
+export interface OrdenActiva {
+  /** El nombre del modelo del maniquí. */
   modelo_nombre: string;
-  /** The specific type of part ordered. */
+  /** El tipo específico de pieza solicitada. */
   tipo_parte: string;
 }
 
 /**
- * Configuration for a table column.
+ * Configuración para una columna de la tabla.
  */
-interface Column {
-  /** Key identifying the data property. */
+export interface Column {
+  /** Clave que identifica la propiedad de los datos. */
   key: string;
-  /** Display label for the column header. */
+  /** Etiqueta que se mostrará en la cabecera. */
   header: string;
-  /** Alignment of content within cells. */
+  /** Alineación del contenido dentro de las celdas. */
   align?: 'left' | 'center' | 'right';
 }
 
 /**
- * Props for the StockCriticoWidget component.
+ * Propiedades del componente {@link StockCriticoWidget}.
  */
-interface StockCriticoWidgetProps {
-  /** List of items in critical stock level. */
+export interface StockCriticoWidgetProps {
+  /** Lista de elementos en nivel de stock crítico. */
   data: StockCriticoData[];
-  /** Optional loading state indicator. */
+  /** Indicador opcional de estado de carga. */
   isLoading?: boolean;
-  /** Callback triggered to request parts/orders for an item. */
+  /** Función callback ejecutada al solicitar piezas/órdenes para un elemento. */
   onPedir: (item: StockCriticoData) => void;
-  /** Translator function. */
+  /** Función de traducción. */
   t: (key: string) => string;
-  /** Role of the authenticated user to restrict actions. */
+  /** Rol del usuario autenticado para restringir acciones. */
   userRole?: string;
-  /** List of active orders to prevent double ordering. */
+  /** Lista de órdenes activas para prevenir pedidos duplicados. */
   ordenesActivas?: OrdenActiva[];
 }
 
 /**
- * Widget Component: StockCriticoWidget
- * Displays critical stock alert tables on the dashboard with interactive order request actions.
+ * Componente Widget: StockCriticoWidget
+ * 
+ * Muestra alertas de stock crítico en el dashboard con acciones interactivas para solicitar piezas.
  */
 export const StockCriticoWidget: FC<StockCriticoWidgetProps> = ({ data, isLoading, onPedir, t, userRole, ordenesActivas = [] }) => {
   const columns = useMemo(() => [

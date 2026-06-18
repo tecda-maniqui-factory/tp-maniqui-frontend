@@ -82,7 +82,7 @@ export interface TableProps<T> {
  * />
  * ```
  */
-const Table = <T extends Record<string, any>>({
+export const Table = <T extends Record<string, any>>({
   columns,
   data,
   footer,

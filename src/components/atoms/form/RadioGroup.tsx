@@ -2,34 +2,53 @@ import { FC, InputHTMLAttributes, useId } from 'react';
 import './Radio.css';
 
 /**
- * Props for the individual Radio option component.
+ * Propiedades del componente individual {@link Radio}.
+ * Excluye la propiedad nativa 'type' ya que está fija en 'radio'.
  */
 export interface RadioProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
-  /** Optional display label for this radio option. */
+  /** Texto descriptivo o etiqueta que se mostrará junto al botón de opción circular. */
   label?: string;
 }
 
 /**
- * Props for the RadioGroup container component.
+ * Propiedades del contenedor {@link RadioGroup}.
  */
 export interface RadioGroupProps {
-  /** Name attribute shared by the radio inputs for grouping. */
+  /** Atributo name de HTML compartido por todos los botones para unificar el grupo de selección. */
   name: string;
-  /** List of options to render in the group. */
-  options: { value: string; label: string; disabled?: boolean }[];
-  /** Current selected value. */
+  /** Lista de opciones que se renderizarán dentro del grupo. */
+  options: { 
+    /** Valor de envío del input al estar seleccionado. */
+    value: string; 
+    /** Texto descriptivo de la opción. */
+    label: string; 
+    /** Indica si la opción del botón de radio está deshabilitada. */
+    disabled?: boolean; 
+  }[];
+  /** Valor de la opción actualmente seleccionada en el grupo. */
   value?: string;
-  /** Callback triggered when a radio option selection changes. */
+  /** 
+   * Función callback disparada cuando el usuario selecciona una opción diferente.
+   * Devuelve el valor de la opción seleccionada.
+   */
   onChange: (value: string) => void;
-  /** Layout orientation. */
+  /** 
+   * Orientación del flujo de las opciones (horizontal en fila o vertical en columna).
+   * @default 'column'
+   */
   orientation?: 'row' | 'column';
-  /** Optional additional CSS class. */
+  /** Clase CSS adicional para el contenedor del grupo. */
   className?: string;
 }
 
 /**
- * Atom Component: Radio
- * Individual circular option selector (Radio button) with Flat UI styling.
+ * Componente Átomo: Radio
+ * 
+ * Botón de selección circular individual con estética Flat UI.
+ * Enlaza de manera accesible la etiqueta (`<label>`) con el control mediante `useId`
+ * cuando no se especifica un `id` explícito.
+ * 
+ * @param props - Propiedades definidas en {@link RadioProps}.
  */
 export const Radio: FC<RadioProps> = ({ label, className = '', id, ...props }) => {
   const generatedId = useId();
@@ -47,8 +66,31 @@ export const Radio: FC<RadioProps> = ({ label, className = '', id, ...props }) =
 };
 
 /**
- * Atom Component: RadioGroup
- * Group container that coordinates multiple individual Radio button options.
+ * Componente Átomo: RadioGroup
+ * 
+ * Contenedor que agrupa y coordina múltiples botones de opción {@link Radio}.
+ * Sincroniza la selección única y administra la orientación visual de forma responsiva.
+ * 
+ * @param props - Propiedades definidas en {@link RadioGroupProps}.
+ * 
+ * @example
+ * ```tsx
+ * const [genero, setGenero] = useState('Masculino');
+ * 
+ * const opciones = [
+ *   { value: 'Masculino', label: 'Masculino' },
+ *   { value: 'Femenino', label: 'Femenino' },
+ *   { value: 'Unisex', label: 'Unisex', disabled: true }
+ * ];
+ * 
+ * <RadioGroup
+ *   name="sexo_maniqui"
+ *   options={opciones}
+ *   value={genero}
+ *   onChange={setGenero}
+ *   orientation="row"
+ * />
+ * ```
  */
 export const RadioGroup: FC<RadioGroupProps> = ({
   name,

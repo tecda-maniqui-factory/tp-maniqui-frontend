@@ -3,23 +3,58 @@ import Icon from '../display/Icon';
 import { icons } from 'lucide-react';
 import './Button.css';
 
+/**
+ * Props para el componente {@link Button}.
+ * Hereda todas las propiedades nativas de un elemento HTML `<button>`.
+ */
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  /** Texto a mostrar a la derecha. Opcional si es isCompact */
+  /** 
+   * Contenido de texto que se renderiza en el bloque derecho del botón.
+   * Opcional o ignorado si {@link ButtonProps.isCompact} es `true`.
+   */
   children?: ReactNode;
-  /** Nombre del icono de lucide-react */
+  /** 
+   * Nombre de la colección de iconos de Lucide que se dibujará en el bloque izquierdo del botón.
+   * Delegado al componente {@link Icon}.
+   */
   iconName?: keyof typeof icons;
-  /** Variante visual que define el color del bloque izquierdo */
+  /** 
+   * Variante de color que define el fondo del bloque de icono izquierdo (Flat UI).
+   * @default 'primary'
+   */
   variant?: 'primary' | 'secondary' | 'danger' | 'success' | 'warning' | 'info';
-  /** Estado deshabilitado explícito (independiente de disabled nativo) */
+  /** 
+   * Estado deshabilitado lógico que añade clases de estilo BEM de atenuación y bloquea clics.
+   * @default false
+   */
   isDisabled?: boolean;
-  /** Si es true, solo muestra el bloque del icono (cuadrado) */
+  /** 
+   * Si es `true`, oculta el bloque de texto derecho y reduce el ancho del botón
+   * al tamaño cuadrado del bloque de icono izquierdo.
+   * @default false
+   */
   isCompact?: boolean;
 }
 
 /**
  * Componente Átomo: Button
- * Diseño Flat UI "Split": Icono en cuadrado de color a la izquierda, texto en gris a la derecha.
- * Si isCompact es true, solo se muestra el bloque del icono.
+ * 
+ * Botón interactivo con diseño Flat UI tipo "Split":
+ * Contiene un bloque de icono de color representativo a la izquierda, y un bloque de texto
+ * en tono neutral a la derecha. Soporta modo compacto y estados deshabilitados.
+ * 
+ * @param props - Propiedades que cumplen con {@link ButtonProps}.
+ * 
+ * @example
+ * ```tsx
+ * // Botón estándar con texto e icono
+ * <Button variant="primary" iconName="Save" onClick={handleSave}>
+ *   Guardar
+ * </Button>
+ * 
+ * // Botón de peligro compacto (solo icono)
+ * <Button variant="danger" iconName="Trash2" isCompact onClick={handleDelete} />
+ * ```
  */
 const Button: FC<ButtonProps> = ({ 
   children, 

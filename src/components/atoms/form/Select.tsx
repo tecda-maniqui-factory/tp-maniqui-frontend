@@ -4,34 +4,78 @@ import { icons } from 'lucide-react';
 import './Select.css';
 
 /**
- * Represents an option inside the Select component.
+ * Representa una opción individual dentro del menú desplegable de {@link Select}.
  */
 export interface SelectOption {
-  /** Value of the option. */
+  /** Valor interno que se enviará en el formulario. */
   value: string | number;
-  /** Human-readable label for the option. */
+  /** Texto legible por el usuario que se mostrará en el menú. */
   label: string;
 }
 
 /**
- * Props for the Select component.
+ * Propiedades del componente {@link Select}.
+ * Hereda todas las propiedades nativas de un elemento HTML `<select>`.
  */
 export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
-  /** Options to display in the dropdown. */
+  /** Lista de opciones estructuradas que se mostrarán en el menú desplegable. */
   options: SelectOption[];
-  /** Optional icon name (from Lucide) to show on the left. */
+  /** 
+   * Nombre del icono de Lucide que se mostrará a la izquierda dentro del campo.
+   * Delegado al componente {@link Icon}.
+   */
   iconName?: keyof typeof icons;
-  /** Visual variant affecting the icon block background. */
+  /** 
+   * Variante visual que define el color del bloque de icono izquierdo (Flat UI).
+   * @default 'primary'
+   */
   variant?: 'primary' | 'secondary' | 'danger' | 'success' | 'warning' | 'info';
-  /** Visual error state indicator. */
+  /** 
+   * Indica si el campo tiene un error de validación activo, aplicando estilos de borde rojo.
+   * @default false
+   */
   hasError?: boolean;
-  /** Custom placeholder option text. */
+  /** 
+   * Texto por defecto de la opción deshabilitada e invisible que actúa como marcador de posición.
+   * @default 'Seleccione una opción...'
+   */
   placeholder?: string;
 }
 
 /**
  * Componente Átomo: Select
- * Se enfoca solo en la selección. Las etiquetas deben ir en FormField.
+ * 
+ * Menú de selección desplegable (dropdown) estilizado bajo la estética Flat UI.
+ * Incluye un bloque de icono lateral, un indicador de flecha personalizado (`ChevronDown`)
+ * y soporte para estados de error/deshabilitado.
+ * 
+ * Se enfoca exclusivamente en la interacción de selección. Para layouts accesibles
+ * que requieran etiquetas descriptivas (labels) y textos de error, utilícese la molécula {@link FormField}.
+ * 
+ * @param props - Propiedades del componente definidas en {@link SelectProps}.
+ * 
+ * @example
+ * ```tsx
+ * const opcionesMoneda = [
+ *   { value: 'ARS', label: 'Pesos Argentinos (ARS)' },
+ *   { value: 'USD', label: 'Dólares Estadounidenses (USD)' }
+ * ];
+ * 
+ * // Select básico con icono de moneda
+ * <Select
+ *   options={opcionesMoneda}
+ *   iconName="Coins"
+ *   placeholder="Elige la moneda"
+ *   onChange={(e) => setMoneda(e.target.value)}
+ * />
+ * 
+ * // Select con variante de peligro (rojo) y error activo
+ * <Select
+ *   options={opciones}
+ *   variant="danger"
+ *   hasError={true}
+ * />
+ * ```
  */
 const Select: FC<SelectProps> = ({
   options,

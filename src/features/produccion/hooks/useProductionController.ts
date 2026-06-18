@@ -5,11 +5,33 @@ import { useLanguage } from '@/hooks/useLanguage';
 import { productionService, Maniqui } from '../api/productionService';
 
 /**
- * Controller hook for the Production Feature dashboard.
- * Manages fetching the list of mannequins in production, loading states, error handling,
- * and page refreshing actions.
+ * Hook de control (Controller) para la vista principal de Producción.
+ * 
+ * Se encarga de solicitar y listar los maniquíes ensamblados o en línea de montaje ({@link Maniqui}),
+ * administrando de forma centralizada los estados de carga (loading) y propagación de errores.
+ * 
+ * Se comunica con el servicio {@link productionService} para recuperar datos,
+ * {@link useAuth} para validar la sesión y {@link useNotify} para emitir alertas visuales.
  *
- * @returns State properties, refresh handler, and translation utility.
+ * @example
+ * ```tsx
+ * import { useProductionController } from './hooks/useProductionController';
+ * 
+ * const ProduccionDashboard = () => {
+ *   const { maniquies, isLoading, handlers } = useProductionController();
+ * 
+ *   if (isLoading) return <p>Cargando información de producción...</p>;
+ * 
+ *   return (
+ *     <div>
+ *       <button onClick={handlers.handleRefresh}>Actualizar</button>
+ *       <p>Total de Maniquíes: {maniquies.length}</p>
+ *     </div>
+ *   );
+ * };
+ * ```
+ * 
+ * @returns Estado local de maniquíes, indicadores de carga, mensajes de error y utilidades de traducción.
  */
 export const useProductionController = () => {
   const { token, logout } = useAuth();

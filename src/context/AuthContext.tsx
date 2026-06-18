@@ -1,46 +1,63 @@
 import { createContext, useState, ReactNode, FC, useMemo, useCallback } from 'react';
 
 /**
- * Represents a user profile in the application.
+ * Perfil de usuario en la aplicación.
  */
 export interface User {
-  /** Unique identifier of the user. */
+  /** Identificador único numérico del usuario. */
   id: number;
-  /** Username for authentication and display. */
+  /** Nombre de usuario utilizado para la autenticación y visualización. */
   username: string;
-  /** Optional email address of the user. */
+  /** Dirección de correo electrónico opcional del usuario. */
   email?: string;
-  /** Role of the user, which controls permissions (e.g. 'gerente_prod', 'operario', 'vendedor'). */
+  /** Rol asignado que controla los permisos de acceso (ej. 'gerente_prod', 'operario', 'vendedor'). */
   rol: string;
-  /** Optional full name of the user. */
+  /** Nombre completo opcional del usuario. */
   name?: string;
 }
 
 /**
- * Shape of the authentication context state and actions.
+ * Representa el estado y las acciones provistas por el contexto de autenticación.
  */
 export interface AuthContextType {
-  /** Indicates whether a user is currently logged in. */
+  /** Indica si hay un usuario autenticado activo en la sesión. */
   isAuthenticated: boolean;
-  /** The current user profile, or null if unauthenticated. */
+  /** Datos del perfil del usuario logueado o null si no se ha autenticado. */
   user: User | null;
-  /** The session token, or null if unauthenticated. */
+  /** Token de sesión JWT actual o null si no está autenticado. */
   token: string | null;
-  /** Authenticates the user and sets the credentials. */
+  /** Registra el token y los datos de perfil para iniciar sesión. */
   login: (token: string, user: User) => void;
-  /** Logs out the user and clears all credentials. */
+  /** Remueve el token y destruye la sesión del usuario. */
   logout: () => void;
 }
 
 /**
- * Context for managing and consuming authentication state.
+ * Contexto de React para consumir y administrar el estado de la sesión.
+ * 
+ * Se consume convenientemente mediante el hook {@link useAuth}.
  */
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 /**
- * AuthProvider component that manages global session state with localStorage persistence.
- *
- * @param props - Component props containing children elements.
+ * Proveedor de contexto (Provider) que administra el ciclo de vida del estado de la sesión global.
+ * 
+ * Almacena el token de sesión y el perfil de usuario, persistiendo ambos datos en el
+ * almacenamiento local (`localStorage`) para mantener la sesión tras recargas.
+ * 
+ * @example
+ * ```tsx
+ * import { AuthProvider } from './context/AuthContext';
+ * 
+ * const App = () => (
+ *   <AuthProvider>
+ *     <MyLayout />
+ *   </AuthProvider>
+ * );
+ * ```
+ * 
+ * @param props - Props de componente que contiene los nodos hijos.
+ * @returns Elemento proveedor de React.
  */
 export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [token, setToken] = useState<string | null>(() => {

@@ -2,42 +2,74 @@ import { ReactNode } from 'react';
 import './Table.css';
 
 /**
- * Configuration for a table column.
+ * Configuración para una columna de la tabla.
  */
 export interface TableColumn {
-  /** Unique key identifying the column. */
+  /** Clave única que identifica la columna en el objeto de datos. */
   key: string;
-  /** Label or header component for the column header. */
+  /** Componente o texto a renderizar en la cabecera de la columna. */
   header: ReactNode;
-  /** Alignment of column values. */
+  /** Alineación horizontal de los valores de la columna. */
   align?: 'left' | 'center' | 'right';
 }
 
 /**
- * Props for the Table component.
+ * Props para el componente {@link Table}.
+ * 
+ * @template T - Tipo de los elementos de datos a renderizar en las filas.
  */
 export interface TableProps<T> {
-  /** Array of column configurations. */
+  /** Listado de configuraciones de columnas de tipo {@link TableColumn}. */
   columns: TableColumn[];
-  /** Array of data items to populate rows. */
+  /** Colección de elementos de datos para poblar las filas de la tabla. */
   data: T[];
-  /** Optional element to display in the table footer. */
+  /** Elemento opcional a renderizar en el pie de página de la tabla (footer). */
   footer?: ReactNode;
-  /** Toggle compact spacing layout style. */
+  /** Habilita la variante compacta reduciendo el padding de las celdas. */
   isCompact?: boolean;
-  /** Toggle row hover styling. */
+  /** Habilita el cambio visual en la fila al pasar el cursor (hover). */
   isHoverable?: boolean;
-  /** Additional CSS class name. */
+  /** Clase CSS adicional para personalizar estilos de la tabla. */
   className?: string;
-  /** Optional custom renderer for cell content. */
+  /** Función personalizada de renderizado para celdas específicas. */
   renderCell?: (item: T, column: TableColumn) => ReactNode;
-  /** Callback to retrieve a unique key for each row. */
+  /** Callback opcional para extraer la clave única de cada fila. */
   rowKey?: (item: T) => string | number;
 }
 
 /**
- * Componente de Tabla flexible siguiendo BEM y Atomic Design.
- * Soporta scope="col" accesible y personalización del rowKey.
+ * Componente de Tabla flexible siguiendo la metodología BEM y Atomic Design.
+ * 
+ * Soporta cabeceras de columna accesibles mediante `scope="col"`, renderizado condicional,
+ * pie de tabla y mapeo personalizado de celdas y claves de fila.
+ * 
+ * @example
+ * ```tsx
+ * import Table, { TableColumn } from './Table';
+ * 
+ * interface User { id: number; name: string; role: string; }
+ * 
+ * const columns: TableColumn[] = [
+ *   { key: 'name', header: 'Nombre Completo' },
+ *   { key: 'role', header: 'Rol del Sistema', align: 'center' }
+ * ];
+ * 
+ * const users: User[] = [
+ *   { id: 1, name: 'Juan Pérez', role: 'Administrador' }
+ * ];
+ * 
+ * const UserTable = () => (
+ *   <Table 
+ *     columns={columns} 
+ *     data={users} 
+ *     rowKey={(user) => user.id} 
+ *     isHoverable={true} 
+ *   />
+ * );
+ * ```
+ * 
+ * @param props - Props matching {@link TableProps}.
+ * @returns Elemento React representativo de la tabla.
  */
 const Table = <T extends Record<string, any>>({
   columns,

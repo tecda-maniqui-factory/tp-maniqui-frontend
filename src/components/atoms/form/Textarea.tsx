@@ -2,16 +2,40 @@ import { FC, TextareaHTMLAttributes, useId } from 'react';
 import './Textarea.css';
 
 /**
- * Props for the Textarea component.
+ * Propiedades del componente {@link Textarea}.
+ * Hereda todas las propiedades nativas de un elemento HTML `<textarea>`.
  */
 export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
-  /** Visual error state indicator. */
+  /** 
+   * Indica si el campo tiene un error de validación activo, aplicando estilos de borde rojo.
+   * @default false
+   */
   hasError?: boolean;
 }
 
 /**
- * Atom Component: Textarea
- * Multiline text input field styled with Flat UI aesthetics.
+ * Componente Átomo: Textarea
+ * 
+ * Área de texto multilínea estilizada según las pautas de diseño de Flat UI.
+ * Incluye estados para control de errores de validación, enfoque (focus) e inactividad (disabled).
+ * 
+ * Se enfoca exclusivamente en el control del campo. Para layouts estructurados
+ * con etiquetas (labels) y textos de validación, se recomienda la molécula {@link FormField}.
+ * 
+ * @param props - Propiedades definidas en {@link TextareaProps}.
+ * 
+ * @example
+ * ```tsx
+ * // Textarea simple de observaciones
+ * <Textarea placeholder="Escribe aquí las observaciones..." rows={4} onChange={handleChange} />
+ * 
+ * // Textarea con error de validación
+ * <Textarea
+ *   placeholder="Descripción obligatoria"
+ *   hasError={true}
+ *   value={descripcion}
+ * />
+ * ```
  */
 const Textarea: FC<TextareaProps> = ({
   hasError = false,

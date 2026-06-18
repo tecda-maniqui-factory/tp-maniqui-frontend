@@ -4,37 +4,51 @@ import { ENV } from '@/config/env.config';
  * Servicio de API para la Feature de Autenticación.
  */
 /**
- * Structure of the response returned by the login endpoint.
+ * Estructura de la respuesta devuelta por el endpoint de inicio de sesión.
  */
 export interface LoginResponse {
-  /** The JSON Web Token (JWT) for the authenticated session. */
+  /** El JSON Web Token (JWT) para la sesión autenticada. */
   token: string;
-  /** The authenticated user profile details. */
+  /** Los detalles del perfil de usuario autenticado. */
   user: {
-    /** Unique identifier of the user. */
+    /** Identificador único del usuario. */
     id: number;
-    /** Username of the user. */
+    /** Nombre de usuario del usuario. */
     username: string;
-    /** Email of the user. */
+    /** Correo electrónico del usuario. */
     email: string;
-    /** Role of the user. */
+    /** Rol del usuario en el sistema. */
     rol: string;
-    /** Optional display name of the user. */
+    /** Nombre opcional para mostrar. */
     name?: string;
   };
 }
 
 /**
- * Service to handle authentication API calls.
+ * Servicio encargado de gestionar las llamadas a la API de autenticación del backend.
+ * 
+ * Se consume principalmente dentro de {@link useLoginController}.
  */
 export const authService = {
   /**
-   * Sends user credentials to the backend API to obtain a JWT session token.
+   * Envía las credenciales de usuario a la API del backend para obtener un token JWT de sesión.
    *
-   * @param username - The username of the user trying to log in.
-   * @param password - The password of the user.
-   * @returns A promise resolving to the LoginResponse containing token and user info.
-   * @throws An error with a message key if credentials or API request fails.
+   * @param username - El nombre de usuario que intenta iniciar sesión.
+   * @param password - Contraseña en texto plano.
+   * @returns Promesa que resuelve a un {@link LoginResponse} con el token y datos del usuario.
+   * @throws {Error} Si el inicio de sesión falla o la respuesta HTTP no es exitosa (ej. credenciales incorrectas).
+   * 
+   * @example
+   * ```ts
+   * import { authService } from './authService';
+   * 
+   * try {
+   *   const res = await authService.login('admin', 'password');
+   *   console.log('JWT:', res.token);
+   * } catch (error) {
+   *   console.error('Error de autenticación:', error);
+   * }
+   * ```
    */
   login: async (username: string, password: string): Promise<LoginResponse> => {
     const response = await fetch(`${ENV.API_URL}/auth/login`, {

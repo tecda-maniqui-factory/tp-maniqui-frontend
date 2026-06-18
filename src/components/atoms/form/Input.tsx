@@ -3,19 +3,53 @@ import Icon from '../display/Icon';
 import { icons } from 'lucide-react';
 import './Input.css';
 
+/**
+ * Props para el componente {@link Input}.
+ * Hereda todas las propiedades nativas de un elemento HTML `<input>`.
+ */
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-  /** Icono opcional a mostrar a la izquierda (lucide-react) */
+  /** 
+   * Nombre del icono de Lucide que se mostrará a la izquierda dentro del campo.
+   * Delegado al componente {@link Icon}.
+   */
   iconName?: keyof typeof icons;
-  /** Variante visual que define el color del bloque del icono (Flat UI) */
+  /** 
+   * Variante visual que define el color del bloque del icono izquierdo (Flat UI).
+   * @default 'primary'
+   */
   variant?: 'primary' | 'secondary' | 'danger' | 'success' | 'warning' | 'info';
-  /** Estado de error visual */
+  /** 
+   * Indica si el campo tiene un error de validación activo, aplicando estilos de borde rojo.
+   * @default false
+   */
   hasError?: boolean;
 }
 
 /**
  * Componente Átomo: Input
- * Fiel a Flat UI, se enfoca solo en el campo y el icono.
- * Las etiquetas y mensajes de error deben ser manejados por FormField (Molécula).
+ * 
+ * Campo de entrada de texto estilizado según la estética Flat UI con soporte para un bloque
+ * de icono lateral y estados de error/deshabilitado.
+ * 
+ * Se enfoca exclusivamente en el control y la interactividad del campo. Para layouts accesibles
+ * que incluyan etiquetas (labels) y mensajes de error extendidos, utilícese la molécula {@link FormField}.
+ * 
+ * @param props - Propiedades que cumplen con {@link InputProps}.
+ * 
+ * @example
+ * ```tsx
+ * // Input simple de búsqueda con icono de lupa
+ * <Input iconName="Search" placeholder="Buscar..." onChange={handleSearch} />
+ * 
+ * // Input de contraseña con variante de seguridad (azul) y estado de error
+ * <Input 
+ *   type="password" 
+ *   iconName="Lock" 
+ *   placeholder="Introduce tu clave"
+ *   variant="primary"
+ *   hasError={true}
+ * />
+ * ```
  */
 const Input: FC<InputProps> = ({
   iconName,

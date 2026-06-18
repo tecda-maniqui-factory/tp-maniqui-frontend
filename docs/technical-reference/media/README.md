@@ -15,6 +15,9 @@ Para facilitar la exploración de la capa visual, la documentación se divide en
 2. ### 🧩 [Guía de Componentes y Vistas](components.md) *(Próximamente)*
    * Especificación de los cuatro cuadrantes del Dashboard de control (Monitor de Producción SQL, Terminal de Ensamblaje SP, Validador Anti-Frankenstein y Calculadora de Descuentos UDF).
 
+3. ### 🛡️ [Manual de Operaciones y Roles](ROLES_Y_OPERACIONES.md)
+   * Detalle completo del sistema RBAC, definiendo quién puede acceder a qué módulos (Producción, Diseño de Modelos, Suministros y Ventas).
+
 ---
 
 ## ⚡ Estándares de Rendimiento y Experiencia de Usuario

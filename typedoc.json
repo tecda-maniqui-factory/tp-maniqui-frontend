@@ -1,6 +1,8 @@
 {
   "$schema": "https://typedoc.org/schema.json",
-  "entryPoints": ["src/main.tsx"],
+  "entryPoints": ["src/**/*.ts", "src/**/*.tsx"],
+  "entryPointStrategy": "expand",
+  "exclude": ["**/*.test.ts", "**/*.test.tsx", "src/vite-env.d.ts"],
   "out": "docs/technical-reference",
   "name": "TP Maniquí Frontend - Referencia Técnica",
   "includeVersion": true,

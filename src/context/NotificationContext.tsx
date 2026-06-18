@@ -1,45 +1,62 @@
 import { createContext, useState, useCallback, ReactNode, FC, useMemo } from 'react';
 
 /**
- * Supported notification visual styles.
+ * Estilos visuales soportados para las notificaciones.
  */
 export type NotificationType = 'success' | 'danger' | 'warning' | 'info';
 
 /**
- * Structure of a notification object.
+ * Estructura de un objeto de notificación.
  */
 export interface Notification {
-  /** Unique identifier of the notification. */
+  /** Identificador único de la notificación. */
   id: string;
-  /** Message body of the notification. */
+  /** Cuerpo del mensaje a mostrar. */
   message: string;
-  /** Type of the notification affecting its styling. */
+  /** Tipo de notificación que afecta al color y al icono. */
   type: NotificationType;
-  /** Optional title of the notification. */
+  /** Título opcional de la notificación. */
   title?: string;
 }
 
 /**
- * Shape of the notification context state and functions.
+ * Representa el estado y las funciones provistas por el contexto de notificaciones.
  */
 export interface NotificationContextType {
-  /** List of currently active notifications. */
+  /** Lista de notificaciones activas en pantalla. */
   notifications: Notification[];
-  /** Shows a new notification with specified parameters. */
+  /** Registra y muestra una nueva notificación. */
   showNotification: (message: string, type?: NotificationType, title?: string) => void;
-  /** Dismisses a notification by its ID. */
+  /** Remueve y cierra una notificación activa. */
   hideNotification: (id: string) => void;
 }
 
 /**
- * Context for managing and triggering notifications.
+ * Contexto de React para gestionar y disparar notificaciones de banner.
+ * 
+ * Se consume convenientemente mediante el hook {@link useNotify}.
  */
 export const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
 
 /**
- * NotificationProvider component that manages the list of active notifications.
- *
- * @param props - Component props containing children elements.
+ * Proveedor de contexto (Provider) que gestiona la lista de notificaciones activas.
+ * 
+ * Expone métodos para agregar nuevas notificaciones con auto-cerrado programado
+ * a los 5 segundos de su creación.
+ * 
+ * @example
+ * ```tsx
+ * import { NotificationProvider } from './context/NotificationContext';
+ * 
+ * const App = () => (
+ *   <NotificationProvider>
+ *     <MyLayout />
+ *   </NotificationProvider>
+ * );
+ * ```
+ * 
+ * @param props - Props de componente que contiene los nodos hijos.
+ * @returns Elemento proveedor de React.
  */
 export const NotificationProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [notifications, setNotifications] = useState<Notification[]>([]);

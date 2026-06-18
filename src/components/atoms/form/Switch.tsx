@@ -2,18 +2,44 @@ import { FC, InputHTMLAttributes, useId } from 'react';
 import './Switch.css';
 
 /**
- * Props for the Switch toggle component.
+ * Propiedades del componente {@link Switch}.
+ * Excluye la propiedad nativa 'type' ya que está fija en 'checkbox'.
  */
 export interface SwitchProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
-  /** Optional descriptive text displayed next to the switch. */
+  /** Texto descriptivo o etiqueta que se mostrará junto al interruptor. */
   label?: string;
-  /** Color variant of the switch when active. */
+  /** 
+   * Variante visual que determina el color del fondo activo de la pista (Flat UI).
+   * @default 'primary'
+   */
   variant?: 'primary' | 'secondary' | 'danger' | 'success' | 'warning' | 'info';
 }
 
 /**
- * Atom Component: Switch (Toggle)
- * A binary toggle switch styled according to Flat UI guidelines.
+ * Componente Átomo: Switch (Toggle)
+ * 
+ * Interruptor deslizante bidireccional (on/off) con estética Flat UI.
+ * Sustituye visualmente la casilla de verificación nativa por una pista y deslizador animados,
+ * manteniendo el comportamiento y la accesibilidad estándar del navegador mediante `useId`.
+ * 
+ * @param props - Propiedades definidas en {@link SwitchProps}.
+ * 
+ * @example
+ * ```tsx
+ * // Interruptor básico
+ * <Switch label="Recordar sesión" onChange={handleToggle} />
+ * 
+ * // Interruptor con variante de éxito (verde) activado
+ * <Switch
+ *   label="Notificaciones push"
+ *   variant="success"
+ *   checked={isPushEnabled}
+ *   onChange={handlePushToggle}
+ * />
+ * 
+ * // Interruptor deshabilitado
+ * <Switch label="Función premium bloqueada" disabled />
+ * ```
  */
 const Switch: FC<SwitchProps> = ({
   label,

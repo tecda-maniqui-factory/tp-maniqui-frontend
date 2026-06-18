@@ -1,18 +1,44 @@
 import { FC } from 'react';
 import './Spinner.css';
 
+/**
+ * Propiedades del componente {@link Spinner}.
+ */
 export interface SpinnerProps {
-  /** Tamaño del spinner en píxeles */
+  /** 
+   * Tamaño de la caja del spinner en píxeles (ancho y alto).
+   * @default 24
+   */
   size?: number;
-  /** Variante de color (Flat UI) */
+  /** 
+   * Variante visual que determina el color del borde activo (Flat UI).
+   * @default 'primary'
+   */
   variant?: 'primary' | 'secondary' | 'danger' | 'success' | 'warning' | 'info';
-  /** Clase CSS adicional */
+  /** Clases CSS adicionales para definir el posicionamiento o márgenes del spinner. */
   className?: string;
 }
 
 /**
  * Componente Átomo: Spinner
- * Indicador visual de carga animado usando bordes CSS.
+ * 
+ * Indicador visual de carga circular animado por CSS.
+ * Utiliza variables CSS (`--spinner-size`) para la escala y es totalmente accesible 
+ * mediante el rol `status` para lectores de pantalla.
+ * 
+ * @param props - Propiedades del componente definidas en {@link SpinnerProps}.
+ * 
+ * @example
+ * ```tsx
+ * // Spinner básico de carga (24px, color azul primario)
+ * <Spinner />
+ * 
+ * // Spinner grande de éxito (48px, color verde)
+ * <Spinner size={48} variant="success" />
+ * 
+ * // Spinner centrado usando clases personalizadas
+ * <Spinner className="mx-auto my-4" />
+ * ```
  */
 const Spinner: FC<SpinnerProps> = ({
   size = 24,

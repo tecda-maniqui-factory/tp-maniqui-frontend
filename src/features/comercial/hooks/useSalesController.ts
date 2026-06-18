@@ -5,11 +5,37 @@ import { useLanguage } from '@/hooks/useLanguage';
 import { comercialService, Cliente, Venta, Maniqui, VentaRaw, VentaDetalle } from '../api/comercialService';
 
 /**
- * Controller hook for the Commercial/Sales module.
- * Manages the state and operations for listing sales, creating clients, registering new sales,
- * selecting items, selecting currencies, managing exchange rates, and viewing detailed invoice information.
+ * Hook de control (Controller) para el módulo Comercial/Ventas.
+ * 
+ * Gestiona de forma unificada el estado de la UI y los flujos de negocio para:
+ * - Listar y filtrar ventas existentes ({@link Venta}).
+ * - Cargar maniquíes disponibles ({@link Maniqui}) e ingresar cantidades por modelo.
+ * - Administrar la creación de nuevos clientes ({@link Cliente}) con validación de CUIT.
+ * - Registrar transacciones de ventas con cotización dinámica en pesos o dólares.
+ * - Mostrar el detalle de facturación con CAE y número de factura usando {@link VentaDetalle}.
+ * 
+ * Se conecta estrechamente con el servicio {@link comercialService} para operaciones API,
+ * el hook {@link useAuth} para token de sesión, y {@link useNotify} para banners informativos.
  *
- * @returns An object containing data lists, forms, modals, loading indicators, action handlers, and the translator.
+ * @example
+ * ```tsx
+ * import { useSalesController } from './hooks/useSalesController';
+ * 
+ * const VentasPanel = () => {
+ *   const { ventas, totalSale, handleRegisterSale, isLoading } = useSalesController();
+ *   
+ *   if (isLoading) return <p>Cargando panel comercial...</p>;
+ *   
+ *   return (
+ *     <form onSubmit={handleRegisterSale}>
+ *       <span>Total a Facturar: ${totalSale}</span>
+ *       <button type="submit">Confirmar Venta</button>
+ *     </form>
+ *   );
+ * };
+ * ```
+ * 
+ * @returns Un objeto estructurado con listados de datos, estado de formularios, cargando/procesando, handlers de acción y traductor.
  */
 export const useSalesController = () => {
   const { token, logout } = useAuth();

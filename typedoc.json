@@ -8,6 +8,7 @@
   "excludeInternal": true,
   "cleanOutputDir": true,
   "githubPages": false,
+  "skipErrorChecking": true,
   "externalSymbolLinkMappings": {
     "@types/react": {
       "Component": "https://react.dev/reference/react/Component",

@@ -6,27 +6,46 @@ import { dashboardService, StockCriticoData } from '../api/dashboardService';
 import { ENV } from '@/config/env.config';
 
 /**
- * Represents a purchase order in the dashboard context.
+ * Representa una orden de compra en el contexto del Dashboard.
  */
 export interface OrdenCompra {
-  /** Unique identifier of the purchase order. */
+  /** Identificador único de la orden de compra. */
   id: string;
-  /** Name of the mannequin model. */
+  /** Nombre del modelo de maniquí asociado. */
   modelo_nombre: string;
-  /** The specific type of part ordered. */
+  /** Tipo específico de pieza ordenada. */
   tipo_parte: string;
-  /** The date/time string of the order. */
+  /** Marca de tiempo/fecha de creación de la orden. */
   fecha: string;
-  /** The status of the purchase order. */
+  /** Estado de procesamiento de la orden. */
   estado: 'pendiente' | 'completada';
 }
 
 /**
- * Controller hook for the main Dashboard view.
- * Handles critical stock fetching, list of active purchase orders, real-time Server-Sent Events (SSE) subscriptions,
- * and purchase order trigger handlers.
- *
- * @returns State properties, action handlers, current authenticated user, and translation utility.
+ * Hook de control (Controller) para la vista del Dashboard.
+ * 
+ * Orquesta la recuperación de datos de stock crítico, suscripciones en tiempo real mediante
+ * Server-Sent Events (SSE) (eventos `nueva_orden`, `orden_completada`, `sync_ordenes`, `stock_actualizado`),
+ * y manejadores para disparar órdenes de reposición.
+ * 
+ * Se conecta con {@link useAuth}, {@link useNotify} y {@link dashboardService}.
+ * 
+ * @example
+ * ```tsx
+ * import { useDashboardController } from './hooks/useDashboardController';
+ * 
+ * const DashboardInfo = () => {
+ *   const { stockCritico, ordenesActivas, isLoading } = useDashboardController();
+ *   return (
+ *     <div>
+ *       <span>Alertas Críticas: {stockCritico.length}</span>
+ *       <span>Pedidos de Reposición Activos: {ordenesActivas.length}</span>
+ *     </div>
+ *   );
+ * };
+ * ```
+ * 
+ * @returns Propiedades de estado de datos, manejadores de acciones, usuario logueado y traductor.
  */
 export const useDashboardController = () => {
   const { token, logout, user } = useAuth();

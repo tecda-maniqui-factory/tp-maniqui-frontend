@@ -10,11 +10,25 @@ import { CredentialOverlay } from './CredentialOverlay';
 import './LoginForm.css';
 
 /**
- * Componente Organismo: LoginForm
+ * Componente Organismo: `LoginForm`
  * 
- * Implementación optimizada con FormField (Molécula) para la gestión de errores y etiquetas.
- * Utiliza Card (Molécula) para el contenedor siguiendo reglas de composición.
- * Integra Spinner (Átomo) para indicar estados de carga y Alert para errores globales.
+ * Formulario de inicio de sesión de la aplicación.
+ * Implementación optimizada con {@link FormField} para la gestión de errores y etiquetas descriptivas,
+ * {@link Card} para estructurar visualmente el contenedor y {@link Input}/{@link Button} para la interactividad.
+ * 
+ * Consume la lógica de negocio y estado mediante el hook de control {@link useLoginController}
+ * e incluye el panel {@link CredentialOverlay} para completar credenciales rápidamente.
+ * 
+ * @example
+ * ```tsx
+ * import { LoginForm } from './components/LoginForm';
+ * 
+ * const LoginView = () => (
+ *   <div className="login-view-container">
+ *     <LoginForm />
+ *   </div>
+ * );
+ * ```
  */
 export const LoginForm: FC = () => {
   const { formData, errors, isLoading, handlers, t } = useLoginController();

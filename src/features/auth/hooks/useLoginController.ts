@@ -5,32 +5,53 @@ import { NotificationContext } from '@/context/NotificationContext';;
 import { authService } from '../api/authService';
 
 /**
- * Holds the login form input values.
+ * Valores de entrada para el formulario de inicio de sesión.
  */
 export interface LoginState {
-  /** The username inputted by the user. */
+  /** Nombre de usuario ingresado. */
   username: string;
-  /** The password inputted by the user. */
+  /** Contraseña ingresada. */
   password: string;
 }
 
 /**
- * Structure for representing form validation or processing errors.
+ * Errores de validación y de procesamiento del formulario.
  */
 export interface LoginErrors {
-  /** Validation error for the username field. */
+  /** Error de validación para el campo de nombre de usuario. */
   username?: string;
-  /** Validation error for the password field. */
+  /** Error de validación para el campo de contraseña. */
   password?: string;
-  /** Global form or authentication request error message. */
+  /** Mensaje de error global del formulario o de la petición de autenticación. */
   form?: string;
 }
 
 /**
- * Controller hook for the Login Page.
- * Orchestrates login form state, validations, loading states, API request triggers, and alerts.
- *
- * @returns Object containing form state, errors, loading indicators, event handlers, and translator.
+ * Hook de control (Controller) para la página de Login.
+ * 
+ * Orquesta el estado del formulario de inicio de sesión, validaciones locales en caliente,
+ * estados de carga, envío de peticiones HTTP mediante {@link authService}, y despacho de notificaciones
+ * usando {@link NotificationContext}.
+ * 
+ * Al completarse con éxito, actualiza el estado de sesión global en {@link AuthContext}.
+ * 
+ * @example
+ * ```tsx
+ * import { useLoginController } from '../hooks/useLoginController';
+ * 
+ * const LoginForm = () => {
+ *   const { formData, errors, isLoading, handlers } = useLoginController();
+ *   return (
+ *     <form onSubmit={handlers.handleSubmit}>
+ *       <input name="username" value={formData.username} onChange={handlers.handleChange} />
+ *       {errors.username && <span>{errors.username}</span>}
+ *       <button type="submit" disabled={isLoading}>Ingresar</button>
+ *     </form>
+ *   );
+ * };
+ * ```
+ * 
+ * @returns Objeto con estado del formulario, errores de validación, indicador de carga, manejadores de eventos y traductor.
  */
 export const useLoginController = () => {
   const { t } = useLanguage();

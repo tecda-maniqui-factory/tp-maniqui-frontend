@@ -9,7 +9,22 @@ import { useSupplyController } from './hooks/useSupplyController';
 import { Modelo } from '../produccion/api/productionService';
 
 /**
- * SupplyPage: View to manage supply orders and record part replenishment arrivals.
+ * Página de Recepción de Suministros (`SupplyPage`).
+ * 
+ * Interfaz de usuario para registrar y administrar el ingreso de piezas físicas al inventario.
+ * Permite visualizar el listado de órdenes de reposición pendientes (sincronizadas en tiempo real)
+ * y rellenar rápidamente el formulario de ingreso con los datos correspondientes.
+ * 
+ * Delega el control de estado en el hook {@link useSupplyController}.
+ * 
+ * @example
+ * ```tsx
+ * import { SupplyPage } from './features/suministros/SupplyPage';
+ * 
+ * const Router = () => (
+ *   <Route path="/suministros" element={<SupplyPage />} />
+ * );
+ * ```
  */
 export const SupplyPage: FC = () => {
   const {

@@ -15,8 +15,26 @@ import { Maniqui, DetalleVentaItem } from './api/comercialService';
 import './VentasPage.css';
 
 /**
- * VentasPage Component
- * Vista principal del Módulo Comercial para registrar y consultar transacciones de venta.
+ * Página del Módulo Comercial (`VentasPage`).
+ * 
+ * Interfaz principal para el registro de nuevas transacciones de venta de maniquíes
+ * y para la consulta del historial de comprobantes facturados.
+ * 
+ * Permite seleccionar clientes registrados, dar de alta clientes en caliente desde un modal,
+ * ingresar cantidades deseadas de maniquíes según el stock disponible en tiempo real,
+ * seleccionar método de pago, establecer cotización en pesos o dólares, y visualizar el detalle
+ * completo de facturas (incluyendo CAE y números de serie asignados de forma unívoca).
+ * 
+ * Delega el control de estado en el hook de control {@link useSalesController}.
+ * 
+ * @example
+ * ```tsx
+ * import VentasPage from './features/comercial/VentasPage';
+ * 
+ * const Router = () => (
+ *   <Route path="/comercial/ventas" element={<VentasPage />} />
+ * );
+ * ```
  */
 const paymentOptions = [
   { value: 'Transferencia', label: 'Transferencia Bancaria' },

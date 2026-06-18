@@ -1,45 +1,56 @@
 import { ENV } from '@/config/env.config';
 
 /**
- * Represents a mannequin item in production or inventory.
+ * Representa un maniquí individual dentro de la línea de producción o inventario.
  */
 export interface Maniqui {
-  /** Unique identifier of the mannequin. */
+  /** Identificador único del maniquí. */
   id: number;
-  /** Serial number of the mannequin. */
+  /** Número de serie único del maniquí. */
   nro_serie: string;
-  /** Reference identifier of the mannequin model. */
+  /** ID de referencia del modelo de diseño al que pertenece. */
   id_modelo: number;
-  /** Production or availability status. */
+  /** Estado del ciclo de vida del maniquí. */
   status: 'En Producción' | 'Disponible' | 'Vendido' | 'Dañado';
-  /** Date/time string when the mannequin was assembled. */
+  /** Marca de tiempo de la fecha en que se finalizó el ensamblaje. */
   fecha_ensamblaje: string;
-  /** Optional name of the mannequin model. */
+  /** Nombre opcional del modelo de maniquí. */
   modelo_nombre?: string; 
 }
 
 /**
- * Represents a mannequin model design.
+ * Representa el diseño técnico de un modelo del catálogo.
  */
 export interface Modelo {
-  /** Unique identifier of the model. */
+  /** Identificador único del modelo en base de datos. */
   id: number;
-  /** Name of the model. */
+  /** Nombre representativo del modelo. */
   nombre: string;
-  /** Optional detailed description of the model. */
+  /** Descripción detallada del modelo. */
   descripcion?: string;
 }
 
 /**
- * Service to handle production API operations.
+ * Servicio técnico de API encargado de realizar las consultas relativas a Producción y Catálogo.
+ * 
+ * Se consume principalmente por hooks de control como {@link useProductionController} y {@link useAssemblyController}.
+ * 
+ * @example
+ * ```ts
+ * import { productionService } from './productionService';
+ * 
+ * const token = 'jwt-token';
+ * const result = await productionService.getManiquies(token);
+ * console.log('Total maniquíes:', result.totalCount);
+ * ```
  */
 export const productionService = {
   /**
-   * Fetches the list of all mannequin records.
+   * Obtiene el listado completo de maniquíes registrados (historial e inventario).
    *
-   * @param token - Authentication bearer token.
-   * @returns An object containing the list of mannequins and count.
-   * @throws Session expired or general fetching error.
+   * @param token - Token de autenticación del usuario.
+   * @returns Promesa que resuelve a un objeto con la lista de maniquíes {@link Maniqui} y la cantidad total.
+   * @throws {Error} Si la sesión expira (`auth.error.session_expired`) o si ocurre un fallo en la llamada.
    */
   getManiquies: async (token: string): Promise<{ maniquies: Maniqui[], totalCount: number }> => {
     const response = await fetch(`${ENV.API_URL}/maniquies`, {
@@ -55,12 +66,11 @@ export const productionService = {
   },
 
   /**
-   * Fetches the list of all available mannequin models.
-   * Normalizes the response to support direct arrays or nested responses.
+   * Obtiene la lista completa de todos los modelos técnicos registrados en el catálogo.
    *
-   * @param token - Authentication bearer token.
-   * @returns An object containing the list of models.
-   * @throws Session expired or model fetching error.
+   * @param token - Token de autenticación del usuario.
+   * @returns Promesa que resuelve al listado de modelos {@link Modelo}.
+   * @throws {Error} Si la sesión expira o falla la petición al servidor.
    */
   getModelos: async (token: string): Promise<{ modelos: Modelo[] }> => {
     const response = await fetch(`${ENV.API_URL}/sistema/modelos`, {
@@ -82,13 +92,15 @@ export const productionService = {
   },
 
   /**
-   * Registers the assembly of a new mannequin.
+   * Registra el ensamblaje técnico de un nuevo maniquí.
+   * 
+   * Consume las piezas necesarias del inventario físico y crea la entidad con estado 'Disponible'.
    *
-   * @param token - Authentication bearer token.
-   * @param modelo_id - ID of the mannequin model to assemble.
-   * @param numero_serie - Unique serial number for the new mannequin.
-   * @returns A promise resolving to the API response.
-   * @throws Session expired or validation error message.
+   * @param token - Token de autenticación.
+   * @param modelo_id - ID del modelo técnico de maniquí a ensamblar.
+   * @param numero_serie - Número de serie único asignado al maniquí.
+   * @returns Promesa con el resultado provisto por la API del backend.
+   * @throws {Error} Si la sesión expira o si no hay suficiente stock de piezas para concretar el armado.
    */
   ensamblarManiqui: async (token: string, modelo_id: number, numero_serie: string): Promise<unknown> => {
     const response = await fetch(`${ENV.API_URL}/maniquies/ensamblar`, {
@@ -115,12 +127,12 @@ export const productionService = {
   },
 
   /**
-   * Registers a new mannequin model with its parts recipe.
+   * Registra un nuevo modelo técnico junto con la receta de sus piezas requeridas.
    *
-   * @param token - Authentication bearer token.
-   * @param data - The configuration of the new model.
-   * @returns A promise resolving to the created model response.
-   * @throws Session expired or saving error.
+   * @param token - Token de autenticación del usuario.
+   * @param data - Configuración técnica del nuevo modelo (nombre, piezas, costo, precio venta).
+   * @returns Promesa que resuelve al objeto de modelo creado.
+   * @throws {Error} Si la sesión expira o falla el almacenamiento.
    */
   createModelo: async (token: string, data: { nombre: string; partes: string[]; sexo_id: number; costo_unitario: number; precio_venta: number }): Promise<any> => {
     const response = await fetch(`${ENV.API_URL}/sistema/modelos`, {

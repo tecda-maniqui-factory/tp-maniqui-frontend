@@ -47,9 +47,22 @@ export interface VentasRecientesTableProps {
 }
 
 /**
- * Componente de Negocio: VentasRecientesTable
+ * Componente de Negocio: `VentasRecientesTable`
  * 
- * Muestra el historial de transacciones de ventas recientes, integrando estados de facturación AFIP.
+ * Muestra el historial de transacciones de ventas recientes en un panel tipo tarjeta ({@link Card}).
+ * Integra el listado genérico {@link Table} y formatea celdas complejas como fechas, totales
+ * monetarios con su respectiva divisa, y estados de validación AFIP (usando {@link Badge}).
+ * 
+ * @example
+ * ```tsx
+ * import { VentasRecientesTable } from './components/VentasRecientesTable';
+ * 
+ * const sales = [
+ *   { id: 1, cliente: 'Cliente A', fecha: '2026-06-18', total: 50000, nro_factura: 'FAC-0001', cae: '123456', moneda: 'ARS' as const }
+ * ];
+ * 
+ * <VentasRecientesTable data={sales} onViewDetail={(id) => console.log('Ver detalle de venta:', id)} />
+ * ```
  */
 export const VentasRecientesTable: FC<VentasRecientesTableProps> = ({ data, onViewDetail }) => {
   const columns = [

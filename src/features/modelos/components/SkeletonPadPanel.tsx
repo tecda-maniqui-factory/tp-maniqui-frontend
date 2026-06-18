@@ -4,31 +4,31 @@ import styles from './SkeletonPadPanel.module.css';
 import { icons } from 'lucide-react';
 
 /**
- * Supported mannequin skeleton part codes.
+ * Códigos admitidos para las partes físicas o del esqueleto de un maniquí.
  */
 export type SkeletonPart = 'CAB' | 'TOR' | 'BRA-D' | 'BRA-I' | 'PIE-D' | 'PIE-I';
 
 /**
- * Props for the SkeletonPadPanel component.
+ * Propiedades del componente {@link SkeletonPadPanel}.
  */
 export interface SkeletonPadPanelProps {
-  /** List of mannequin skeleton parts currently selected. */
+  /** Colección de partes actualmente seleccionadas/activas del maniquí. */
   selectedParts?: SkeletonPart[];
-  /** Callback triggered when a part is selected or toggled. */
+  /** Callback ejecutado al alternar (seleccionar/deseleccionar) una parte del panel. */
   onPartSelect?: (part: SkeletonPart) => void;
-  /** Translation helper function. */
+  /** Utilidad de traducción para localizar los nombres de las partes. */
   t: (key: string) => string;
 }
 
 /**
- * Configuration structure for a skeleton pad element.
+ * Configuración visual y de traducción para un botón de parte del esqueleto.
  */
-interface PadConfig {
-  /** Skeleton part code. */
+export interface PadConfig {
+  /** Código único de la parte física del esqueleto. */
   id: SkeletonPart;
-  /** Lucide icon name to display. */
+  /** Nombre de icono Lucide a renderizar en el botón. */
   icon: keyof typeof icons;
-  /** Localized translation key for the part label. */
+  /** Clave de traducción para localizar el texto del botón. */
   labelKey: string;
 }
 
@@ -42,7 +42,25 @@ const PAD_CONFIGS: PadConfig[] = [
 ];
 
 /**
- * SkeletonPadPanel: Herramienta de diseño para seleccionar qué partes componen un modelo.
+ * Componente: `SkeletonPadPanel`
+ * 
+ * Herramienta de diseño interactiva e ilustrada que permite seleccionar qué partes físicas (receta)
+ * componen un modelo específico de maniquí (cabeza, torso, extremidades).
+ * 
+ * @example
+ * ```tsx
+ * import { SkeletonPadPanel, SkeletonPart } from './components/SkeletonPadPanel';
+ * 
+ * const MyEditor = () => {
+ *   const [parts, setParts] = useState<SkeletonPart[]>(['CAB', 'TOR']);
+ *   const handleToggle = (part: SkeletonPart) => {
+ *     setParts(prev => prev.includes(part) ? prev.filter(p => p !== part) : [...prev, part]);
+ *   };
+ *   return (
+ *     <SkeletonPadPanel selectedParts={parts} onPartSelect={handleToggle} t={(k) => k} />
+ *   );
+ * };
+ * ```
  */
 export const SkeletonPadPanel: FC<SkeletonPadPanelProps> = ({
   selectedParts = [],

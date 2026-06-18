@@ -3,8 +3,20 @@ import { LoginForm } from './components/LoginForm';
 import './AuthPage.css';
 
 /**
- * AuthPage: Orquestador de la feature de autenticación.
- * Sigue la regla de Feature-Based Modularization (FeaturePage.tsx).
+ * Página de Autenticación (`AuthPage`).
+ * 
+ * Orquestador principal de la vista de autenticación de la aplicación.
+ * Sigue el patrón de Feature-Based Modularization, sirviendo como contenedor de página.
+ * Renderiza el formulario de inicio de sesión {@link LoginForm}.
+ * 
+ * @example
+ * ```tsx
+ * import { AuthPage } from './features/auth/AuthPage';
+ * 
+ * const AppRouter = () => (
+ *   <Route path="/login" element={<AuthPage />} />
+ * );
+ * ```
  */
 export const AuthPage: FC = () => {
   return (

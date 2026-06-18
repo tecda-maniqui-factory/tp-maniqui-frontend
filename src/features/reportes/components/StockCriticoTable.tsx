@@ -39,9 +39,22 @@ export interface StockCriticoTableProps {
 }
 
 /**
- * Componente de Negocio: StockCriticoTable
+ * Componente de Negocio: `StockCriticoTable`
  * 
- * Muestra los niveles de inventario de piezas críticas (menos de 5 unidades) con opciones para iniciar órdenes de compra.
+ * Muestra los niveles de inventario de piezas críticas (aquellas con menos de 5 unidades en almacén)
+ * utilizando el listado genérico {@link Table} envuelto en una tarjeta ({@link Card}).
+ * Provee acciones visuales interactivas para iniciar el proceso de compra o reposición.
+ * 
+ * @example
+ * ```tsx
+ * import { StockCriticoTable } from './components/StockCriticoTable';
+ * 
+ * const criticalItems = [
+ *   { modelo: 'Maniquí Masculino', tipo_parte: 'Cabeza', cantidad_disponible: 3 }
+ * ];
+ * 
+ * <StockCriticoTable data={criticalItems} isLoading={false} />
+ * ```
  */
 export const StockCriticoTable: FC<StockCriticoTableProps> = ({ data, isLoading }) => {
   const columns = [

@@ -5,20 +5,32 @@ import { Maniqui } from '../api/productionService';
 import { getProductionColumns } from '../config/production.config';
 
 /**
- * Props for the ProductionTable component.
+ * Propiedades del componente {@link ProductionTable}.
  */
 export interface ProductionTableProps {
-  /** List of mannequin records in production or inventory. */
+  /** Colección de registros de maniquíes {@link Maniqui} a desplegar en la tabla. */
   data: Maniqui[];
-  /** Translator function. */
+  /** Utilidad de traducción. */
   t: (key: string) => string;
 }
 
 /**
- * Organismo: ProductionTable
+ * Componente Organismo: `ProductionTable`
  * 
- * Renderiza la tabla de producción de maniquíes con columnas preconfiguradas
- * y formateo dinámico de estados (Badges) y fechas.
+ * Renderiza el historial y stock de maniquíes utilizando el listado {@link Table}
+ * con columnas configuradas de manera estándar (número de serie, modelo, fecha de ensamblaje, estado).
+ * Formatea de forma dinámica las celdas mediante {@link Badge} para los estados de ciclo de vida.
+ * 
+ * @example
+ * ```tsx
+ * import { ProductionTable } from './components/ProductionTable';
+ * 
+ * const data = [
+ *   { id: 1, nro_serie: 'SN-001', id_modelo: 10, status: 'Disponible' as const, fecha_ensamblaje: '2026-06-18', modelo_nombre: 'Busto' }
+ * ];
+ * 
+ * <ProductionTable data={data} t={(key) => key} />
+ * ```
  */
 export const ProductionTable: FC<ProductionTableProps> = ({ data, t }) => {
   const columns = getProductionColumns(t);

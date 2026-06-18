@@ -9,18 +9,32 @@ import { Modelo } from '../api/productionService';
 import './AssemblyForm.css';
 
 /**
- * Props for the AssemblyForm component.
+ * Propiedades del componente {@link AssemblyForm}.
  */
 export interface AssemblyFormProps {
-  /** Callback triggered when a mannequin is successfully assembled and registered. */
+  /** Callback opcional que se ejecuta cuando el maniquí se ensambla y registra con éxito. */
   onSuccess?: () => void;
-  /** Callback triggered when the assembly process is cancelled. */
+  /** Callback opcional que se ejecuta al cancelar el proceso de ensamblaje. */
   onCancel?: () => void;
 }
 
 /**
- * Organismo: AssemblyForm
- * Formulario para el registro técnico de ensamblaje (Línea de Montaje).
+ * Componente Organismo: `AssemblyForm`
+ * 
+ * Formulario técnico de la línea de montaje que permite registrar el ensamblaje de un nuevo maniquí.
+ * Facilita la selección del modelo del catálogo técnico y la especificación del número de serie único.
+ * 
+ * Delega su lógica de control y validaciones en el hook {@link useAssemblyController}.
+ * 
+ * @example
+ * ```tsx
+ * import { AssemblyForm } from './components/AssemblyForm';
+ * 
+ * <AssemblyForm 
+ *   onSuccess={() => console.log('¡Ensamblaje registrado!')} 
+ *   onCancel={() => console.log('Proceso cancelado')} 
+ * />
+ * ```
  */
 export const AssemblyForm: FC<AssemblyFormProps> = ({ onSuccess, onCancel }) => {
   const { 

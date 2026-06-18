@@ -1,27 +1,37 @@
 import { ENV } from '@/config/env.config';
 
 /**
- * Structure of critical stock data item.
+ * Estructura de un registro de stock crítico.
  */
 export interface StockCriticoData {
-  /** Name of the mannequin model. */
+  /** Nombre del modelo de maniquí. */
   modelo: string;
-  /** Type of part (e.g. 'Cabeza', 'Torso'). */
+  /** Tipo de parte del cuerpo (ej. 'Cabeza', 'Torso'). */
   tipo_parte: string;
-  /** Number of units available in stock. */
+  /** Cantidad de unidades físicas disponibles en stock. */
   cantidad_disponible: number;
 }
 
 /**
- * Service to handle dashboard-related API operations.
+ * Servicio encargado de gestionar las consultas y peticiones de stock crítico en el backend.
+ * 
+ * Se consume principalmente dentro de {@link useDashboardController}.
+ * 
+ * @example
+ * ```ts
+ * import { dashboardService } from './dashboardService';
+ * 
+ * const token = 'jwt-token-aqui';
+ * const stockCritico = await dashboardService.getStockCritico(token);
+ * ```
  */
 export const dashboardService = {
   /**
-   * Fetches parts that are in critical stock level.
+   * Obtiene la lista de partes que tienen un nivel de stock por debajo del mínimo de seguridad.
    *
-   * @param token - Authentication bearer token.
-   * @returns A promise resolving to a list of StockCriticoData objects.
-   * @throws Session expired or general fetching error.
+   * @param token - Token de autenticación del usuario.
+   * @returns Promesa con el listado de registros de stock crítico {@link StockCriticoData}.
+   * @throws {Error} Si la sesión expira (`auth.error.session_expired`) o si ocurre un fallo de red.
    */
   getStockCritico: async (token: string): Promise<StockCriticoData[]> => {
     const response = await fetch(`${ENV.API_URL}/reportes/stock-critico`, {
@@ -36,13 +46,13 @@ export const dashboardService = {
   },
 
   /**
-   * Generates a new purchase order to replenish stock.
+   * Genera y envía una nueva orden de compra/reposición para reabastecer el stock crítico de una parte.
    *
-   * @param token - Authentication bearer token.
-   * @param modelo - The name of the mannequin model.
-   * @param parte - The name of the part to order.
-   * @returns A promise resolving when the order is successfully created.
-   * @throws Session expired or creation error.
+   * @param token - Token de autenticación del usuario.
+   * @param modelo - Nombre del modelo de maniquí.
+   * @param parte - Nombre del tipo de parte a reponer.
+   * @returns Promesa que se resuelve al crear exitosamente la orden.
+   * @throws {Error} Si la sesión expira o si falla la petición de creación.
    */
   postOrdenCompra: async (token: string, modelo: string, parte: string): Promise<void> => {
     const response = await fetch(`${ENV.API_URL}/notificaciones/ordenes`, {

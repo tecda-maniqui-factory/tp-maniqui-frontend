@@ -12,7 +12,22 @@ import { useAuth } from '@/hooks/useAuth';
 import { productionService } from '../produccion/api/productionService';
 
 /**
- * ModelCreationPage: Página para diseñar y registrar nuevos modelos de maniquíes.
+ * Página de Diseño y Registro de Modelos (`ModelCreationPage`).
+ * 
+ * Permite a los usuarios diseñar nuevos modelos de maniquíes seleccionando de forma interactiva
+ * e ilustrada (mediante {@link SkeletonPadPanel}) qué partes físicas o piezas componen la receta técnica.
+ * Adicionalmente, recopila el nombre, género, costo unitario de producción y precio sugerido de venta.
+ * 
+ * Invoca el servicio {@link productionService.createModelo} al confirmar el envío.
+ * 
+ * @example
+ * ```tsx
+ * import { ModelCreationPage } from './features/modelos/ModelCreationPage';
+ * 
+ * const Router = () => (
+ *   <Route path="/modelos/nuevo" element={<ModelCreationPage />} />
+ * );
+ * ```
  */
 export const ModelCreationPage: FC = () => {
   const { t } = useLanguage();

@@ -8,8 +8,22 @@ import { useAuth } from '@/hooks/useAuth';
 import './ReportsPage.css';
 
 /**
- * Página de Feature: Reportes
- * Integra múltiples reportes analíticos basados en la lógica del backend.
+ * Página del Módulo de Reportes (`ReportsPage`).
+ * 
+ * Orquestador principal de la vista analítica del sistema.
+ * Agrupa y muestra métricas clave (utilizando {@link StatCard}) como la ganancia acumulada y el margen promedio,
+ * además de desplegar de forma tabular la rentabilidad de las ventas registradas mediante {@link RentabilidadTable}.
+ * 
+ * Consume datos desde {@link reportsService} y maneja estados de carga y error en caliente.
+ * 
+ * @example
+ * ```tsx
+ * import ReportsPage from './features/reportes/ReportsPage';
+ * 
+ * const Router = () => (
+ *   <Route path="/reportes" element={<ReportsPage />} />
+ * );
+ * ```
  */
 const ReportsPage: FC = () => {
   const [rentabilidad, setRentabilidad] = useState<RentabilidadItem[]>([]);

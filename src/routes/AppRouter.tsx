@@ -15,7 +15,25 @@ import { ErrorPage } from './ErrorPage';
 import { PrivateLayout } from './PrivateLayout';
 
 /**
- * AppRouter: Orquestador principal de rutas de la aplicación.
+ * Componente `AppRouter`
+ * 
+ * Orquestador principal de rutas de la aplicación. Configura y provee la estructura
+ * de navegación utilizando React Router, gestionando el acceso público (login) y privado
+ * con layouts específicos, además de las restricciones basadas en roles (`gerente_prod`, `operario`, `vendedor`).
+ * 
+ * @example
+ * ```tsx
+ * import { AppRouter } from './routes/AppRouter';
+ * import { AuthProvider } from './context/AuthProvider';
+ * 
+ * function App() {
+ *   return (
+ *     <AuthProvider>
+ *       <AppRouter />
+ *     </AuthProvider>
+ *   );
+ * }
+ * ```
  */
 export const AppRouter: FC = () => {
   const auth = use(AuthContext);

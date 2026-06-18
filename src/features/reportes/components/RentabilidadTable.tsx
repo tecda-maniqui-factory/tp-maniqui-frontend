@@ -45,9 +45,22 @@ export interface RentabilidadTableProps {
 }
 
 /**
- * Componente de Negocio: RentabilidadTable
+ * Componente de Negocio: `RentabilidadTable`
  * 
- * Renderiza una tabla de datos resumiendo márgenes de ganancias y ganancia neta por unidad de maniquí armada.
+ * Renderiza una tabla detallada ({@link Table}) envuelta en un panel ({@link Card})
+ * que resume el análisis financiero de cada maniquí vendido:
+ * precio de venta, costo total de las piezas y ganancia neta con su porcentaje de margen.
+ * 
+ * @example
+ * ```tsx
+ * import { RentabilidadTable } from './components/RentabilidadTable';
+ * 
+ * const data = [
+ *   { maniqui_serie: 'SN-001', modelo: 'Busto', precio_lista: 15000, costo_total_piezas: 8000, margen_bruto: 7000, porcentaje_margen: 46 }
+ * ];
+ * 
+ * <RentabilidadTable data={data} isLoading={false} />
+ * ```
  */
 export const RentabilidadTable: FC<RentabilidadTableProps> = ({ data, isLoading }) => {
   const columns = [

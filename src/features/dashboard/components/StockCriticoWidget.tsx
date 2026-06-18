@@ -46,9 +46,30 @@ export interface StockCriticoWidgetProps {
 }
 
 /**
- * Componente Widget: StockCriticoWidget
+ * Componente Widget: `StockCriticoWidget`
  * 
- * Muestra alertas de stock crítico en el dashboard con acciones interactivas para solicitar piezas.
+ * Widget para el panel de control ({@link Card}) que muestra alertas cuando el inventario
+ * de determinadas piezas de maniquíes cae por debajo del mínimo de seguridad.
+ * 
+ * Renderiza los registros en un listado tabular ({@link Table}) e incluye acciones dinámicas
+ * de reposición (botón de "Pedir" que cambia a "Pedido") según el rol del usuario logueado
+ * y si ya existe una orden activa para evitar duplicados.
+ * 
+ * @example
+ * ```tsx
+ * import { StockCriticoWidget } from './components/StockCriticoWidget';
+ * 
+ * const data = [{ modelo: 'Maniquí Femenino', tipo_parte: 'Cabeza', cantidad_disponible: 2 }];
+ * const ordenes = [{ modelo_nombre: 'Maniquí Femenino', tipo_parte: 'Cabeza' }];
+ * 
+ * <StockCriticoWidget 
+ *   data={data} 
+ *   ordenesActivas={ordenes} 
+ *   onPedir={(item) => console.log('Pedir reposición para:', item)} 
+ *   t={(key) => key} 
+ *   userRole="gerente_prod" 
+ * />
+ * ```
  */
 export const StockCriticoWidget: FC<StockCriticoWidgetProps> = ({ data, isLoading, onPedir, t, userRole, ordenesActivas = [] }) => {
   const columns = useMemo(() => [

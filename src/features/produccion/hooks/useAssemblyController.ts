@@ -5,11 +5,30 @@ import { useLanguage } from '@/hooks/useLanguage';
 import { productionService, Modelo } from '../api/productionService';
 
 /**
- * Controller hook for the Mannequin Assembly Form.
- * Handles loading available mannequin models, form state management, submission execution, and validations.
+ * Hook de control (Controller) para el formulario de ensamblaje ({@link AssemblyForm}).
+ * 
+ * Se encarga de cargar los modelos disponibles en el catálogo ({@link Modelo}), gestionar
+ * el estado de selección de modelo y número de serie del nuevo maniquí, y orquestar el envío
+ * de la petición de ensamblaje mediante el servicio {@link productionService.ensamblarManiqui}.
+ * 
+ * Se integra con los hooks {@link useAuth} y {@link useNotify}.
  *
- * @param onSuccess - Optional callback triggered upon successful mannequin assembly registration.
- * @returns State properties, form control methods, action handlers, and translation utility.
+ * @param onSuccess - Callback opcional ejecutado al concretarse con éxito el ensamblaje en el backend.
+ * @returns Estado local, métodos de cambio y envío, y utilidad de traducción.
+ * 
+ * @example
+ * ```tsx
+ * import { useAssemblyController } from './hooks/useAssemblyController';
+ * 
+ * const MyForm = () => {
+ *   const { modelos, selectedModelo, numeroSerie, handlers } = useAssemblyController(() => console.log('Éxito'));
+ *   return (
+ *     <form onSubmit={handlers.handleSubmit}>
+ *       <input value={numeroSerie} onChange={handlers.handleSerieChange} />
+ *     </form>
+ *   );
+ * };
+ * ```
  */
 export const useAssemblyController = (onSuccess?: () => void) => {
   const { token, logout } = useAuth();

@@ -6,8 +6,28 @@ import ProtectedRoute from './ProtectedRoute';
 import { getSidebarItems } from '@/config/navigation.config';
 
 /**
- * Componente Layout para rutas protegidas.
- * Envuelve el contenido con el MainLayout del sistema.
+ * Componente `PrivateLayout`
+ * 
+ * Componente de diseño (Layout) que envuelve todas las rutas privadas/protegidas de la aplicación.
+ * Utiliza el componente `ProtectedRoute` para asegurar la autenticación del usuario,
+ * e integra la plantilla `MainLayout` configurada dinámicamente con los elementos de la barra
+ * lateral correspondientes al rol del usuario y ruta activa.
+ * 
+ * @example
+ * ```tsx
+ * import { PrivateLayout } from './routes/PrivateLayout';
+ * import { createBrowserRouter } from 'react-router-dom';
+ * 
+ * const router = createBrowserRouter([
+ *   {
+ *     path: '/',
+ *     element: <PrivateLayout />,
+ *     children: [
+ *       { index: true, element: <DashboardPage /> }
+ *     ]
+ *   }
+ * ]);
+ * ```
  */
 export const PrivateLayout: FC = () => {
   const auth = use(AuthContext);

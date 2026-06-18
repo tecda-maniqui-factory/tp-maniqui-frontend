@@ -1,45 +1,55 @@
 import { ENV } from '../../../config/env.config';
 
 /**
- * Represents a profitability report item for a mannequin.
+ * Representa un registro analítico de rentabilidad para un maniquí vendido.
  */
 export interface RentabilidadItem {
-  /** The mannequin's unique serial number. */
+  /** Número de serie único del maniquí. */
   maniqui_serie: string;
-  /** The name of the mannequin model. */
+  /** Nombre del modelo de maniquí. */
   modelo: string;
-  /** The list price/sale price of the mannequin. */
+  /** Precio de lista o precio final de venta. */
   precio_lista: number;
-  /** The total cost of the parts used to assemble it. */
+  /** Costo acumulado de las piezas consumidas para su ensamblaje. */
   costo_total_piezas: number;
-  /** The gross margin amount (price - cost). */
+  /** Margen bruto obtenido expresado en valor monetario (precio_lista - costo_total_piezas). */
   margen_bruto: number;
-  /** The percentage margin. */
+  /** Porcentaje de margen obtenido. */
   porcentaje_margen: number;
 }
 
 /**
- * Represents a critical stock report item.
+ * Representa un registro del reporte de existencias críticas.
  */
 export interface StockCriticoItem {
-  /** The mannequin model associated with the part. */
+  /** Nombre del modelo de maniquí. */
   modelo: string;
-  /** The type of part (e.g. 'Cabeza', 'Torso'). */
+  /** Tipo específico de pieza física (ej. 'Cabeza', 'Torso'). */
   tipo_parte: string;
-  /** The quantity of parts currently available. */
+  /** Cantidad de piezas disponibles en stock. */
   cantidad_disponible: number;
 }
 
 /**
- * Service to handle reports-related API operations.
+ * Servicio técnico de API encargado de realizar las consultas relativas al Módulo de Reportes.
+ * 
+ * Se consume principalmente por la página {@link ReportsPage}.
+ * 
+ * @example
+ * ```ts
+ * import { reportsService } from './reportsService';
+ * 
+ * const token = 'jwt-token';
+ * const rentData = await reportsService.getRentabilidad(token);
+ * ```
  */
 export const reportsService = {
   /**
-   * Fetches the profitability report details.
+   * Obtiene el reporte analítico de rentabilidad detallado por maniquí vendido.
    *
-   * @param token - Authentication bearer token.
-   * @returns A promise resolving to an array of RentabilidadItem.
-   * @throws An error if request fails.
+   * @param token - Token de autenticación del usuario.
+   * @returns Promesa que resuelve a un listado de métricas de rentabilidad {@link RentabilidadItem}.
+   * @throws {Error} Si la petición de red falla o la respuesta HTTP no es exitosa.
    */
   getRentabilidad: async (token: string): Promise<RentabilidadItem[]> => {
     const response = await fetch(`${ENV.API_URL}/reportes/rentabilidad`, {
@@ -50,11 +60,11 @@ export const reportsService = {
   },
 
   /**
-   * Fetches the critical stock report details.
+   * Obtiene el reporte de piezas con nivel de stock crítico (existencias por debajo del mínimo).
    *
-   * @param token - Authentication bearer token.
-   * @returns A promise resolving to an array of StockCriticoItem.
-   * @throws An error if request fails.
+   * @param token - Token de autenticación del usuario.
+   * @returns Promesa que resuelve al listado de stock crítico {@link StockCriticoItem}.
+   * @throws {Error} Si la petición de red falla o la respuesta HTTP no es exitosa.
    */
   getStockCritico: async (token: string): Promise<StockCriticoItem[]> => {
     const response = await fetch(`${ENV.API_URL}/reportes/stock-critico`, {

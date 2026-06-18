@@ -9,8 +9,21 @@ import { useClientesController } from './hooks/useClientesController';
 import './ClientesPage.css';
 
 /**
- * ClientesPage — vista de gestión de clientes.
- * Permite listar, buscar y crear clientes.
+ * Página de Gestión de Clientes (`ClientesPage`).
+ * 
+ * Interfaz de usuario que permite el control y administración del listado de clientes de la empresa.
+ * Proporciona utilidades de búsqueda, listado y un modal para el alta de nuevos clientes.
+ * 
+ * Delega el control de estado en el hook personalizado {@link useClientesController}.
+ * 
+ * @example
+ * ```tsx
+ * import ClientesPage from './features/comercial/ClientesPage';
+ * 
+ * const RouteConfig = () => (
+ *   <Route path="/clientes" element={<ClientesPage />} />
+ * );
+ * ```
  */
 const ClientesPage: FC = () => {
   const {

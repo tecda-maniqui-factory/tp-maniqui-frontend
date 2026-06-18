@@ -5,11 +5,31 @@ import { useLanguage } from '@/hooks/useLanguage';
 import { comercialService, Cliente } from '../api/comercialService';
 
 /**
- * Controller hook for the Customer Management sub-module.
- * Handles customer listings, search filtering, client registration form state,
- * submission loading indicators, form validation, and modal toggles.
- *
- * @returns State properties, form control methods, action handlers, and translation utility.
+ * Hook de control (Controller) para la sección de Gestión de Clientes.
+ * 
+ * Centraliza la lógica para recuperar el listado de clientes mediante {@link comercialService},
+ * filtrar dinámicamente los registros según búsquedas por nombre, CUIT/CUIL o email,
+ * gestionar el estado y validaciones del formulario de alta de nuevo cliente (incluyendo
+ * formato correcto de CUIT y email), y controlar la apertura/cierre de modales.
+ * 
+ * Se conecta con los hooks globales {@link useAuth} y {@link useNotify}.
+ * 
+ * @example
+ * ```tsx
+ * import { useClientesController } from './hooks/useClientesController';
+ * 
+ * const ClientesList = () => {
+ *   const { clientesFiltrados, search, setSearch, handleOpenModal } = useClientesController();
+ *   return (
+ *     <div>
+ *       <input value={search} onChange={(e) => setSearch(e.target.value)} />
+ *       <button onClick={handleOpenModal}>Nuevo Cliente</button>
+ *     </div>
+ *   );
+ * };
+ * ```
+ * 
+ * @returns Estado local, métodos de control de formulario, manejadores de eventos y utilidad de traducción.
  */
 export const useClientesController = () => {
   const { token, logout } = useAuth();

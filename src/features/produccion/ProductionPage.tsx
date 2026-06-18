@@ -10,8 +10,22 @@ import { useAuth } from '@/hooks/useAuth';
 import './ProductionPage.css';
 
 /**
- * ProductionPage: Orquestador de la feature de Producción.
- * Consume el controlador para mostrar datos reales del inventario.
+ * Página del Módulo de Producción (`ProductionPage`).
+ * 
+ * Orquestador principal de la vista de producción.
+ * Muestra el listado de maniquíes ensamblados e interactúa con el modal de ensamblaje ({@link AssemblyForm})
+ * restringiendo acciones según el rol del usuario (operarios o gerentes de producción).
+ * 
+ * Delega el control de estado en el hook de control {@link useProductionController}.
+ * 
+ * @example
+ * ```tsx
+ * import ProductionPage from './features/produccion/ProductionPage';
+ * 
+ * const Router = () => (
+ *   <Route path="/produccion" element={<ProductionPage />} />
+ * );
+ * ```
  */
 const ProductionPage: FC = () => {
   const { user } = useAuth();

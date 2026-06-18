@@ -1,17 +1,30 @@
 import { ENV } from '@/config/env.config';
 
+/**
+ * Servicio técnico de API encargado de registrar la recepción e ingreso de suministros (piezas de maniquíes) al stock.
+ * 
+ * Se consume principalmente dentro de {@link useSupplyController}.
+ * 
+ * @example
+ * ```ts
+ * import { supplyService } from './supplyService';
+ * 
+ * const token = 'jwt-token';
+ * await supplyService.ingresarPiezas(token, 'Nac', 'CAB', 5, 10, 15000);
+ * ```
+ */
 export const supplyService = {
   /**
-   * Registers the arrival of mannequin parts from a supplier.
+   * Registra el ingreso/arribo de un lote de piezas físicas al almacén de suministros.
    *
-   * @param token - Authentication bearer token.
-   * @param origen_codigo - Code representing the origin supplier (e.g. 'Nacional', 'Importado').
-   * @param tipo_parte_codigo - Code of the part type (e.g. 'C', 'T').
-   * @param modelo_id - ID of the mannequin model.
-   * @param cantidad - Quantity of parts arriving.
-   * @param costo - Unit cost of the parts.
-   * @returns A promise resolving when the transaction is saved.
-   * @throws Session expired error or API response error.
+   * @param token - Token de autenticación del usuario.
+   * @param origen_codigo - Código del proveedor de origen (ej. 'Nac', 'Imp').
+   * @param tipo_parte_codigo - Código de la pieza recibida (ej. 'CAB', 'TOR').
+   * @param modelo_id - ID del modelo técnico de maniquí destinatario.
+   * @param cantidad - Cantidad de piezas del lote.
+   * @param costo - Costo total del lote recibido.
+   * @returns Promesa que se resuelve al guardar con éxito el ingreso.
+   * @throws {Error} Si la sesión expira (`auth.error.session_expired`) o falla la validación en el backend.
    */
   ingresarPiezas: async (token: string, origen_codigo: string, tipo_parte_codigo: string, modelo_id: number, cantidad: number, costo: number): Promise<void> => {
     const response = await fetch(`${ENV.API_URL}/piezas/ingreso`, {

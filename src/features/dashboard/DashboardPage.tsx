@@ -5,8 +5,22 @@ import { useDashboardController } from './hooks/useDashboardController';
 import './DashboardPage.css';
 
 /**
- * DashboardPage: Orquestador de la feature de Dashboard.
- * Proporciona una vista general del estado del sistema y alertas críticas.
+ * Página del Panel de Control (`DashboardPage`).
+ * 
+ * Vista centralizada que provee un resumen operativo de la aplicación.
+ * Integra widgets críticos como el listado de existencias bajo mínimo ({@link StockCriticoWidget})
+ * y orquesta la actualización y solicitudes de stock en base al rol de usuario logueado.
+ * 
+ * Delega el control de estado en el hook {@link useDashboardController}.
+ * 
+ * @example
+ * ```tsx
+ * import DashboardPage from './features/dashboard/DashboardPage';
+ * 
+ * const AppRoutes = () => (
+ *   <Route path="/dashboard" element={<DashboardPage />} />
+ * );
+ * ```
  */
 const DashboardPage: FC = () => {
   const { stockCritico, ordenesActivas, isLoading, handlers, t, user } = useDashboardController();

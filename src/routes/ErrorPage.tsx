@@ -4,8 +4,25 @@ import Button from '@/components/atoms/form/Button';;
 import './ErrorPage.css';
 
 /**
- * Componente de Error para el Router.
- * Proporciona una UX limpia cuando algo falla en una ruta.
+ * Componente `ErrorPage`
+ * 
+ * Página de visualización de errores que actúa como boundary (límite de error) para React Router.
+ * Captura y muestra información detallada del error (status text o mensaje de error) en la interfaz
+ * y proporciona un botón para redirigir de forma segura al usuario al inicio de la aplicación.
+ * 
+ * @example
+ * ```tsx
+ * import { ErrorPage } from './routes/ErrorPage';
+ * import { createBrowserRouter } from 'react-router-dom';
+ * 
+ * const router = createBrowserRouter([
+ *   {
+ *     path: '*',
+ *     element: <DashboardPage />,
+ *     errorElement: <ErrorPage />
+ *   }
+ * ]);
+ * ```
  */
 export const ErrorPage: FC = () => {
   const error = useRouteError() as { statusText?: string; message?: string } | null;

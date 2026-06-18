@@ -7,27 +7,51 @@ import { supplyService } from '../api/supplyService';
 import { ENV } from '@/config/env.config';
 
 /**
- * Represents a purchase order in the supply context.
+ * Representa una orden de compra en el contexto de suministros.
  */
 export interface OrdenCompra {
-  /** Unique identifier of the purchase order. */
+  /** Identificador único de la orden de compra. */
   id: string;
-  /** Name of the mannequin model. */
+  /** Nombre del modelo de maniquí asociado. */
   modelo_nombre: string;
-  /** The specific type of part ordered. */
+  /** Tipo específico de pieza ordenada (ej: 'Cabeza', 'Torso'). */
   tipo_parte: string;
-  /** The date/time string of the order. */
+  /** Marca de tiempo/fecha de creación de la orden. */
   fecha: string;
-  /** The status of the purchase order. */
+  /** Estado de procesamiento de la orden. */
   estado: 'pendiente' | 'completada';
 }
 
 /**
- * Controller hook for the Supply/Replenishment page.
- * Manages fetching mannequin models, loading suppliers, tracking active purchase orders via real-time SSE,
- * handling manual inventory entry form submissions, and pre-filling the entry form when completing an active purchase order.
- *
- * @returns State properties, options lists, action handlers, and the translation utility.
+ * Hook de control (Controller) para la vista de Suministros/Recepción de Piezas.
+ * 
+ * Gestiona de forma unificada el estado y flujo para:
+ * - Cargar modelos del catálogo mediante {@link productionService}.
+ * - Recuperar dinámicamente los proveedores registrados en el backend.
+ * - Suscribirse mediante Server-Sent Events (SSE) a los eventos en tiempo real de órdenes de compra pendientes.
+ * - Registrar ingresos manuales de stock físico con el servicio {@link supplyService}.
+ * - Rellenar automáticamente el formulario de ingreso al seleccionar una orden de compra pendiente de la lista.
+ * 
+ * Se conecta con los hooks globales {@link useAuth} y {@link useNotify}.
+ * 
+ * @example
+ * ```tsx
+ * import { useSupplyController } from './hooks/useSupplyController';
+ * 
+ * const IngresoPanel = () => {
+ *   const { ordenesActivas, isSubmitting, handlers } = useSupplyController();
+ *   return (
+ *     <div>
+ *       <span>Pedidos Pendientes: {ordenesActivas.length}</span>
+ *       <form onSubmit={handlers.handleSubmit}>
+ *         <button type="submit" disabled={isSubmitting}>Registrar</button>
+ *       </form>
+ *     </div>
+ *   );
+ * };
+ * ```
+ * 
+ * @returns Estado local de modelos, opciones, listado de órdenes activas de compra y manejadores de acción.
  */
 export const useSupplyController = () => {
   const { token, logout } = useAuth();

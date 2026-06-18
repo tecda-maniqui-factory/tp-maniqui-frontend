@@ -15,6 +15,24 @@ export interface CredentialOverlayProps {
  * 
  * Muestra credenciales rápidas de prueba en entornos de desarrollo/demo para facilitar
  * el inicio de sesión con diferentes roles de usuario (Gerente, Operario, Vendedor).
+ * 
+ * @example
+ * ```tsx
+ * import { CredentialOverlay } from './components/CredentialOverlay';
+ * 
+ * const LoginForm = () => {
+ *   const fillCredentials = (user: string, pass: string) => {
+ *     setUsername(user);
+ *     setPassword(pass);
+ *   };
+ * 
+ *   return (
+ *     <div>
+ *       <CredentialOverlay onSelect={fillCredentials} />
+ *     </div>
+ *   );
+ * };
+ * ```
  */
 export const CredentialOverlay: FC<CredentialOverlayProps> = ({ onSelect }) => {
   const credentials = [

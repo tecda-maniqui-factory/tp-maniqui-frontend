@@ -17,25 +17,36 @@ import { comercialService, Cliente } from './api/comercialService';
 import './PresupuestoPage.css';
 
 /**
- * Represents an item in the budget/quote estimation list.
+ * Representa un artículo cotizado en el presupuesto.
  */
-interface QuoteItem {
-  /** Model ID reference. */
+export interface QuoteItem {
+  /** Referencia del identificador único del modelo. */
   id: number;
-  /** Name of the model. */
+  /** Nombre del modelo de maniquí. */
   nombre: string;
-  /** Quantity of mannequins estimated. */
+  /** Cantidad de maniquíes presupuestados. */
   cantidad: number;
-  /** Unit price of the model. */
+  /** Precio de venta unitario del modelo. */
   precioUnitario: number;
-  /** Subtotal cost (cantidad * precioUnitario). */
+  /** Subtotal acumulado para este ítem (cantidad * precioUnitario). */
   subtotal: number;
 }
 
 /**
- * Budget calculator page component.
- * Allows simulating costs for customers, adding models to a draft invoice,
- * performing currency conversion, and outputting/printing the final estimate.
+ * Página del Cotizador de Presupuestos (`PresupuestoPage`).
+ * 
+ * Permite simular transacciones comerciales, añadir modelos al borrador de facturación,
+ * efectuar conversiones automáticas de moneda (ARS/USD), y emitir presupuestos en formato imprimible
+ * sin afectar el inventario real.
+ * 
+ * @example
+ * ```tsx
+ * import PresupuestoPage from './features/comercial/PresupuestoPage';
+ * 
+ * const Router = () => (
+ *   <Route path="/comercial/presupuesto" element={<PresupuestoPage />} />
+ * );
+ * ```
  */
 export const PresupuestoPage: FC = () => {
   const { token, logout } = useAuth();

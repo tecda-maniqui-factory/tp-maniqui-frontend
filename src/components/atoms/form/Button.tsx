@@ -56,7 +56,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
  * <Button variant="danger" iconName="Trash2" isCompact onClick={handleDelete} />
  * ```
  */
-const Button: FC<ButtonProps> = ({ 
+export const Button: FC<ButtonProps> = ({ 
   children, 
   iconName,
   variant = 'primary', 

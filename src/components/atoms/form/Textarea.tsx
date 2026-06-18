@@ -37,7 +37,7 @@ export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElemen
  * />
  * ```
  */
-const Textarea: FC<TextareaProps> = ({
+export const Textarea: FC<TextareaProps> = ({
   hasError = false,
   disabled = false,
   className = '',

@@ -36,7 +36,7 @@ export interface CheckboxProps extends Omit<InputHTMLAttributes<HTMLInputElement
  * <Checkbox disabled>Opción no disponible</Checkbox>
  * ```
  */
-const Checkbox: FC<CheckboxProps> = ({
+export const Checkbox: FC<CheckboxProps> = ({
   variant = 'primary',
   disabled = false,
   className = '',

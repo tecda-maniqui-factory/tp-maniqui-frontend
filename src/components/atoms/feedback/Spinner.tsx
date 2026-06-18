@@ -40,7 +40,7 @@ export interface SpinnerProps {
  * <Spinner className="mx-auto my-4" />
  * ```
  */
-const Spinner: FC<SpinnerProps> = ({
+export const Spinner: FC<SpinnerProps> = ({
   size = 24,
   variant = 'primary',
   className = ''

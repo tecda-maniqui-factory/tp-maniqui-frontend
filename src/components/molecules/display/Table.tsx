@@ -38,38 +38,49 @@ export interface TableProps<T> {
 }
 
 /**
- * Componente de Tabla flexible siguiendo la metodología BEM y Atomic Design.
+ * Componente de Tabla flexible y genérico siguiendo la metodología BEM.
  * 
- * Soporta cabeceras de columna accesibles mediante `scope="col"`, renderizado condicional,
- * pie de tabla y mapeo personalizado de celdas y claves de fila.
+ * Proporciona un renderizado seguro y accesible de datos tabulares con soporte para:
+ * - Cabeceras de columna alineables mediante {@link TableColumn.align}.
+ * - Renderizadores de celda dinámicos y avanzados mediante {@link TableProps.renderCell}.
+ * - Variante estética compacta y filas interactivas al pasar el cursor (hover).
+ * - Mensajes de estado cuando la colección de datos está vacía.
+ * 
+ * @template T - Tipo del registro de datos (debe extender de un objeto estándar indexable).
+ * @param props - Propiedades definidas en {@link TableProps}.
  * 
  * @example
  * ```tsx
- * import Table, { TableColumn } from './Table';
- * 
- * interface User { id: number; name: string; role: string; }
- * 
- * const columns: TableColumn[] = [
- *   { key: 'name', header: 'Nombre Completo' },
- *   { key: 'role', header: 'Rol del Sistema', align: 'center' }
+ * // 1. Tabla básica de texto
+ * const columns = [
+ *   { key: 'nombre', header: 'Nombre' },
+ *   { key: 'rol', header: 'Rol', align: 'center' }
  * ];
  * 
- * const users: User[] = [
- *   { id: 1, name: 'Juan Pérez', role: 'Administrador' }
+ * <Table columns={columns} data={usuarios} rowKey={(u) => u.id} />
+ * 
+ * // 2. Tabla avanzada usando renderCell para inyectar otros componentes
+ * const columns = [
+ *   { key: 'nombre', header: 'Nombre' },
+ *   { key: 'estado', header: 'Estado', align: 'center' },
+ *   { key: 'acciones', header: 'Acciones', align: 'right' }
  * ];
  * 
- * const UserTable = () => (
- *   <Table 
- *     columns={columns} 
- *     data={users} 
- *     rowKey={(user) => user.id} 
- *     isHoverable={true} 
- *   />
- * );
+ * <Table 
+ *   columns={columns} 
+ *   data={usuarios}
+ *   rowKey={(u) => u.id}
+ *   renderCell={(user, col) => {
+ *     if (col.key === 'estado') {
+ *       return <Badge variant={user.active ? 'success' : 'danger'}>{user.active ? 'Activo' : 'Inactivo'}</Badge>;
+ *     }
+ *     if (col.key === 'acciones') {
+ *       return <Button iconName="Edit" isCompact onClick={() => handleEdit(user.id)} />;
+ *     }
+ *     return user[col.key];
+ *   }}
+ * />
  * ```
- * 
- * @param props - Props matching {@link TableProps}.
- * @returns Elemento React representativo de la tabla.
  */
 const Table = <T extends Record<string, any>>({
   columns,

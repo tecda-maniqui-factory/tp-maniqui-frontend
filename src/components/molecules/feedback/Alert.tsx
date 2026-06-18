@@ -1,27 +1,36 @@
 import { FC, ReactNode } from 'react';
-import Icon from '@/components/atoms/display/Icon';;
+import Icon from '@/components/atoms/display/Icon';
 import { icons } from 'lucide-react';
 import './Alert.css';
 
 /**
- * Props for the Alert component.
+ * Propiedades del componente {@link Alert}.
  */
 export interface AlertProps {
-  /** Optional header title for the alert. */
+  /** Título opcional en negrita para encabezar el mensaje de alerta. */
   title?: string;
-  /** Content message to display inside the alert. */
+  /** Contenido principal o mensaje detallado a mostrar dentro de la alerta. */
   children: ReactNode;
-  /** Color variant of the alert following Flat UI palettes. */
+  /** 
+   * Variante visual que define el color del contenedor y el icono por defecto (Flat UI).
+   * @default 'info'
+   */
   variant?: 'primary' | 'secondary' | 'danger' | 'success' | 'warning' | 'info';
-  /** Optional custom Lucide icon name. If omitted, uses a default based on variant. */
+  /** 
+   * Nombre de un icono personalizado de Lucide a renderizar a la izquierda.
+   * Si no se provee, se elige uno automáticamente basándose en la {@link AlertProps.variant}.
+   */
   iconName?: keyof typeof icons;
-  /** Optional callback to close/dismiss the alert. */
+  /** 
+   * Función callback opcional para cerrar o descartar la alerta.
+   * Si está presente, renderiza un botón de cierre en forma de cruz ('X') a la derecha.
+   */
   onClose?: () => void;
-  /** Additional custom CSS class name. */
+  /** Clase CSS adicional para sobreescribir estilos o definir márgenes. */
   className?: string;
 }
 
-/** Default Lucide icon mapped to each alert style variant. */
+/** Iconos por defecto de Lucide asociados a cada variante de alerta. */
 const defaultIcons: Record<string, keyof typeof icons> = {
   primary: 'Info',
   secondary: 'Info',
@@ -33,7 +42,34 @@ const defaultIcons: Record<string, keyof typeof icons> = {
 
 /**
  * Componente Molécula: Alert
- * Caja de notificación estática para mostrar mensajes importantes.
+ * 
+ * Banner estático de retroalimentación para mostrar información relevante, advertencias,
+ * éxitos o errores de negocio. Incluye soporte para cierre interactivo y resolución automática de iconos.
+ * Cumple con accesibilidad WAI-ARIA asignando el atributo `role="alert"`.
+ * 
+ * @param props - Propiedades definidas en {@link AlertProps}.
+ * 
+ * @example
+ * ```tsx
+ * // Alerta informativa básica
+ * <Alert variant="info">
+ *   El sistema se actualizará a las 22:00 hs.
+ * </Alert>
+ * 
+ * // Alerta de éxito con título
+ * <Alert variant="success" title="¡Ensamblado Exitoso!">
+ *   El maniquí número de serie S-1-2491 se ha guardado en el inventario.
+ * </Alert>
+ * 
+ * // Alerta descartable de peligro con callback
+ * <Alert 
+ *   variant="danger" 
+ *   title="Error de Validación" 
+ *   onClose={() => setHasError(false)}
+ * >
+ *   Faltan piezas en el stock de cabezas para el modelo elegido.
+ * </Alert>
+ * ```
  */
 const Alert: FC<AlertProps> = ({
   title,

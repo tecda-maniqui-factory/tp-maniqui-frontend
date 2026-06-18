@@ -2,51 +2,70 @@ import { FC, ReactNode, useId, Children, isValidElement, cloneElement } from 're
 import './FormField.css';
 
 /**
- * Props para el componente {@link FormField}.
+ * Propiedades del componente {@link FormField}.
  */
 export interface FormFieldProps {
   /** Texto opcional para la etiqueta que se muestra arriba del control de formulario. */
   label?: string;
-  /** Mensaje de error de validación. Si se define, el campo adopta el estilo de error visual. */
+  /** Mensaje de error de validación. Si se define, aplica estilos visuales de advertencia y se renderiza en rojo. */
   error?: string;
-  /** Texto de ayuda/guía opcional que se muestra cuando no hay error. */
+  /** Texto de ayuda/guía opcional que se muestra debajo del control (solo si no hay error activo). */
   helperText?: string;
-  /** Si es true, añade un indicador visual de obligatoriedad a la etiqueta. */
+  /** 
+   * Si es `true`, añade un asterisco rojo indicador de obligatoriedad junto a la etiqueta.
+   * @default false
+   */
   required?: boolean;
-  /** El elemento de control de formulario hijo (ej. {@link Input}, {@link Select}, {@link Textarea}). */
+  /** 
+   * El elemento de control de formulario hijo. 
+   * Típicamente un componente {@link Input}, {@link Select} o {@link Textarea}.
+   */
   children: ReactNode;
-  /** Clase CSS personalizada adicional. */
+  /** Clase CSS personalizada para definir márgenes o dimensiones externas. */
   className?: string;
-  /** ID para asociar explícitamente el label con el control hijo. Si se omite, se autogenera uno único. */
+  /** 
+   * Identificador explícito para vincular el label con el control hijo. 
+   * Si se omite, se autogenera un ID único y accesible usando `useId`.
+   */
   htmlFor?: string;
 }
 
 /**
- * Molécula que encapsula la lógica visual de un campo de formulario.
+ * Componente Molécula: FormField
  * 
- * Unifica la etiqueta de texto (Label), el control de formulario hijo (como {@link Input})
- * y el mensaje de error o ayuda. Genera de forma automatizada IDs únicos mediante `useId`
- * para garantizar la vinculación accesible entre el label y su control.
+ * Contenedor estructurado de control de formulario. Encapsula y alinea de forma accesible:
+ * - Una etiqueta descriptiva (`<label>`).
+ * - Un componente de entrada de datos hijo (como {@link Input}, {@link Select} o {@link Textarea}).
+ * - Mensajes contextuales dinámicos (errores de validación o textos de ayuda).
+ * 
+ * Genera automáticamente enlaces de identificación (`id`/`htmlFor`) mediante `useId` y
+ * el clonado de elementos React en caso de que no se provean de forma manual.
+ * 
+ * @param props - Propiedades definidas en {@link FormFieldProps}.
  * 
  * @example
  * ```tsx
- * import FormField from './FormField';
- * import Input from '../../atoms/form/Input';
+ * // 1. Campo de texto obligatorio con icono
+ * <FormField 
+ *   label="Nombre de Usuario" 
+ *   required 
+ *   helperText="Debe ser único en el sistema"
+ * >
+ *   <Input placeholder="Ingrese username" iconName="User" />
+ * </FormField>
  * 
- * const EmailField = () => (
- *   <FormField 
- *     label="Correo Electrónico" 
- *     required 
- *     error={errors.email}
- *     helperText="Introduce tu correo institucional"
- *   >
- *     <Input type="email" iconName="Mail" placeholder="ejemplo@dominio.com" />
- *   </FormField>
- * );
+ * // 2. Selector desplegable con error de validación activo
+ * <FormField 
+ *   label="Rol de Acceso" 
+ *   error="Debes seleccionar un rol válido"
+ * >
+ *   <Select 
+ *     options={roles} 
+ *     placeholder="Seleccione..." 
+ *     hasError={true} 
+ *   />
+ * </FormField>
  * ```
- * 
- * @param props - Props matching {@link FormFieldProps}.
- * @returns Elemento React que estructura el campo de formulario.
  */
 const FormField: FC<FormFieldProps> = ({
   label,

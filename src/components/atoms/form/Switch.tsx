@@ -41,7 +41,7 @@ export interface SwitchProps extends Omit<InputHTMLAttributes<HTMLInputElement>,
  * <Switch label="Función premium bloqueada" disabled />
  * ```
  */
-const Switch: FC<SwitchProps> = ({
+export const Switch: FC<SwitchProps> = ({
   label,
   variant = 'primary',
   disabled = false,

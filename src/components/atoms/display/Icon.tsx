@@ -47,7 +47,7 @@ export interface IconProps {
  * <Icon name="Download" className="mr-2" />
  * ```
  */
-const Icon: FC<IconProps> = ({ 
+export const Icon: FC<IconProps> = ({ 
   name, 
   size = 20, 
   color = 'currentColor',

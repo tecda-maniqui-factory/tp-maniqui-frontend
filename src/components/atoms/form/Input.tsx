@@ -51,7 +51,7 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
  * />
  * ```
  */
-const Input: FC<InputProps> = ({
+export const Input: FC<InputProps> = ({
   iconName,
   variant,
   hasError = false,

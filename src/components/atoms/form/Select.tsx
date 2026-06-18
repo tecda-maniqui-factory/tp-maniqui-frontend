@@ -77,7 +77,7 @@ export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
  * />
  * ```
  */
-const Select: FC<SelectProps> = ({
+export const Select: FC<SelectProps> = ({
   options,
   iconName,
   variant,

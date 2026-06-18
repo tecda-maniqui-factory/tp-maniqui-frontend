@@ -1,24 +1,43 @@
 import { FC, ChangeEvent, FormEvent, useState } from 'react';
 import Input from '@/components/atoms/form/Input';
-import Button from '@/components/atoms/form/Button';;
+import Button from '@/components/atoms/form/Button';
 import './SearchBar.css';
 
 /**
- * Props for the SearchBar component.
+ * Propiedades del componente {@link SearchBar}.
  */
 export interface SearchBarProps {
-  /** Optional placeholder text inside the input. */
+  /** 
+   * Texto de sugerencia o marcador de posición que se muestra dentro del input.
+   * @default "Buscar..."
+   */
   placeholder?: string;
-  /** Optional callback triggered with the search query upon submission. */
+  /** 
+   * Función callback opcional que se ejecuta al enviar el formulario (Submit) o presionar Enter.
+   * Devuelve el texto ingresado en el input.
+   */
   onSearch?: (value: string) => void;
-  /** Optional custom CSS class name. */
+  /** Clase CSS adicional para ajustar el margen o la alineación de la barra de búsqueda. */
   className?: string;
 }
 
 /**
- * Molécula: SearchBar
+ * Componente Molécula: SearchBar
  * 
- * Combina el átomo Input con funcionalidad de búsqueda.
+ * Barra de búsqueda modular que integra un campo de texto {@link Input} con un icono de lupa,
+ * y un botón de confirmación {@link Button} compacto de envío.
+ * Utiliza un elemento `<form>` nativo para interceptar la acción de búsqueda al presionar "Enter".
+ * 
+ * @param props - Propiedades definidas en {@link SearchBarProps}.
+ * 
+ * @example
+ * ```tsx
+ * // Barra de búsqueda simple con callback
+ * <SearchBar 
+ *   placeholder="Buscar órdenes de producción..." 
+ *   onSearch={(query) => console.log('Buscando:', query)} 
+ * />
+ * ```
  */
 const SearchBar: FC<SearchBarProps> = ({
   placeholder = "Buscar...",

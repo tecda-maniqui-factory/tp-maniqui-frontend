@@ -47,7 +47,7 @@ export interface BadgeProps {
  * </Badge>
  * ```
  */
-const Badge: FC<BadgeProps> = ({
+export const Badge: FC<BadgeProps> = ({
   children,
   variant = 'primary',
   iconName,

@@ -1,11 +1,19 @@
 import { FC } from 'react';
-import { Table, Card } from '../../../components/molecules';
-import { Button, Badge } from '../../../components/atoms';
+import Table from '@/components/molecules/display/Table';
+import Card from '@/components/molecules/display/Card';;
+import Button from '@/components/atoms/form/Button';
+import Badge from '@/components/atoms/display/Badge';;
 
 interface StockCriticoData {
   modelo: string;
   tipo_parte: string;
   cantidad_disponible: number;
+}
+
+interface Column {
+  key: string;
+  header: string;
+  align?: 'left' | 'center' | 'right';
 }
 
 interface StockCriticoTableProps {
@@ -25,7 +33,7 @@ export const StockCriticoTable: FC<StockCriticoTableProps> = ({ data, isLoading 
     { key: 'actions', header: 'Acción', align: 'center' as const }
   ];
 
-  const renderCell = (item: StockCriticoData, col: any) => {
+  const renderCell = (item: StockCriticoData, col: Column) => {
     if (col.key === 'cantidad_disponible') {
       return (
         <Badge variant={item.cantidad_disponible === 0 ? 'danger' : 'warning'}>
@@ -40,7 +48,7 @@ export const StockCriticoTable: FC<StockCriticoTableProps> = ({ data, isLoading 
         </Button>
       );
     }
-    return item[col.key as keyof StockCriticoData] as any;
+    return item[col.key as keyof StockCriticoData] as string | number | undefined;
   };
 
   return (

@@ -1,6 +1,10 @@
 import { FC } from 'react';
-import { Input, Button, Spinner } from '@/components/atoms';
-import { FormField, Card, Alert } from '@/components/molecules';
+import Input from '@/components/atoms/form/Input';
+import Button from '@/components/atoms/form/Button';
+import Spinner from '@/components/atoms/feedback/Spinner';;
+import FormField from '@/components/molecules/form/FormField';
+import Card from '@/components/molecules/display/Card';
+import Alert from '@/components/molecules/feedback/Alert';;
 import { useLoginController } from '../hooks/useLoginController';
 import { CredentialOverlay } from './CredentialOverlay';
 import './LoginForm.css';

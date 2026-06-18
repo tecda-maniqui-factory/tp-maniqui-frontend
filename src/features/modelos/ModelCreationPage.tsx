@@ -1,7 +1,10 @@
 import { FC, useState } from 'react';
-import { PageHeader } from '@/components/organisms';
-import { FormField } from '@/components/molecules';
-import { Input, Button, Spinner, Select } from '@/components/atoms';
+import PageHeader from '@/components/organisms/layout/PageHeader';;
+import FormField from '@/components/molecules/form/FormField';;
+import Input from '@/components/atoms/form/Input';
+import Button from '@/components/atoms/form/Button';
+import Spinner from '@/components/atoms/feedback/Spinner';
+import Select from '@/components/atoms/form/Select';;
 import { SkeletonPadPanel, SkeletonPart } from './components/SkeletonPadPanel';
 import { useLanguage } from '@/hooks/useLanguage';
 import { useNotify } from '@/hooks/useNotify';
@@ -18,6 +21,8 @@ export const ModelCreationPage: FC = () => {
 
   const [nombre, setNombre] = useState('');
   const [sexo, setSexo] = useState('');
+  const [costoUnitario, setCostoUnitario] = useState('');
+  const [precioVenta, setPrecioVenta] = useState('');
   const [selectedParts, setSelectedParts] = useState<SkeletonPart[]>(['CAB', 'TOR', 'BRA-I', 'BRA-D', 'PIE-I', 'PIE-D']);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -31,18 +36,22 @@ export const ModelCreationPage: FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!nombre || !sexo || selectedParts.length === 0 || !token) return;
+    if (!nombre || !sexo || !costoUnitario || !precioVenta || selectedParts.length === 0 || !token) return;
 
     setIsSubmitting(true);
     try {
       await productionService.createModelo(token, {
         nombre,
         partes: selectedParts,
-        sexo_id: Number(sexo)
+        sexo_id: Number(sexo),
+        costo_unitario: Number(costoUnitario),
+        precio_venta: Number(precioVenta)
       });
       notify(`Modelo "${nombre}" creado exitosamente con ${selectedParts.length} piezas.`, 'success');
       setNombre('');
       setSexo('');
+      setCostoUnitario('');
+      setPrecioVenta('');
       setSelectedParts(['CAB', 'TOR', 'BRA-I', 'BRA-D', 'PIE-I', 'PIE-D']);
     } catch (err: any) {
       if (err.message === 'auth.error.session_expired') {
@@ -99,10 +108,38 @@ export const ModelCreationPage: FC = () => {
             />
           </FormField>
 
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+            <FormField label={t('production.model.cost_label')}>
+              <Input 
+                type="number"
+                min="0.01"
+                step="0.01"
+                placeholder="Ej: 5000.00"
+                value={costoUnitario}
+                onChange={(e) => setCostoUnitario(e.target.value)}
+                disabled={isSubmitting}
+                required
+              />
+            </FormField>
+
+            <FormField label={t('production.model.price_label')}>
+              <Input 
+                type="number"
+                min="0.01"
+                step="0.01"
+                placeholder="Ej: 18500.00"
+                value={precioVenta}
+                onChange={(e) => setPrecioVenta(e.target.value)}
+                disabled={isSubmitting}
+                required
+              />
+            </FormField>
+          </div>
+
           <Button 
             type="submit" 
             variant="primary" 
-            isDisabled={isSubmitting || !nombre || !sexo || selectedParts.length === 0}
+            isDisabled={isSubmitting || !nombre || !sexo || !costoUnitario || !precioVenta || selectedParts.length === 0}
           >
             {isSubmitting ? <Spinner size={20} /> : 'Guardar Nuevo Modelo'}
           </Button>

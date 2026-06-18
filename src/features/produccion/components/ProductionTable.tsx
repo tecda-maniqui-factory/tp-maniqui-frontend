@@ -1,6 +1,6 @@
 import { FC, ReactNode } from 'react';
-import { Table, TableColumn } from '@/components/molecules';
-import { Badge } from '@/components/atoms';
+import Table, { TableColumn } from '@/components/molecules/display/Table';;
+import Badge from '@/components/atoms/display/Badge';;
 import { Maniqui } from '../api/productionService';
 import { getProductionColumns } from '../config/production.config';
 

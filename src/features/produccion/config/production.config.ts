@@ -1,4 +1,4 @@
-import { TableColumn } from '@/components/molecules';
+import { TableColumn } from '@/components/molecules/display/Table';;
 
 export const getProductionColumns = (t: (key: string) => string): TableColumn[] => [
   { key: 'numero_serie', header: t('production.table.serie') },

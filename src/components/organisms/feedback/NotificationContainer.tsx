@@ -1,7 +1,7 @@
 import { FC, use } from 'react';
 import { createPortal } from 'react-dom';
-import { NotificationContext } from '@/context';
-import { Alert } from '@/components/molecules';
+import { NotificationContext } from '@/context/NotificationContext';;
+import Alert from '@/components/molecules/feedback/Alert';;
 import './NotificationContainer.css';
 
 /**

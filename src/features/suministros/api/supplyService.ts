@@ -4,14 +4,14 @@ export const supplyService = {
   /**
    * Registra el ingreso de piezas desde un proveedor.
    */
-  ingresarPiezas: async (token: string, origen_codigo: string, tipo_parte_codigo: string, modelo_id: number, cantidad: number): Promise<void> => {
+  ingresarPiezas: async (token: string, origen_codigo: string, tipo_parte_codigo: string, modelo_id: number, cantidad: number, costo: number): Promise<void> => {
     const response = await fetch(`${ENV.API_URL}/piezas/ingreso`, {
       method: 'POST',
       headers: { 
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ origen_codigo, tipo_parte_codigo, modelo_id, cantidad })
+      body: JSON.stringify({ origen_codigo, tipo_parte_codigo, modelo_id, cantidad, costo })
     });
 
     if (response.status === 401) {

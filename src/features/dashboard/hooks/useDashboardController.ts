@@ -35,7 +35,7 @@ export const useDashboardController = () => {
         notify(t('dashboard.error.fetch_failed'), 'danger');
       }
     } finally {
-      if (showLoading) setIsLoading(false);
+      setIsLoading(false);
     }
   }, [token, logout, notify, t]);
 

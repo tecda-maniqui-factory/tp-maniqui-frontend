@@ -89,5 +89,10 @@ export const translations: Record<string, string> = {
   'commercial.new_client_title': 'Registrar Nuevo Cliente',
   'commercial.client_name': 'Nombre o Razón Social',
   'commercial.client_cuit': 'CUIT / CUIL',
-  'commercial.client_email': 'Correo Electrónico'
+  'commercial.client_email': 'Correo Electrónico',
+  'supply.cost_label': 'Costo Unitario (Facturado)',
+  'production.model.cost_label': 'Costo Unitario Estimado ($)',
+  'production.model.price_label': 'Precio de Venta Sugerido ($)',
+  'commercial.quotes.title': 'Cotizador de Presupuestos',
+  'commercial.quotes.description': 'Genera estimaciones de costos para clientes sin afectar el inventario físico.'
 };

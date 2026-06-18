@@ -1,0 +1,110 @@
+.presupuesto-page {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.quote-header {
+  border-bottom: 2px solid var(--border-light);
+  padding-bottom: 1rem;
+}
+
+@media print {
+  @page {
+    size: auto;
+    margin: 0mm; /* Elimina fecha, título, URL y paginación nativas del navegador */
+  }
+
+  /* Restablecer contenedores principales para evitar que el layout flex/100vh recorte la hoja */
+  html, 
+  body, 
+  #root, 
+  .main-layout, 
+  .main-layout__body, 
+  .main-layout__content {
+    height: auto !important;
+    width: auto !important;
+    overflow: visible !important;
+    display: block !important;
+    position: static !important;
+  }
+
+  body {
+    margin: 1.6cm !important; /* Agrega margen físico seguro al contenido en la hoja impresa */
+    background: white !important;
+    color: black !important;
+  }
+
+  /* Ocultar elementos de la interfaz del sistema */
+  .no-print, 
+  .main-layout__sidebar, 
+  .main-layout__header, 
+  .page-header,
+  .presupuesto-page__layout > *:first-child,
+  .printable-area .card__header {
+    display: none !important;
+  }
+
+  /* Asegurar que el layout y la vista previa ocupen el 100% de la hoja */
+  .presupuesto-page__layout {
+    display: block !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .printable-area {
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    background: white !important;
+  }
+
+  .main-layout__content {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Ocultar la columna de acciones (tacho de basura) al imprimir */
+  .printable-area table th:last-child,
+  .printable-area table td:last-child {
+    display: none !important;
+  }
+
+  /* Ajustar la info del cliente para que no gaste tinta y se imprima nítida */
+  .quote-client-info {
+    background-color: transparent !important;
+    border: 1px solid #ddd !important;
+    color: black !important;
+  }
+
+  /* Estilos para que la tabla de productos se imprima limpia en papel */
+  .printable-area table {
+    border-collapse: collapse !important;
+    width: 100% !important;
+    margin-top: 1rem !important;
+  }
+
+  .printable-area table th {
+    background-color: #f8f9fa !important;
+    color: black !important;
+    border-bottom: 2px solid #ccc !important;
+    padding: 8px !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .printable-area table td {
+    border-bottom: 1px solid #eee !important;
+    color: #333 !important;
+    padding: 8px !important;
+  }
+
+  .quote-footer {
+    border-top: 2px solid #ccc !important;
+    margin-top: 2rem !important;
+    padding-top: 1rem !important;
+  }
+}

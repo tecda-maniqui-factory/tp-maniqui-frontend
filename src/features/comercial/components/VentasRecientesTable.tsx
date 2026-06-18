@@ -1,6 +1,8 @@
 import { FC } from 'react';
-import { Table, Card } from '../../../components/molecules';
-import { Button, Badge } from '../../../components/atoms';
+import Table from '@/components/molecules/display/Table';
+import Card from '@/components/molecules/display/Card';;
+import Button from '@/components/atoms/form/Button';
+import Badge from '@/components/atoms/display/Badge';;
 
 interface VentaData {
   id: number;
@@ -10,6 +12,12 @@ interface VentaData {
   nro_factura: string;
   cae?: string;
   moneda: 'ARS' | 'USD';
+}
+
+interface Column {
+  key: string;
+  header: string;
+  align?: 'left' | 'center' | 'right';
 }
 
 interface VentasRecientesTableProps {
@@ -31,7 +39,7 @@ export const VentasRecientesTable: FC<VentasRecientesTableProps> = ({ data, onVi
     { key: 'acciones', header: 'Acciones', align: 'center' as const }
   ];
 
-  const renderCell = (item: VentaData, col: any) => {
+  const renderCell = (item: VentaData, col: Column) => {
     if (col.key === 'fecha') {
       return new Date(item.fecha).toLocaleDateString();
     }
@@ -52,7 +60,7 @@ export const VentasRecientesTable: FC<VentasRecientesTableProps> = ({ data, onVi
         </Button>
       );
     }
-    return item[col.key as keyof VentaData] as any;
+    return item[col.key as keyof VentaData] as string | number | undefined;
   };
 
   return (

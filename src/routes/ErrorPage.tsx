@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { useRouteError } from 'react-router-dom';
-import { Button } from '@/components/atoms';
+import Button from '@/components/atoms/form/Button';;
 import './ErrorPage.css';
 
 /**

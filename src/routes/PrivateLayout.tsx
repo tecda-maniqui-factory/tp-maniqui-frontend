@@ -1,7 +1,7 @@
 import { FC, use } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { AuthContext } from '@/context';
-import { MainLayout } from '@/components/templates';
+import { AuthContext } from '@/context/AuthContext';;
+import MainLayout from '@/components/templates/MainLayout';;
 import ProtectedRoute from './ProtectedRoute';
 import { getSidebarItems } from '@/config/navigation.config';
 

@@ -1,6 +1,6 @@
 import React, { FC, ReactNode, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
-import { Icon } from '@/components/atoms';
+import Icon from '@/components/atoms/display/Icon';;
 import './Modal.css';
 
 export interface ModalProps {

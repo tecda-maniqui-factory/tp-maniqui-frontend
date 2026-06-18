@@ -1,6 +1,8 @@
 import { FC } from 'react';
-import { Table, Card } from '../../../components/molecules';
-import { Icon, Badge } from '../../../components/atoms';
+import Table from '@/components/molecules/display/Table';
+import Card from '@/components/molecules/display/Card';;
+import Icon from '@/components/atoms/display/Icon';
+import Badge from '@/components/atoms/display/Badge';;
 
 interface RentabilidadData {
   maniqui_serie: string;
@@ -9,6 +11,12 @@ interface RentabilidadData {
   costo_total_piezas: number;
   margen_bruto: number;
   porcentaje_margen: number;
+}
+
+interface Column {
+  key: string;
+  header: string;
+  align?: 'left' | 'center' | 'right';
 }
 
 interface RentabilidadTableProps {
@@ -30,7 +38,7 @@ export const RentabilidadTable: FC<RentabilidadTableProps> = ({ data, isLoading 
     { key: 'margen_bruto', header: 'Ganancia Neta', align: 'right' as const }
   ];
 
-  const renderCell = (item: RentabilidadData, col: any) => {
+  const renderCell = (item: RentabilidadData, col: Column) => {
     if (col.key === 'maniqui_serie') {
       return (
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -55,7 +63,7 @@ export const RentabilidadTable: FC<RentabilidadTableProps> = ({ data, isLoading 
         </span>
       );
     }
-    return item[col.key as keyof RentabilidadData] as any;
+    return item[col.key as keyof RentabilidadData] as string | number | undefined;
   };
 
   return (

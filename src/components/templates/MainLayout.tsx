@@ -1,5 +1,6 @@
 import { FC, ReactNode, useState } from 'react';
-import { Navbar, Sidebar, SidebarItem } from '../organisms';
+import Navbar from '@/components/organisms/layout/Navbar';
+import Sidebar, { SidebarItem } from '@/components/organisms/layout/Sidebar';;
 import { useAuth } from '@/hooks/useAuth';
 import { ENV } from '@/config/env.config';
 import './MainLayout.css';
@@ -37,6 +38,8 @@ const MainLayout: FC<MainLayoutProps> = ({
 
   const handleSelect = (id: string) => {
     onSidebarItemSelect?.(id);
+    
+    console.log('RUTA', onSidebarItemSelect,id)
     if (window.innerWidth <= 768) {
       setIsOpen(false);
     }

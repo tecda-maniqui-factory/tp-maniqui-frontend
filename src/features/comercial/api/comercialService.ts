@@ -19,6 +19,35 @@ export interface Venta {
   moneda: 'ARS' | 'USD';
 }
 
+/** Shape devuelta por el backend en GET /ventas (antes del mapeo en el controller) */
+export interface VentaRaw {
+  id: number;
+  cliente_id: number;
+  cliente?: string;
+  fecha_venta?: string;
+  fecha?: string;
+  total: number | string;
+  metodo_pago: string;
+  nro_factura?: string;
+  cae?: string;
+  moneda?: 'ARS' | 'USD';
+}
+
+/** Un ítem dentro de Detalle_Ventas que retorna GET /ventas/:id */
+export interface DetalleVentaItem {
+  maniqui_id: number;
+  numero_serie: string;
+  precio_final: number;
+  Modelo?: { nombre: string };
+  /** Relación anidada que puede venir del backend según el include de Sequelize */
+  maniqui?: { numero_serie?: string; Modelo?: { nombre: string } };
+}
+
+/** Respuesta completa de GET /ventas/:id */
+export interface VentaDetalle extends Venta {
+  Detalle_Ventas: DetalleVentaItem[];
+}
+
 export interface Maniqui {
   id: number;
   numero_serie: string;
@@ -58,7 +87,7 @@ export const comercialService = {
     return response.json();
   },
 
-  getVentas: async (token: string): Promise<any[]> => {
+  getVentas: async (token: string): Promise<VentaRaw[]> => {
     const response = await fetch(`${ENV.API_URL}/ventas`, {
       headers: { 'Authorization': `Bearer ${token}` }
     });
@@ -67,7 +96,7 @@ export const comercialService = {
     return response.json();
   },
 
-  getVentaById: async (token: string, id: number): Promise<any> => {
+  getVentaById: async (token: string, id: number): Promise<VentaDetalle> => {
     const response = await fetch(`${ENV.API_URL}/ventas/${id}`, {
       headers: { 'Authorization': `Bearer ${token}` }
     });

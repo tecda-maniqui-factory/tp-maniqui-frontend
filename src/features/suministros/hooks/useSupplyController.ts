@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useNotify } from '@/hooks/useNotify';
 import { useLanguage } from '@/hooks/useLanguage';
@@ -24,6 +24,7 @@ export const useSupplyController = () => {
   const [tipoPieza, setTipoPieza] = useState('');
   const [modeloId, setModeloId] = useState('');
   const [cantidad, setCantidad] = useState('10');
+  const [costo, setCosto] = useState('50.00');
   
   const [ordenesActivas, setOrdenesActivas] = useState<OrdenCompra[]>([]);
   const [proveedorOptions, setProveedorOptions] = useState<{ value: string; label: string }[]>([
@@ -62,8 +63,8 @@ export const useSupplyController = () => {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         if (response.ok) {
-          const data = await response.json();
-          const externalOptions = data.map((p: any) => ({
+          const data: Array<{ codigo: string; nombre: string }> = await response.json();
+          const externalOptions = data.map(p => ({
             value: p.codigo,
             label: p.nombre
           }));
@@ -75,6 +76,7 @@ export const useSupplyController = () => {
           }
         }
       } catch (err) {
+        // Network error loading providers — silently keep defaults
         console.error('Error loading proveedores:', err);
       }
     };
@@ -82,49 +84,53 @@ export const useSupplyController = () => {
     return () => { isMounted = false; };
   }, [token]);
 
+  // Stable ref for SSE callbacks — prevents stale closure re-subscription on every notify change
+  const sseHandlerRef = useRef({ notify, setOrdenesActivas });
+  useEffect(() => {
+    sseHandlerRef.current = { notify, setOrdenesActivas };
+  });
+
   // Setup SSE
   useEffect(() => {
     if (!token) return;
 
     const eventSource = new EventSource(`${ENV.API_URL}/notificaciones/stream?token=${token}`);
 
-    eventSource.addEventListener('sync_ordenes', (e) => {
-      const data = JSON.parse(e.data);
-      setOrdenesActivas(data);
-    });
-
-    eventSource.addEventListener('nueva_orden', (e) => {
-      const data = JSON.parse(e.data);
-      setOrdenesActivas(prev => [...prev, data]);
-      notify(`Nueva orden recibida: ${data.tipo_parte} para ${data.modelo_nombre}`, 'info');
-    });
-
-    eventSource.addEventListener('orden_completada', (e) => {
-      const data = JSON.parse(e.data);
-      setOrdenesActivas(prev => prev.filter(o => o.id !== data.id));
-    });
-
-    eventSource.onerror = (e) => {
-      console.error('SSE Error', e);
+    const handleSyncOrdenes = (e: MessageEvent) => {
+      const data: OrdenCompra[] = JSON.parse(e.data);
+      sseHandlerRef.current.setOrdenesActivas(data);
+    };
+    const handleNuevaOrden = (e: MessageEvent) => {
+      const data: OrdenCompra = JSON.parse(e.data);
+      sseHandlerRef.current.setOrdenesActivas(prev => [...prev, data]);
+      sseHandlerRef.current.notify(`Nueva orden recibida: ${data.tipo_parte} para ${data.modelo_nombre}`, 'info');
+    };
+    const handleOrdenCompletada = (e: MessageEvent) => {
+      const data: { id: string } = JSON.parse(e.data);
+      sseHandlerRef.current.setOrdenesActivas(prev => prev.filter(o => o.id !== data.id));
     };
 
-    return () => {
-      eventSource.close();
-    };
-  }, [token, notify]);
+    eventSource.addEventListener('sync_ordenes', handleSyncOrdenes);
+    eventSource.addEventListener('nueva_orden', handleNuevaOrden);
+    eventSource.addEventListener('orden_completada', handleOrdenCompletada);
+    eventSource.onerror = (e) => { console.error('SSE Error (supply)', e); };
+
+    return () => { eventSource.close(); };
+  }, [token]);
 
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!token || !proveedor || !tipoPieza || !modeloId || !cantidad) return;
+    if (!token || !proveedor || !tipoPieza || !modeloId || !cantidad || !costo) return;
 
     setIsSubmitting(true);
     try {
-      await supplyService.ingresarPiezas(token, proveedor, tipoPieza, Number(modeloId), Number(cantidad));
+      await supplyService.ingresarPiezas(token, proveedor, tipoPieza, Number(modeloId), Number(cantidad), Number(costo));
       notify(`Ingreso de stock exitoso: ${cantidad} unidades recibidas.`, 'success');
       setProveedor('');
       setTipoPieza('');
       setModeloId('');
       setCantidad('10');
+      setCosto('');
     } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : String(err);
       if (errorMessage === 'auth.error.session_expired') {
@@ -135,13 +141,14 @@ export const useSupplyController = () => {
     } finally {
       setIsSubmitting(false);
     }
-  }, [token, proveedor, tipoPieza, modeloId, cantidad, logout, notify]);
+  }, [token, proveedor, tipoPieza, modeloId, cantidad, costo, logout, notify]);
 
   const handlers = {
     handleProveedorChange: (e: React.ChangeEvent<HTMLSelectElement>) => setProveedor(e.target.value),
     handleTipoPiezaChange: (e: React.ChangeEvent<HTMLSelectElement>) => setTipoPieza(e.target.value),
     handleModeloChange: (e: React.ChangeEvent<HTMLSelectElement>) => setModeloId(e.target.value),
     handleCantidadChange: (e: React.ChangeEvent<HTMLInputElement>) => setCantidad(e.target.value),
+    handleCostoChange: (e: React.ChangeEvent<HTMLInputElement>) => setCosto(e.target.value),
     handleSubmit,
     handleCompletarOrden: (orden: OrdenCompra) => {
       // Seleccionar dinámicamente el primer proveedor externo disponible, o por defecto 'EXT-A'
@@ -177,6 +184,7 @@ export const useSupplyController = () => {
     tipoPieza,
     modeloId,
     cantidad,
+    costo,
     ordenesActivas,
     isSubmitting,
     isLoadingModels,

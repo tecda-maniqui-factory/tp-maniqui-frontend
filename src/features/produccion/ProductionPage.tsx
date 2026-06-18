@@ -1,6 +1,8 @@
 import { FC, useState } from 'react';
-import { PageHeader, Modal } from '@/components/organisms';
-import { Spinner, Button } from '@/components/atoms';
+import PageHeader from '@/components/organisms/layout/PageHeader';
+import Modal from '@/components/organisms/feedback/Modal';;
+import Spinner from '@/components/atoms/feedback/Spinner';
+import Button from '@/components/atoms/form/Button';;
 import { AssemblyForm } from './components/AssemblyForm';
 import { ProductionTable } from './components/ProductionTable';
 import { useProductionController } from './hooks/useProductionController';

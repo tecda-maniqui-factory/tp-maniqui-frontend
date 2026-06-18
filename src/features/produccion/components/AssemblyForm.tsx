@@ -1,6 +1,9 @@
 import { FC } from 'react';
-import { FormField } from '@/components/molecules';
-import { Select, Input, Button, Spinner } from '@/components/atoms';
+import FormField from '@/components/molecules/form/FormField';;
+import Select from '@/components/atoms/form/Select';
+import Input from '@/components/atoms/form/Input';
+import Button from '@/components/atoms/form/Button';
+import Spinner from '@/components/atoms/feedback/Spinner';;
 import { useAssemblyController } from '../hooks/useAssemblyController';
 import { Modelo } from '../api/productionService';
 import './AssemblyForm.css';

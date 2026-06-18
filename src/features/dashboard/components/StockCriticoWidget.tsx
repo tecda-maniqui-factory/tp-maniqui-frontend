@@ -1,7 +1,20 @@
 import { FC, useMemo } from 'react';
-import { Table, Card } from '@/components/molecules';
-import { Button, Badge } from '@/components/atoms';
+import Table from '@/components/molecules/display/Table';
+import Card from '@/components/molecules/display/Card';;
+import Button from '@/components/atoms/form/Button';
+import Badge from '@/components/atoms/display/Badge';;
 import { StockCriticoData } from '../api/dashboardService';
+
+interface OrdenActiva {
+  modelo_nombre: string;
+  tipo_parte: string;
+}
+
+interface Column {
+  key: string;
+  header: string;
+  align?: 'left' | 'center' | 'right';
+}
 
 interface StockCriticoWidgetProps {
   data: StockCriticoData[];
@@ -9,7 +22,7 @@ interface StockCriticoWidgetProps {
   onPedir: (item: StockCriticoData) => void;
   t: (key: string) => string;
   userRole?: string;
-  ordenesActivas?: any[];
+  ordenesActivas?: OrdenActiva[];
 }
 
 /**
@@ -26,7 +39,7 @@ export const StockCriticoWidget: FC<StockCriticoWidgetProps> = ({ data, isLoadin
     ] : [])
   ], [t, userRole]);
 
-  const renderCell = (item: StockCriticoData, col: any) => {
+  const renderCell = (item: StockCriticoData, col: Column) => {
     if (col.key === 'cantidad_disponible') {
       return (
         <Badge variant={item.cantidad_disponible === 0 ? 'danger' : 'warning'}>
@@ -51,7 +64,7 @@ export const StockCriticoWidget: FC<StockCriticoWidgetProps> = ({ data, isLoadin
         </Button>
       );
     }
-    return item[col.key as keyof StockCriticoData] as any;
+    return item[col.key as keyof StockCriticoData] as string | number | undefined;
   };
 
   return (

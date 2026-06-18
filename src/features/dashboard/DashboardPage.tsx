@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { PageHeader } from '@/components/organisms';
+import PageHeader from '@/components/organisms/layout/PageHeader';;
 import { StockCriticoWidget } from './components/StockCriticoWidget';
 import { useDashboardController } from './hooks/useDashboardController';
 import './DashboardPage.css';

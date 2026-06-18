@@ -25,7 +25,7 @@ export const dashboardService = {
   /**
    * Genera una nueva orden de compra para reponer stock.
    */
-  postOrdenCompra: async (token: string, modelo: string, parte: string): Promise<any> => {
+  postOrdenCompra: async (token: string, modelo: string, parte: string): Promise<void> => {
     const response = await fetch(`${ENV.API_URL}/notificaciones/ordenes`, {
       method: 'POST',
       headers: {
@@ -37,6 +37,6 @@ export const dashboardService = {
 
     if (response.status === 401) throw new Error('auth.error.session_expired');
     if (!response.ok) throw new Error('Error al crear la orden');
-    return response.json();
+    await response.json();
   }
 };

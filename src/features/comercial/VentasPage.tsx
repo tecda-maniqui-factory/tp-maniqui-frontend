@@ -1,10 +1,17 @@
 import { FC, useMemo } from 'react';
-import { PageHeader, Modal } from '@/components/organisms';
-import { Spinner, Button, Select, Input, Badge } from '@/components/atoms';
-import { FormField, Card } from '@/components/molecules';
+import PageHeader from '@/components/organisms/layout/PageHeader';
+import Modal from '@/components/organisms/feedback/Modal';;
+import Spinner from '@/components/atoms/feedback/Spinner';
+import Button from '@/components/atoms/form/Button';
+import Select from '@/components/atoms/form/Select';
+import Input from '@/components/atoms/form/Input';
+import Badge from '@/components/atoms/display/Badge';;
+import FormField from '@/components/molecules/form/FormField';
+import Card from '@/components/molecules/display/Card';
+import Alert from '@/components/molecules/feedback/Alert';;
 import { VentasRecientesTable } from './components/VentasRecientesTable';
 import { useSalesController } from './hooks/useSalesController';
-import { Maniqui } from './api/comercialService';
+import { Maniqui, DetalleVentaItem } from './api/comercialService';
 import './VentasPage.css';
 
 /**
@@ -428,11 +435,17 @@ export const VentasPage: FC = () => {
                 </div>
               </div>
 
+              {!selectedVentaDetalle.cae && (
+                <Alert variant="warning" title="Factura Pendiente de AFIP" className="sale-detail-modal__alert">
+                  Este comprobante se encuentra en estado <strong>Pendiente</strong> porque aún no ha sido enviado o autorizado por AFIP (no posee código CAE ni número de factura oficial asignado).
+                </Alert>
+              )}
+
               {/* Items Vendidos */}
               <div className="sale-detail-modal__items-section">
                 <h4 className="sale-detail-modal__items-title">Productos / Maniquíes Vendidos</h4>
                 <div className="sale-detail-modal__items-list">
-                  {selectedVentaDetalle.Detalle_Ventas?.map((detalle: any, idx: number) => {
+                  {selectedVentaDetalle.Detalle_Ventas?.map((detalle: DetalleVentaItem, idx: number) => {
                     const modelName = detalle.maniqui?.Modelo?.nombre || 'Maniquí Ensamblado';
                     const serial = detalle.maniqui?.numero_serie || `ID: ${detalle.maniqui_id}`;
                     return (

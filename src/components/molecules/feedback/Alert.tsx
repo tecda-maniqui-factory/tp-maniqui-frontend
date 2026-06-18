@@ -1,5 +1,5 @@
 import { FC, ReactNode } from 'react';
-import { Icon } from '@/components/atoms';
+import Icon from '@/components/atoms/display/Icon';;
 import { icons } from 'lucide-react';
 import './Alert.css';
 

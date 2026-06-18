@@ -1,4 +1,4 @@
-import { SidebarItem } from '@/components/organisms';
+import { SidebarItem } from '@/components/organisms/layout/Sidebar';;
 
 export const getSidebarItems = (pathname: string, role?: string): SidebarItem[] => {
   const items: SidebarItem[] = [
@@ -25,6 +25,18 @@ export const getSidebarItems = (pathname: string, role?: string): SidebarItem[] 
       label: 'Ventas', 
       icon: 'ShoppingCart', 
       isActive: pathname === '/ventas' 
+    });
+    items.push({ 
+      id: '/clientes', 
+      label: 'Clientes', 
+      icon: 'Users', 
+      isActive: pathname === '/clientes' 
+    });
+    items.push({ 
+      id: '/presupuestos', 
+      label: 'Presupuestos', 
+      icon: 'FileText', 
+      isActive: pathname === '/presupuestos' 
     });
   }
 

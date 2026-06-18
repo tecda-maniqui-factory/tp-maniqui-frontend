@@ -1,7 +1,10 @@
 import { FC } from 'react';
-import { PageHeader } from '@/components/organisms';
-import { FormField } from '@/components/molecules';
-import { Input, Button, Spinner, Select } from '@/components/atoms';
+import PageHeader from '@/components/organisms/layout/PageHeader';;
+import FormField from '@/components/molecules/form/FormField';;
+import Input from '@/components/atoms/form/Input';
+import Button from '@/components/atoms/form/Button';
+import Spinner from '@/components/atoms/feedback/Spinner';
+import Select from '@/components/atoms/form/Select';;
 import { useSupplyController } from './hooks/useSupplyController';
 import { Modelo } from '../produccion/api/productionService';
 
@@ -12,10 +15,12 @@ export const SupplyPage: FC = () => {
     tipoPieza,
     modeloId,
     cantidad,
+    costo,
     ordenesActivas,
     isSubmitting,
     isLoadingModels,
     handlers,
+    t,
     proveedorOptions
   } = useSupplyController();
 
@@ -108,11 +113,24 @@ export const SupplyPage: FC = () => {
             />
           </FormField>
 
+          <FormField label={t('supply.cost_label')}>
+            <Input 
+              type="number"
+              min="0.01"
+              step="0.01"
+              iconName="DollarSign"
+              value={costo}
+              onChange={handlers.handleCostoChange}
+              disabled={isSubmitting}
+              required
+            />
+          </FormField>
+
           <Button 
             type="submit" 
             variant="success" 
             iconName="Download"
-            isDisabled={isSubmitting || !proveedor || !tipoPieza || !modeloId}
+            isDisabled={isSubmitting || !proveedor || !tipoPieza || !modeloId || !costo}
           >
             {isSubmitting ? <Spinner size={20} /> : 'Registrar Ingreso de Stock'}
           </Button>

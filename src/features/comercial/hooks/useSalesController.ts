@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useNotify } from '@/hooks/useNotify';
 import { useLanguage } from '@/hooks/useLanguage';
-import { comercialService, Cliente, Venta, Maniqui } from '../api/comercialService';
+import { comercialService, Cliente, Venta, Maniqui, VentaRaw, VentaDetalle } from '../api/comercialService';
 
 /**
  * Hook Controlador para el Módulo Comercial - Ventas y Clientes.
@@ -24,7 +24,7 @@ export const useSalesController = () => {
   const [isClienteModalOpen, setIsClienteModalOpen] = useState(false);
 
   // Estados de Detalle de Venta
-  const [selectedVentaDetalle, setSelectedVentaDetalle] = useState<any | null>(null);
+  const [selectedVentaDetalle, setSelectedVentaDetalle] = useState<VentaDetalle | null>(null);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [isDetailLoading, setIsDetailLoading] = useState(false);
 
@@ -91,7 +91,7 @@ export const useSalesController = () => {
       setManiquiesDisponibles(maniquiesData);
 
       // Normalizar las ventas para mapear el nombre del cliente si no viene del backend
-      const mappedVentas = (ventasData || []).map((v: any) => {
+      const mappedVentas = (ventasData || []).map((v: VentaRaw) => {
         const clienteObj = clientesData.find(c => c.id === v.cliente_id);
         return {
           id: v.id,
@@ -107,7 +107,7 @@ export const useSalesController = () => {
       });
 
       setVentas(mappedVentas);
-    } catch (err: any) {
+    } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
       if (msg === 'auth.error.session_expired') {
         logout();
@@ -115,7 +115,7 @@ export const useSalesController = () => {
         notify(t('commercial.error.fetch_failed'), 'danger');
       }
     } finally {
-      if (showLoading) setIsLoading(false);
+      setIsLoading(false);
     }
   }, [token, logout, notify, t]);
 
@@ -171,7 +171,7 @@ export const useSalesController = () => {
       setIsClienteModalOpen(false);
 
       notify(t('commercial.success.client_created'), 'success');
-    } catch (err: any) {
+    } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
       if (msg === 'auth.error.session_expired') {
         logout();
@@ -236,7 +236,7 @@ export const useSalesController = () => {
 
       // Recargar datos actualizados (ventas e inventario disponible)
       await loadCommercialData(false);
-    } catch (err: any) {
+    } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
       if (msg === 'auth.error.session_expired') {
         logout();
@@ -278,7 +278,7 @@ export const useSalesController = () => {
     try {
       const detail = await comercialService.getVentaById(token, id);
       setSelectedVentaDetalle(detail);
-    } catch (err: any) {
+    } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
       if (msg === 'auth.error.session_expired') {
         logout();

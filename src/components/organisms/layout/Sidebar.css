@@ -72,9 +72,13 @@
   z-index: 80;
 }
 
-/* Responsive: Mobile view overlay */
-@media (max-width: 768px) {
-  .sidebar-overlay--open {
-    display: block;
+.sidebar-overlay--open {
+  display: block;
+}
+
+@media (min-width: 769px) {
+  .sidebar-overlay {
+    display: none !important;
   }
 }
+

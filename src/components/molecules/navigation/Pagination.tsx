@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Button } from '@/components/atoms';
+import Button from '@/components/atoms/form/Button';;
 import './Pagination.css';
 
 export interface PaginationProps {

@@ -1,14 +1,16 @@
 import { FC, use } from 'react';
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom';
-import { AuthPage } from '@/features/auth';
-import { ProductionPage } from '@/features/produccion';
-import { DashboardPage } from '@/features/dashboard';
-import { ModelCreationPage } from '@/features/modelos';
-import { SupplyPage } from '@/features/suministros';
+import { AuthPage } from '@/features/auth/AuthPage';;
+import ProductionPage from '@/features/produccion/ProductionPage';;
+import DashboardPage from '@/features/dashboard/DashboardPage';;
+import { ModelCreationPage } from '@/features/modelos/ModelCreationPage';;
+import { SupplyPage } from '@/features/suministros/SupplyPage';;
 import ReportsPage from '@/features/reportes/ReportsPage';
-import { VentasPage } from '@/features/comercial';
-import { NotificationContainer } from '@/components/organisms';
-import { AuthContext } from '@/context';
+import { VentasPage } from '@/features/comercial/VentasPage';
+import ClientesPage from '@/features/comercial/ClientesPage';
+import { PresupuestoPage } from '@/features/comercial/PresupuestoPage';;
+import NotificationContainer from '@/components/organisms/feedback/NotificationContainer';;
+import { AuthContext } from '@/context/AuthContext';;
 import { ErrorPage } from './ErrorPage';
 import { PrivateLayout } from './PrivateLayout';
 
@@ -65,6 +67,18 @@ export const AppRouter: FC = () => {
           path: 'ventas',
           element: (auth.user?.rol === 'gerente_prod' || auth.user?.rol === 'vendedor')
             ? <VentasPage />
+            : <Navigate to="/" replace />,
+        },
+        {
+          path: 'clientes',
+          element: (auth.user?.rol === 'gerente_prod' || auth.user?.rol === 'vendedor')
+            ? <ClientesPage />
+            : <Navigate to="/" replace />,
+        },
+        {
+          path: 'presupuestos',
+          element: (auth.user?.rol === 'gerente_prod' || auth.user?.rol === 'vendedor')
+            ? <PresupuestoPage />
             : <Navigate to="/" replace />,
         },
       ],

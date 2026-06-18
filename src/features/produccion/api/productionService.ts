@@ -85,7 +85,7 @@ export const productionService = {
   /**
    * Registra un nuevo modelo con su receta de piezas.
    */
-  createModelo: async (token: string, data: { nombre: string; partes: string[]; sexo_id: number }): Promise<any> => {
+  createModelo: async (token: string, data: { nombre: string; partes: string[]; sexo_id: number; costo_unitario: number; precio_venta: number }): Promise<any> => {
     const response = await fetch(`${ENV.API_URL}/sistema/modelos`, {
       method: 'POST',
       headers: {

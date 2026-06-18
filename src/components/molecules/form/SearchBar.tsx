@@ -1,5 +1,6 @@
 import { FC, ChangeEvent, FormEvent, useState } from 'react';
-import { Input, Button } from '@/components/atoms';
+import Input from '@/components/atoms/form/Input';
+import Button from '@/components/atoms/form/Button';;
 import './SearchBar.css';
 
 export interface SearchBarProps {

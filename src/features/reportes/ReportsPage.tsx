@@ -1,10 +1,10 @@
-import { FC, useEffect, useState } from 'react';
-import { PageHeader } from '../../components/organisms/layout';
-import { StatCard } from '../../components/organisms/display';
+import { FC, useEffect, useState, useCallback } from 'react';
+import PageHeader from '@/components/organisms/layout/PageHeader';;
+import StatCard from '@/components/organisms/display/StatCard';;
 import { RentabilidadTable } from './components/RentabilidadTable';
 import { reportsService, RentabilidadItem } from './api/reportsService';
-import { useNotify } from '../../hooks/useNotify';
-import { useAuth } from '../../hooks/useAuth';
+import { useNotify } from '@/hooks/useNotify';
+import { useAuth } from '@/hooks/useAuth';
 import './ReportsPage.css';
 
 /**
@@ -17,24 +17,29 @@ const ReportsPage: FC = () => {
   const showNotification = useNotify();
   const { token } = useAuth();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (!token) return;
-
-      try {
-        setIsLoading(true);
-        const rentData = await reportsService.getRentabilidad(token);
-        setRentabilidad(rentData);
-      } catch (error) {
-        showNotification('No se pudo cargar la información analítica', 'danger');
-        console.error(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchData();
+  const fetchData = useCallback(async () => {
+    if (!token) return;
+    setIsLoading(true);
+    try {
+      const rentData = await reportsService.getRentabilidad(token);
+      setRentabilidad(rentData);
+    } catch (error) {
+      showNotification('No se pudo cargar la información analítica', 'danger');
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
   }, [token, showNotification]);
+
+  useEffect(() => {
+    let isMounted = true;
+    const run = async () => {
+      await Promise.resolve();
+      if (isMounted) fetchData();
+    };
+    run();
+    return () => { isMounted = false; };
+  }, [fetchData]);
 
   // Cálculos para StatCards
   const totalGanancia = rentabilidad.reduce((acc, item) => acc + item.margen_bruto, 0);

@@ -1,5 +1,5 @@
 import { use } from 'react';
-import { AuthContext } from '@/context';
+import { AuthContext } from '@/context/AuthContext';;
 
 /**
  * Hook de acceso rápido a la autenticación.

@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Icon } from '@/components/atoms';
+import Icon from '@/components/atoms/display/Icon';;
 import './CredentialOverlay.css';
 
 interface CredentialOverlayProps {

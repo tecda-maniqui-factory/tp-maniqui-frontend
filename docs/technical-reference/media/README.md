@@ -30,4 +30,4 @@ Nuestra interfaz está diseñada bajo estrictos estándares corporativos para of
 ---
 
 > [!NOTE]
-> Este frontend está configurado por defecto mediante Vite para ejecutarse en el **puerto `5173`** en desarrollo local y consumirá la API expuesta por el backend en el **puerto `8081`**.
+> Este frontend está configurado por defecto mediante Vite para ejecutarse en el **puerto `5173`** en desarrollo local y consumirá la API expuesta por el backend en el **puerto `8082`**.

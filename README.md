@@ -40,7 +40,7 @@ Toda la documentación visual y la referencia técnica autogenerada está dispon
     ```bash
     pnpm run docs
     ```
-    Una vez generada, puedes abrir [docs/technical-reference/index.html](file:///home/jmro/Documentos/Proyectos/maniqui/tp-maniqui-frontend/docs/technical-reference/index.html) en tu navegador.
+    Una vez generada, puedes abrir [docs/technical-reference/index.html](docs/technical-reference/index.html) en tu navegador.
 *   **Guías Visuales Internas:**
     *   👉 **[Manual de Operaciones y Roles](docs/ROLES_Y_OPERACIONES.md)**: Detalle del sistema RBAC en la interfaz.
     *   👉 **[Guía de Componentes y Vistas](docs/components.md)** *(Próximamente)*

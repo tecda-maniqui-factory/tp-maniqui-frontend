@@ -19,7 +19,9 @@ Este repositorio sigue una arquitectura de diseño modular y limpia basada en lo
 ## 🚀 Guía de Inicio Rápido
 
 ### 1. Levantar el entorno de desarrollo local
+Copia la plantilla preconfigurada para generar tu archivo `.env` (apunta a la API en el puerto `8082`):
 ```bash
+cp .env.example .env
 pnpm install
 pnpm dev
 ```

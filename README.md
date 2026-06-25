@@ -33,6 +33,19 @@ pnpm run build
 
 ---
 
+## 🔑 Credenciales de Prueba para el Evaluador
+
+El panel administrativo implementa control de acceso y vistas adaptativas según el rol del usuario (RBAC). Puedes iniciar sesión utilizando las siguientes cuentas de prueba precargadas:
+
+| Rol / Nivel de Acceso | Usuario | Contraseña | Vistas y Funciones Permitidas |
+| :--- | :--- | :--- | :--- |
+| **Gerente de Producción** | `gerente` | `gerente` | Acceso completo a producción, registro de modelos y reportes financieros. |
+| **Vendedor** | `vendedor` | `vendedor` | Acceso a registro de ventas y visualización de stock/catálogos. |
+| **Operario** | `operario` | `operario` | Panel básico de control de calidad y estados de piezas. |
+| **Administrador General** | `admin_pablo` | `tecda2026` | Permisos totales de gestión sobre la plataforma. |
+
+---
+
 ## 📖 Centro de Documentación y Referencia Técnica
 
 Toda la documentación visual y la referencia técnica autogenerada está disponible en las siguientes rutas:

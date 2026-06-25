@@ -40,7 +40,6 @@ El panel administrativo implementa control de acceso y vistas adaptativas según
 | Rol / Nivel de Acceso | Usuario | Contraseña | Vistas y Funciones Permitidas |
 | :--- | :--- | :--- | :--- |
 | **Gerente de Producción** (Admin) | `gerente` | `gerente` | Acceso completo a producción, registro de modelos y reportes financieros. |
-| **Gerente de Producción** (Admin) | `admin_pablo` | `tecda2026` | Acceso completo de administrador (Usuario original de desarrollo, mismo rol que `gerente`). |
 | **Vendedor** | `vendedor` | `vendedor` | Acceso a registro de ventas y visualización de stock/catálogos. |
 | **Operario** | `operario` | `operario` | Panel básico de control de calidad y estados de piezas. |
 
